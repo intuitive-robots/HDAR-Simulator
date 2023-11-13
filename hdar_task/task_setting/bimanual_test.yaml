@@ -1,0 +1,35 @@
+task_type: grasp test
+discription: grasp test
+
+robots: 
+  {
+    {
+      type: gripper_panda,
+      name: grasp_robot1, 
+      base_position: [0.0, 0.1, 0.1],
+      base_rotation: [-20.0, 0.0, 0.0],
+      init_end_eff_pos: [0.55, 0.2, 0.55],
+      init_end_eff_quat: [0.0, 1.0, 0.0, 0.0],
+    },
+
+    {
+      type: gripper_panda,
+      name: grasp_robot2, 
+      base_position: [0.0, -0.1, 0.1],
+      base_rotation: [20.0, 0.0, 0.0],
+      init_end_eff_pos: [0.55, -0.2, 0.55],
+      init_end_eff_quat: [0.0, 1.0, 0.0, 0.0],
+    },
+  }
+
+objects:
+  [
+    {
+      type: Box,
+      name: "box6",
+      init_pos: [0.4, 0.0, 0.2],
+      init_quat: [0, 1, 0, 0],
+      size: [0.25, 0.25, 0.2],
+      rgba: [0, 1, 0, 1],
+    },
+  ]

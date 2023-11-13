@@ -1,0 +1,43 @@
+RobotConfig: {
+  grasp_robot:
+  {
+    # interaction_method: "real_robot",
+    # interaction_method: "virtual_robot",
+    interaction_method: "hand_tracking",
+    # interaction_method: "gamepad",
+    # interaction_method: "motion_controller",
+  },
+}
+
+SLConfig: {
+  grasp_robot:
+  {
+    # IRL Setting
+    sl_robot_name: panda201,
+    backend_addr: tcp://10.10.10.210:51201,
+    local_addr: 10.10.10.220,
+    # ALR Setting
+    # sl_robot_name: "panda2",
+    # backend_addr: tcp://141.3.53.152:51102,
+    # local_addr: "141.3.53.158",
+  }
+}
+
+HDARConfig: {
+  # hdar_addr: "192.168.178.102",
+  # hdar_addr: "192.168.0.143",
+  hdar_addr: "192.168.0.215",
+  # hdar_addr: "192.168.0.215", # virtual robot test
+  # hdar_addr: "192.168.0.246",
+  # hdar_addr: "10.42.0.1", # irl-220 hot spot
+  # hdar_addr: 141.3.53.54,
+  hdar_port: 8052,
+}
+
+
+QRConfig: {
+  QRText: "SFBase",
+  offsetPos: [0.045,  -0.14, 0.005],
+  # offsetPos: [0.0,  0.0, 0.5],
+  offsetRot: [-90.0, 179.0, 0.0],
+}

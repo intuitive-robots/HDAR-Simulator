@@ -1,0 +1,40 @@
+task_type: grasp_object
+discription: grasp_object
+
+robots:
+  {
+    grasp_robot: {
+      base_position: [0.0, 0.0, 0.0],
+      base_rotation: [0.0, 0.0, 0.0],
+      init_end_eff_pos: [0.525, 0.0, 0.3],
+      init_end_eff_quat: [0.0, 1.0, 0.0, 0.0],
+    },
+  }
+
+objects: 
+  {
+    # plate: {
+    #   type: 029_plate,
+    #   init_pos: [0.5, 0.3, 0.1],
+    #   init_quat: [1.0, 0.0, 0.0, 0.0],
+    #   source: ycb,
+    # },
+    # mug: {
+    #   type: 025_mug,
+    #   init_pos: [0.3, -0.3, 0.3],
+    #   init_quat: [0.0, 1.0, 0.0, 0.0],
+    #   source: ycb,
+    # },
+    # banana: {
+    #   type: 011_banana,
+    #   init_pos: [0.5, 0.2, 0.4],
+    #   init_quat: [0.0, 1.0, 0.0, 0.0],
+    #   source: ycb,
+    # },
+    a_cups: {
+      type: 048_hammer,
+      init_pos: [0.5, 0.0, 0.2],
+      init_quat: [1.0, 0.0, 0.0, 0.0],
+      source: ycb,
+    },
+  }

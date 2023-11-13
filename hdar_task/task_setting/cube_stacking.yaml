@@ -1,0 +1,46 @@
+task_type: cube_stacking
+discription: cube_stacking
+
+robots:
+  {
+    grasp_robot: {
+      base_position: [0.0, 0.0, 0.0],
+      base_rotation: [0.0, 0.0, 0.0],
+      init_end_eff_pos: [0.525, 0.0, 0.3],
+      init_end_eff_quat: [0.0, 1.0, 0.0, 0.0],
+    },
+  }
+
+objects: 
+  {
+    red_box: {
+      init_pos: [0.35, -0.25, 0.0],
+      init_quat: [0.0, 1.0, 0.0, 0.0],
+      rgba: [1.0, 0.0, 0.0, 1.0],
+      mass: 0.05,
+      size: [0.03, 0.03, 0.03],
+    },
+    green_box: {
+      init_pos: [0.35, -0.1, 0.0],
+      init_quat: [0.0, 1.0, 0.0, 0.0],
+      rgba: [0.0, 1.0, 0.0, 1.0],
+      mass: 0.05,
+      size: [0.03, 0.03, 0.03],
+    },
+    blue_box: {
+      init_pos: [0.55, -0.25, 0.0],
+      init_quat: [0.0, 1.0, 0.0, 0.0],
+      rgba: [0.0, 0.0, 1.0, 1.0],
+      mass: 0.05,
+      size: [0.03, 0.05, 0.03],
+    },
+    # target_box: {
+    #   type: Box,
+    #   name: target_box,
+    #   init_pos: [0.5, 0.2, 0.0],
+    #   init_quat: [0.0, 1.0, 0.0, 0.0],
+    #   rgba: [0.5, 0.0, 0.5, 0.5],
+    #   size: [0.05, 0.05, 0.04],
+    # },
+
+  }
