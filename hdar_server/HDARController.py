@@ -11,14 +11,8 @@ from alr_sim.controllers.Controller import JointPDController
 from alr_sim.sims.sl.multibot_teleop.src.human_controller import HumanController
 from alr_sim.sims.mujoco.mj_interactive.devices.gamepad import GamePad
 from alr_sim.sims.universal_sim.PrimitiveObjects import Box, Sphere
-from alr_sim.utils import (
-    geometric_transformation as geo_trans,
-    euler2quat,
-    euler2mat,
-    mat2quat,
-    quat2mat,
-    quat_mul,
-)
+from alr_sim.utils.geometric_transformation import euler2quat, euler2mat, mat2quat
+from alr_sim.utils.geometric_transformation import quat2mat, quat_mul
 from alr_sim.sims.sl.multibot_teleop.src.kalman_filter import KalmanFilter
 
 from .UnityStreamer import UnityStreamer, RobotHandler

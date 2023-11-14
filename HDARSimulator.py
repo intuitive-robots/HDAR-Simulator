@@ -58,8 +58,8 @@ class HDARSimulator:
         downsample_steps=1,
     ) -> None:
 
-        self.real_sim_factory: SlFactory = None
-        self.real_scene: SlScene = None
+        self.real_sim_factory: SlFactory
+        self.real_scene: SlScene
 
         self.current_time = 0
         self.time_limit = time_limit
