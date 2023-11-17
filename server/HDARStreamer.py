@@ -1,3 +1,4 @@
+from ast import Dict
 import asyncio
 import json
 import threading
@@ -15,24 +16,14 @@ from sim_pub.sf.sf_simobj_publisher import *
 class HDARStreamer(SFSimStreamer):
     def __init__(
         self,
-        scene: MjScene,
-        robots: list[RobotBase],
-        objects: list[SimObject],
-        host="127.0.0.1",
-        port=8052,
+        server_config: Dict
     ) -> None:
-
-        self.scene = scene
-        # if robots is not None:
-        #     self.robot_handlers = [SFPandaPublisher(robot, scene) for robot in robots]
-        # if objects is not None:
-        #     self.object_handlers = [ObjectHandler(obj, scene) for obj in objects]
 
         self.ws: server.WebSocketServerProtocol
         self.wsserver: server.WebSocketServer 
         self.server_future: asyncio.Future
-        self.host = host
-        self.port = port
+        self.host = server_config["server_addr"]
+        self.port = server_config["server_port"]
 
         # flags
         self.connected = False

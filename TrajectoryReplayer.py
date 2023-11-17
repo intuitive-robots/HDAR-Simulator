@@ -20,7 +20,7 @@ from hdar_server.UnityHDRecorder import UnityHDRecorder
 from hdar_server.UnityStreamer import UnityStreamer
 from hdar_server.HDARController import *
 from hdar_server.utils import get_hdar_config, str2list
-from hdar_task.TaskManager import TaskManager
+from hdar_task.HDARTaskBase import TaskManager
 
 
 class TrajectoryReplayer:

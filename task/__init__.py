@@ -1,11 +1,11 @@
-from .TaskManager import TaskManager
+from .HDARTaskBase import HDARTask
 from .CubeStackingManager import CubeStackingManager
 from .CupStackingManager import CupStackingManager
 from .PracticalManipulation import PracticalManipulation
 from .WarmUp import WarmUp
 from .BoxStackingManager import BoxStackingManager
 
-TaskManager._repository = {
+HDARTaskBase._repository = {
     "cube_stacking": CubeStackingManager,
     "box_stacking": BoxStackingManager,
     "cup_stacking": CupStackingManager,

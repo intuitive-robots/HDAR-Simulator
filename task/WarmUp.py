@@ -1,13 +1,13 @@
 from alr_sim.sims.SimFactory import SimFactory
-from .TaskManager import *
+from .HDARTaskBase import *
 from alr_sim.utils.sim_path import sim_framework_path
 from hdar_server.HDARModel import HDARSimObject
 from alr_sim.sims.mj_beta.mj_utils.mj_scene_object import YCBMujocoObject
 
 
-class PracticalManipulation(TaskManager):
+class WarmUp(TaskManager):
     def __init__(self) -> None:
-        super().__init__("practical_manipulation")
+        super().__init__("warm_up")
 
     def create_objects(self):
         super().create_objects()

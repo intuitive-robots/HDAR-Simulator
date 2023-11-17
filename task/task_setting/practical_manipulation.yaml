@@ -4,6 +4,7 @@ discription: practical_manipulation
 robots:
   {
     grasp_robot: {
+      robot_type: Panda,
       base_position: [0.0, 0.0, 0.0],
       base_rotation: [0.0, 0.0, 0.0],
       init_end_eff_pos: [0.525, 0.0, 0.6],

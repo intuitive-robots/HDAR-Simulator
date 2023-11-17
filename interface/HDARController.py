@@ -15,7 +15,8 @@ from alr_sim.utils.geometric_transformation import euler2quat, euler2mat, mat2qu
 from alr_sim.utils.geometric_transformation import quat2mat, quat_mul
 from alr_sim.sims.sl.multibot_teleop.src.kalman_filter import KalmanFilter
 
-from .UnityStreamer import UnityStreamer, RobotHandler
+from .HDARStreamer import HDARStreamer
+from HDARFactory import HDARFactory
 from .triad_openvr import triad_openvr
 from .utils import degEuler2radEuler
 
@@ -545,9 +546,28 @@ class VTController(JointPDController):
         self.real_robot.activeController = real_robot_controller
 
 
-class RealRobotController(HumanController):
-    def __init__(self, primary_robot: SlRobot, regularize=True):
-        super().__init__(primary_robot, regularize)
+# class RealRobotController(HumanController):
+#     def __init__(self, primary_robot: SlRobot, regularize=True):
+#         super().__init__(primary_robot, regularize)
+
+class RealRobotController(JointPDController):
+    def __init__(self, robot_pub: SlRobot):
+        self.sl_robot = HDARFactory.create_sl_robot()
+        self.sl_robot_controller = HumanController(self.sl_robot)
+        self.goal_pos_fct = self.sl_robot.current_j_pos
+        self.goal_vel_fct = self.sl_robot.current_j_vel
+
+    def getControl(self, robot):
+        self.setSetPoint(
+            desired_pos=self.goal_pos_fct(), desired_vel=self.goal_vel_fct()
+        )
+        if self.goal_gripper_width_fct is not None:
+            if self.goal_gripper_width_fct() <= 0.075:
+                robot.close_fingers(duration=0)  # Grasp
+            else:
+                robot.open_fingers()
+        self.sl_robot_controller.getControl()
+        return super().getControl(robot)
 
 
 class ReplayerController(JointPDController):

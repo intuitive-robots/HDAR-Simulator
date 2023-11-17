@@ -1,3 +1,4 @@
+from ast import List
 import os
 import yaml
 import numpy as np
@@ -8,32 +9,12 @@ from alr_sim.core.Scene import Scene
 from alr_sim.utils.sim_path import sim_framework_path
 
 
-def degEuler2radEuler(degEuler):
+def degList2radList(degEuler: List[float]) -> List[float]:
     return [radians(x) for x in degEuler]
 
 
 def str2list(s: str):
     return [ord(c) for c in list(s)]
-
-
-def mj2unity_pos(pos):
-    return [-pos[1], pos[2], pos[0]]
-
-
-def mj2unity_quat(quat):
-    # note that the order is "[x, y, z, w]"
-    return [quat[2], -quat[3], -quat[1], quat[0]]
-
-
-def mj2unity_size(obj: PrimitiveObject):
-    if obj.type == PrimitiveObject.Shape.BOX:
-        return [obj.size[1] * 2, obj.size[2] * 2, obj.size[0] * 2]
-    elif obj.type == PrimitiveObject.Shape.SPHERE:
-        return [obj.size[1], obj.size[2], obj.size[0]]
-    elif obj.type == PrimitiveObject.Shape.CYLINDER:
-        return [obj.size[1], obj.size[2] * 2, obj.size[0]]
-    else:
-        return [1, 1, 1]
 
 
 def unity2mj_pos(pos):
@@ -44,6 +25,11 @@ def unity2mj_quat(quat):
     # note that the order is "[x, y, z, w]"
     return [quat[2], -quat[3], -quat[1], quat[0]]
 
+
+def read_yaml_file(config_path):
+    with open(config_path, "r") as f:
+        config = yaml.load(f, Loader=yaml.FullLoader)
+    return config
 
 def get_task_setting(task_type: str):
     task_setting_path = sim_framework_path(

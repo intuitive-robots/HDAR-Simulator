@@ -25,11 +25,11 @@ robots:
 objects:
   [
     {
-      type: Box,
+      obj_type: Box,
       name: "box6",
       init_pos: [0.4, 0.0, 0.2],
       init_quat: [0, 1, 0, 0],
-      size: [0.25, 0.25, 0.2],
+      mj_size: [0.25, 0.25, 0.2],
       rgba: [0, 1, 0, 1],
     },
   ]

@@ -15,11 +15,11 @@ from alr_sim.sims.sl.SlRobot import SlRobot
 from alr_sim.sims.sl.SlScene import SlScene
 from alr_sim.sims.sl.SlFactory import SlFactory
 
-from hdar_server.UnityHDRecorder import UnityHDRecorder
-from hdar_server.UnityStreamer import UnityStreamer
-from hdar_server.HDARController import *
-from hdar_server.utils import get_hdar_config, str2list
-from hdar_task.TaskManager import TaskManager
+from server.HDARRecorder import UnityHDRecorder
+from server.HDARStreamer import HDARStreamer
+from server.HDARFactory import HDARFactory
+from server.utils import get_hdar_config, read_yaml_file
+from task.HDARTaskBase import HDARTask
 
 
 class HDARCLI(GeneralCLI):
@@ -52,112 +52,86 @@ class SimFlag(Flag):
 class HDARSimulator:
     def __init__(
         self,
-        task_type,
+        config_path,
         record_mode=False,
-        time_limit=999999,
         downsample_steps=1,
     ) -> None:
 
-        self.real_sim_factory: SlFactory
-        self.real_scene: SlScene
-
-        self.current_time = 0
-        self.time_limit = time_limit
-
-        # virtual twin
-        self.vt_sim_factory = SimRepository.get_factory("mj_beta")
-        self.scene_manager: TaskManager = TaskManager.get_manager(task_type)
-        self.scene_manager.create_task(self.vt_sim_factory)
-
-        self.vt_scene: Scene = self.scene_manager.get_scene()
-        self.vt_object_dict = self.scene_manager.get_object_dict()
-        self.vt_robot_dict = self.scene_manager.get_robot_dict()
-
-        self.robot_list: list[RobotBase] = list()
-
-        self.scene_list: list[Scene] = list()
-        self.scene_list.append(self.vt_scene)
-
-        hdar_config = get_hdar_config("HDARConfig")
-        self.streamer = UnityStreamer(
-            self.vt_scene,
-            self.vt_robot_dict.values(),
-            self.vt_object_dict.values(),
-            host=hdar_config["hdar_addr"],
-            port=hdar_config["hdar_port"],
+        config = read_yaml_file(config_path)
+        self.task: HDARTask = HDARFactory.create_task(config)
+        self.streamer = HDARStreamer(
+            config=config["HDARServerConfig"]
         )
 
-        # controller setting
-        self.vt_controller_dict: dict[
-            str, VTController | InteractiveTCPControllerBase
-        ] = {}
-        self.controller_list: list[ControllerBase] = list()
+        self.task.set_up_interface()
 
-        for robot_name, robot_config in self.scene_manager.robots_config.items():
-            # for vt_robot_handler in self.streamer.robot_handlers:
-            vt_robot = self.vt_robot_dict[robot_name]
-            interaction_method = getattr(vt_robot, "interaction_method")
-            if interaction_method == "real_robot":
-                # set up real scene
-                if self.real_sim_factory is None:
-                    self.real_sim_factory = SimRepository.get_factory("sl")
-                    self.real_scene = self.real_sim_factory.create_scene(skip_home=True)
-                    self.scene_list.append(self.real_scene)
-                sl_config = get_hdar_config("SLConfig")[robot_name]
-                real_robot: SlRobot = self.real_sim_factory.create_robot(
-                    self.real_scene,
-                    robot_name=sl_config["sl_robot_name"],
-                    backend_addr=sl_config["backend_addr"],
-                    local_addr=sl_config["local_addr"],
-                    gripper_actuation=True,
-                )
-                real_controller = RealRobotController(real_robot, regularize=True)
-                self.controller_list.append(real_controller)
-                self.robot_list.append(real_robot)
+        # # controller setting
+        # self.vt_controller_dict: dict[
+        #     str, VTController | InteractiveTCPControllerBase
+        # ] = {}
+        # self.controller_list: list[ControllerBase] = list()
 
-                vt_controller = VTController(
-                    real_robot,
-                    self.vt_scene,
-                    lambda: real_robot.current_j_pos,
-                    lambda: real_robot.current_j_vel,
-                    robot_config,
-                    lambda: real_robot.gripper_width,
-                )
+        # for robot_name, robot_config in self.scene_manager.robots_config.items():
+        #     # for vt_robot_handler in self.streamer.robot_handlers:
+        #     vt_robot = self.vt_robot_dict[robot_name]
+        #     interaction_method = getattr(vt_robot, "interaction_method")
+        #     if interaction_method == "real_robot":
+        #         # set up real scene
+        #         if self.real_sim_factory is None:
+        #             self.real_sim_factory = SimRepository.get_factory("sl")
+        #             self.real_scene = self.real_sim_factory.create_scene(skip_home=True)
+        #             self.scene_list.append(self.real_scene)
+        #         sl_config = get_hdar_config("SLConfig")[robot_name]
+        #         real_robot: SlRobot = self.real_sim_factory.create_robot(
+        #             self.real_scene,
+        #             robot_name=sl_config["sl_robot_name"],
+        #             backend_addr=sl_config["backend_addr"],
+        #             local_addr=sl_config["local_addr"],
+        #             gripper_actuation=True,
+        #         )
+        #         real_controller = RealRobotController(real_robot, regularize=True)
+        #         self.controller_list.append(real_controller)
+        #         self.robot_list.append(real_robot)
 
-            elif interaction_method == "gamepad":
-                vt_controller = GamePadTCPController(
-                    self.vt_scene,
-                    vt_robot,
-                    robot_config,
-                )
-            elif interaction_method == "virtual_robot":
-                vt_controller = VirtualRobotTCPController(
-                    self.vt_scene,
-                    vt_robot,
-                    robot_config,
-                )
-            elif interaction_method == "hand_tracking":
-                vt_controller = HandTrackerTCPController(
-                    self.vt_scene,
-                    vt_robot,
-                    robot_config,
-                )
-            elif interaction_method == "motion_controller":
-                vt_controller = ViveProMotionControllerTCPController(
-                    self.vt_scene,
-                    vt_robot,
-                    robot_config,
-                )
+        #         vt_controller = VTController(
+        #             real_robot,
+        #             self.vt_scene,
+        #             lambda: real_robot.current_j_pos,
+        #             lambda: real_robot.current_j_vel,
+        #             robot_config,
+        #             lambda: real_robot.gripper_width,
+        #         )
 
-            self.vt_controller_dict[robot_name] = vt_controller
-            self.controller_list.append(vt_controller)
-            self.robot_list.append(vt_robot)
+        #     elif interaction_method == "gamepad":
+        #         vt_controller = GamePadTCPController(
+        #             self.vt_scene,
+        #             vt_robot,
+        #             robot_config,
+        #         )
+        #     elif interaction_method == "virtual_robot":
+        #         vt_controller = VirtualRobotTCPController(
+        #             self.vt_scene,
+        #             vt_robot,
+        #             robot_config,
+        #         )
+        #     elif interaction_method == "hand_tracking":
+        #         vt_controller = HandTrackerTCPController(
+        #             self.vt_scene,
+        #             vt_robot,
+        #             robot_config,
+        #         )
+        #     elif interaction_method == "motion_controller":
+        #         vt_controller = ViveProMotionControllerTCPController(
+        #             self.vt_scene,
+        #             vt_robot,
+        #             robot_config,
+        #         )
 
-        for scene in self.scene_list:
-            scene.start()
+            # self.vt_controller_dict[robot_name] = vt_controller
+            # self.controller_list.append(vt_controller)
+            # self.robot_list.append(vt_robot)
 
-        for robot, controller in zip(self.robot_list, self.controller_list):
-            controller.executeController(robot, maxDuration=1000, block=False)
+        self.task.start_simulation()
 
         # the recorder for logging and saving
         self.recorder: UnityHDRecorder = UnityHDRecorder(
@@ -325,17 +299,7 @@ class HDARSimulator:
 
 if __name__ == "__main__":
     # s = HDARSimulator(debug_mode=True)
-    s = HDARSimulator(
-        # task_type="grasp_object",
-        # task_type="bimanual_test",
-        # task_type="stacking",
-        # task_type="cube_stacking",
-        # task_type="warm_up",
-        # task_type="box_stacking",
-        # task_type="cup_stacking",
-        task_type="practical_manipulation",
-        record_mode=True,
-        time_limit=60,
-        downsample_steps=50,
+    simulator = HDARSimulator(
+        config_path="./config.yaml"
     )
-    s.run()
+    simulator.run()

@@ -1,4 +1,4 @@
-from .TaskManager import *
+from .HDARTaskBase import *
 
 
 class CubeStackingManager(TaskManager):
