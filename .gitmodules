@@ -1,3 +1,3 @@
-[submodule "hdar_page/beautifulhugo"]
-	path = hdar_page/theme/beautifulhugo/
+[submodule "hdar_page/themes/beautifulhugo"]
+	path = hdar_page/themes/beautifulhugo/
 	url = https://github.com/halogenica/beautifulhugo.git
