@@ -1,0 +1,22 @@
+{{/* Enable video to be loaded from local page dir or media library at `static/img/`. */}}
+{{ $path := "" }}
+{{ $root_dir := "" }}
+{{ if .Get "library" }}
+{{ $path = "img/" }}
+{{ $root_dir = "static/" }}
+{{ end }}
+
+{{ $video_one := printf "%s%s" $path (.Get "src1") }}
+{{ $video_two := printf "%s%s" $path (.Get "src2") }}
+
+
+<div class="col-lg-6" style="padding-left: 0; padding-top: 10px;">
+    <video controls autoplay muted loop>
+        <source src="{{ $video_one }}" type="video/webm">
+    </video>
+</div>
+<div class="col-lg-6" style="padding-right: 0; padding-top: 10px; padding-bottom: 20px;">
+    <video controls autoplay muted loop>
+        <source src="{{ $video_two }}" type="video/webm">
+    </video>
+</div>
