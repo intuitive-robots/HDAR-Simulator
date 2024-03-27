@@ -29,14 +29,11 @@ class VTController(controllers.JointPDController):
 
         self.t = 0
         self.update_interval = update_interval
+
         # self.viewController = MjViewGamePadController(vt_scene)
 
     def getControl(self, robot: RobotBase):
         # self.viewController.controlViewCamera()
-        if self.t == 0:
-            self.vt_robot.beam_to_joint_pos(
-                self.real_robot.robot.get_joint_positions().numpy()
-            )
         if self.t % self.update_interval == 0:
             self.setSetPoint(
                 desired_pos=self.real_robot.robot.get_joint_positions().numpy(),
