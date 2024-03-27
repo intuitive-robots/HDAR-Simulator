@@ -16,6 +16,6 @@ def start_poly_controller(robot, controller):
     threading.Thread(target=_start).start()
 
 
-class RealRobotController(poly_controllers.controllers.ForceFeedbackController):
+class RealRobotController(poly_controllers.ForceFeedbackController):
     def __init__(self, primary_robot, regularize=True):
         super().__init__(primary_robot, regularize)
