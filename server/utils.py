@@ -46,14 +46,7 @@ def unity2mj_quat(quat):
 
 
 def get_task_setting(task_type: str):
-    task_setting_path = sim_framework_path(
-        "demos",
-        "unity",
-        "human_demostration_ar",
-        "hdar_task",
-        "task_setting",
-        f"{task_type}.yaml",
-    )
+    task_setting_path = f"task/task_setting/{task_type}.yaml"
     with open(task_setting_path, "r") as f:
         task_setting = yaml.load(f, Loader=yaml.FullLoader)
     return task_setting
