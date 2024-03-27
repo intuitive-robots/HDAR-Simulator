@@ -179,8 +179,7 @@ class Simulation:
                     robot_port=real_robot_config["robot_port"],
                     gripper_port=real_robot_config["gripper_port"],
                 )
-                real_controller = controllers.RealRobotController(real_robot.robot, regularize=True)
-                controllers.start_poly_controller(real_robot, real_controller)
+                real_controller = controllers.RealRobotController(real_robot, regularize=True)
                 self.real_robot_list.append(real_robot)
 
                 vt_controller = controllers.VTController(
