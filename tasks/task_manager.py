@@ -77,30 +77,33 @@ class TaskManager:
         for obj_name, obj_config in self.objects_config.items():
             new_obj = generate_HDARObj_from_dict(obj_name, obj_config)
             self.object_dict[obj_name] = new_obj
+    
+    def _create_robot(self, name, config):
+        base_position = config["base_position"]
+        base_quat = euler2quat(
+            np.array(config["base_rotation"]) * np.pi / 180
+        )
+        model_name = config.get("type", "gripper_panda")
+        robot = self.sim_factory.create_robot(
+            self.scene,
+            num_DoF=7,
+            base_position=base_position,
+            base_orientation=base_quat,
+            gravity_comp=True,
+            clip_actions=False,
+            root=sim_path.FRAMEWORK_DIR,
+            xml_path=f"./model/robot/{model_name}.xml",
+        )
+        robot.type = model_name
+        robot.name = name
+        robot.init_end_eff_pos = config["init_end_eff_pos"]
+        robot.init_end_eff_quat = config["init_end_eff_quat"]
+        robot.interaction_method = config["interaction_method"]
+        return robot
 
     def create_robots(self):
         for robot_name, robot_config in self.robots_config.items():
-            base_position = robot_config["base_position"]
-            base_quat = euler2quat(
-                np.array(robot_config["base_rotation"]) * np.pi / 180
-            )
-            model_name = robot_config.get("type", "gripper_panda")
-            new_robot = self.sim_factory.create_robot(
-                self.scene,
-                num_DoF=7,
-                base_position=base_position,
-                base_orientation=base_quat,
-                gravity_comp=True,
-                clip_actions=False,
-                root=sim_path.FRAMEWORK_DIR,
-                xml_path=f"./model/robot/{model_name}.xml",
-            )
-            new_robot.type = model_name
-            new_robot.name = robot_name
-            new_robot.init_end_eff_pos = robot_config["init_end_eff_pos"]
-            new_robot.init_end_eff_quat = robot_config["init_end_eff_quat"]
-            new_robot.interaction_method = robot_config["interaction_method"]
-            self.robot_dict[robot_name] = new_robot
+            self.robot_dict[robot_name] = self.create_robot(robot_name, robot_config)
 
     def reset_objects(self):
         for obj_name, obj in self.object_dict.items():
@@ -110,7 +113,6 @@ class TaskManager:
 
     def reset_robots(self):
         for robot in self.get_robot_list():
-            # if robot.activeController is not controllers.RealRobotController:
             robot.activeController.reset_robot()
 
     def _add_robot_attr():
