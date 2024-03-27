@@ -9,9 +9,9 @@ from alr_sim.utils import (
     quat_mul,
 )
 
-from server.triad_openvr import triad_openvr
-from server.utils import degEuler2radEuler
+from .triad_openvr import triad_openvr
 from .tcp_controller import InteractiveTCPControllerBase
+from utils import degEuler2radEuler
 
 
 class ViveProMotionControllerTCPController(InteractiveTCPControllerBase):
