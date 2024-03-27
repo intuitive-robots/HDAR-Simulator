@@ -103,7 +103,7 @@ class TaskManager:
 
     def create_robots(self):
         for robot_name, robot_config in self.robots_config.items():
-            self.robot_dict[robot_name] = self.create_robot(robot_name, robot_config)
+            self.robot_dict[robot_name] = self._create_robot(robot_name, robot_config)
 
     def reset_objects(self):
         for obj_name, obj in self.object_dict.items():
