@@ -1,70 +1,14 @@
+import torch
+import time
+import numpy as np
+from typing import List
 from enum import Flag, auto
-
-import threading
 
 from alr_sim.core import Scene, RobotBase
 from alr_sim.controllers.Controller import ControllerBase
 from alr_sim.sims.SimFactory import SimRepository
 
-import server, controllers, utils, task
-from task import TaskManager
-import poly_controllers
-
-import torch
-
-from typing import List
-import time
-import numpy as np
-
-
-class GeneralCLI(threading.Thread):
-    def __init__(self):
-        super().__init__(name="Teleoperation CLI")
-        self._func_map = {"Q": lambda: False}
-        self._instruction_map = {"Q": "Exit"}
-
-    def register_function(self, key: str, label: str, fn: callable):
-        _k = key.upper()
-        self._instruction_map[_k] = label
-        self._func_map[_k] = fn
-
-    def remove_function(self, key: str):
-        _k = key.upper()
-        if _k in self._func_map:
-            del self._instruction_map[_k]
-            del self._func_map[_k]
-
-    def print_instructions(self):
-        print()
-        for key, text in self._instruction_map.items():
-            print("({}) {}".format(key, text))
-
-    def exec_cmd(self, cmd: str):
-        if cmd not in self._func_map:
-            print("Wrong Command!")
-            return True
-
-        func = self._func_map[cmd]
-        cli_continue = func()
-
-        if cli_continue is None:
-            cli_continue = True
-        return cli_continue
-
-    def get_input(self) -> bool:
-        self.print_instructions()
-        cmd = str(input("Enter Command... ")).upper()
-        return self.exec_cmd(cmd)
-
-    def run(self):
-        while self.get_input():
-            continue
-
-
-class HDARCLI(GeneralCLI):
-    def get_input(self) -> bool:
-        cmd = str(input("Enter Command... ")).upper()
-        return self.exec_cmd(cmd)
+import server, controllers, utils, task, poly_controllers
 
 
 class SimFlag(Flag):
@@ -90,7 +34,7 @@ class SimFlag(Flag):
     RUNNING = WAITING_FOR_CONNECTION | CONNECTED
 
 
-class HDARSimulator:
+class Simulation:
     def __init__(
         self,
         task_type,
@@ -109,7 +53,7 @@ class HDARSimulator:
         self.dt = dt
 
         # virtual twin
-        self.task_manager: TaskManager = TaskManager.get_manager(
+        self.task_manager = task.TaskManager.get_manager(
             task_type, self.vt_factory, self.dt
         )
         self.task_manager.create_task()
@@ -153,7 +97,7 @@ class HDARSimulator:
 
     def setup_cli(self):
         # GLI setting
-        self.cli = HDARCLI()
+        self.cli = utils.CLI()
         self.cli.register_function("Q", "close", self.shutdown_cli)
         self.cli.register_function("R", "Reset", self.reset)
         # self.cli.register_function("OG", "Open Gripper", self.open_grippers)
@@ -202,7 +146,7 @@ class HDARSimulator:
         )
 
     def setup_streamer(self):
-        hdar_config = utils.get_hdar_config("HDARConfig")
+        hdar_config = utils.get_hdar_config()
         self.streamer = server.UnityStreamer(
             self.vt_scene,
             self.vt_robot_dict.values(),
@@ -228,7 +172,7 @@ class HDARSimulator:
             interaction_method = getattr(vt_robot, "interaction_method")
             if interaction_method == "real_robot":
                 # set up real scene
-                real_robot_config = utils.get_hdar_config("RealRobotConfig")[robot_name]
+                real_robot_config = utils.get_real_robot_config()[robot_name]
                 real_robot = poly_controllers.Panda(
                     name=robot_name,
                     ip=real_robot_config["ip"],
@@ -287,7 +231,7 @@ class HDARSimulator:
             controller.executeController(robot, maxDuration=1000, block=False)
 
     def start_qr_teleport(self):
-        qr_config = utils.get_hdar_config("QRConfig")
+        qr_config = utils.get_qr_config()
         self.streamer.send_dict(
             {
                 "Header": "text_message",
@@ -446,10 +390,3 @@ class HDARSimulator:
             for scene in self.scene_list:
                 scene.next_step()
         print("Goodbye")
-
-
-if __name__ == "__main__":
-    # s = HDARSimulator(debug_mode=True)
-    simulator_config = utils.get_hdar_config("SimulatorConfig")
-    s = HDARSimulator(**simulator_config)
-    s.run()
