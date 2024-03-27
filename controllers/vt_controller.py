@@ -10,13 +10,15 @@ import threading
 class VTController(controllers.JointPDController):
     def __init__(
         self,
+        vt_robot,
         real_robot,
         vt_scene: Scene,
         robot_config: dict,
-        use_gripper: bool = False,
-        update_interval=10,
+        use_gripper: bool = True,
+        update_interval: int = 10,
     ):
         super().__init__()
+        self.vt_robot = vt_robot
         self.real_robot = real_robot
         self.robot_config = robot_config
         self.use_gripper = use_gripper
@@ -31,6 +33,10 @@ class VTController(controllers.JointPDController):
 
     def getControl(self, robot: RobotBase):
         # self.viewController.controlViewCamera()
+        if self.t == 0:
+            self.vt_robot.beam_to_joint_pos(
+                self.real_robot.robot.get_joint_positions().numpy()
+            )
         if self.t % self.update_interval == 0:
             self.setSetPoint(
                 desired_pos=self.real_robot.robot.get_joint_positions().numpy(),

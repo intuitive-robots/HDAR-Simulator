@@ -170,6 +170,7 @@ class Simulation:
             # for vt_robot_handler in self.streamer.robot_handlers:
             vt_robot = self.vt_robot_dict[robot_name]
             interaction_method = vt_robot.interaction_method
+            real_robot = None 
             if interaction_method == "real_robot":
                 # set up real scene
                 real_robot_config = utils.get_real_robot_config()[robot_name]
@@ -177,36 +178,26 @@ class Simulation:
                     name=robot_name,
                     **real_robot_config,
                 )
-                real_controller = controllers.RealRobotController(real_robot, regularize=True)
+                real_controller = controllers.RealRobotController(real_robot)
                 self.real_robot_list.append(real_robot)
 
                 vt_controller = controllers.VTController(
+                    vt_robot,
                     real_robot,
                     self.vt_scene,
                     robot_config,
-                    use_gripper=True,
                 )
 
-            elif interaction_method == "gamepad":
-                vt_controller = controllers.GamePadTCPController(
-                    self.vt_scene,
-                    vt_robot,
-                    robot_config,
-                )
-            elif interaction_method == "virtual_robot":
-                vt_controller = controllers.VirtualRobotTCPController(
-                    self.vt_scene,
-                    vt_robot,
-                    robot_config,
-                )
-            elif interaction_method == "hand_tracking":
-                vt_controller = controllers.HandTrackerTCPController(
-                    self.vt_scene,
-                    vt_robot,
-                    robot_config,
-                )
-            elif interaction_method == "motion_controller":
-                vt_controller = controllers.ViveProMotionControllerTCPController(
+            else:
+                if interaction_method == "gamepad":
+                    controller_cls = controllers.GamePadTCPController
+                elif interaction_method == "virtual_robot":
+                    controller_cls = controllers.VirtualRobotTCPController
+                elif interaction_method == "hand_tracking":
+                    controller_cls = controllers.HandTrackerTCPController
+                elif interaction_method == "motion_controller":
+                    controller_cls = controllers.ViveProMotionControllerTCPController
+                vt_controller = controller_cls(
                     self.vt_scene,
                     vt_robot,
                     robot_config,
@@ -326,20 +317,16 @@ class Simulation:
         ):
             self.force_last_timestep = self.scene_list[0].time_stamp
             for vt_robot, real_robot in zip(self.robot_list, self.real_robot_list):
-                if not real_robot.is_running_policy():
-                    continue
-                qfrc = np.array(
-                    [
+                if real_robot.is_running_policy():
+                    constraint_forces = [
                         self.vt_scene.data.joint(name).qfrc_constraint[0]
                         for name in vt_robot.joint_names
                     ]
-                )
-                try:
-                    real_robot.robot.update_current_policy(
-                        {"virtual_load": -torch.tensor(qfrc) / 5.0}
-                    )
-                except Exception:
-                    pass
+                    constraint_forces = -torch.tensor(np.array(constraint_forces)) / 5.0
+                    try:
+                        real_robot.robot.update_current_policy({"virtual_load": constraint_forces})
+                    except:
+                        pass
 
     def run(self):
         self.terminate_policies()

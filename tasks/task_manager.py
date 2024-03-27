@@ -113,7 +113,8 @@ class TaskManager:
 
     def reset_robots(self):
         for robot in self.get_robot_list():
-            robot.activeController.reset_robot()
+            if hasattr(robot.activeController, "reset_robot"):
+                robot.activeController.reset_robot()
 
     def _add_robot_attr():
         pass
