@@ -7,14 +7,14 @@ from alr_sim.core.sim_object import SimObject
 from alr_sim.core.logger import ObjectLogger
 from alr_sim.utils.sim_path import sim_framework_path
 
-from .UnityStreamer import UnityStreamer
+from .unity_streamer import UnityStreamer
 
 import multiprocessing as mp
 
 from typing import List
 
 
-class UnityHDRecorder:
+class UnityRecorder:
     def __init__(
         self,
         scene: Scene,
@@ -22,15 +22,10 @@ class UnityHDRecorder:
         task_type,
         streamer: UnityStreamer,
         manager,
-        save_root_path=None,
+        save_root_path="./ARHumanDemoData/",
         record_mode=False,
         downsample_steps=1,
     ) -> None:
-        if save_root_path is None:
-            save_root_path = os.path.join(
-                sim_framework_path(),
-                "ARHumanDemoData/",
-            )
         self.save_root_path = save_root_path
         self.record_mode = record_mode
         self.scene = scene

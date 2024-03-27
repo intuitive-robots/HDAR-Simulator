@@ -8,94 +8,7 @@ from alr_sim.core.Scene import Scene
 from alr_sim.core.Robots import RobotBase
 from alr_sim.core.sim_object import SimObject
 
-from utils import mj2unity_size, mj2unity_pos, mj2unity_quat
-
-
-class ObjectHandler:
-    def __init__(self, obj: SimObject, scene: Scene) -> None:
-        self.obj = obj
-        self.scene = scene
-
-        if hasattr(obj, "name"):
-            self.name = obj.name
-        elif hasattr(obj, "object_name"):
-            self.name = getattr(obj, "object_name")
-        else:
-            raise Exception("Cannot find object name")
-
-        if hasattr(obj, "type"):
-            obj_type = getattr(obj, "type")
-            if type(obj_type) is str:
-                self.type = obj_type
-            elif hasattr(obj_type, "value"):
-                self.type = getattr(obj_type, "value")
-        else:
-            raise Exception("Cannot find object type")
-
-    def get_obj_param_dict(self):
-        obj = self.obj
-        return {
-            "attr": {
-                "type": self.type,
-                # "static": 0 if not hasattr(obj, "rgba") else 1,
-            },
-            "data": {
-                "pos": list(mj2unity_pos(self.scene.get_obj_pos(obj))),
-                "rot": list(mj2unity_quat(self.scene.get_obj_quat(obj))),
-                "size": mj2unity_size(obj),
-                "rgba": [-1, -1, -1, 1] if not hasattr(obj, "rgba") else obj.rgba,
-                "rot_offset": [0, 0, 0]
-                if not hasattr(obj, "rot_offset")
-                else getattr(obj, "rot_offset"),
-            },
-        }
-
-    def get_obj_state_dict(self) -> dict:
-        return {
-            "data": {
-                "pos": list(mj2unity_pos(self.scene.get_obj_pos(self.obj))),
-                "rot": list(mj2unity_quat(self.scene.get_obj_quat(self.obj))),
-            }
-        }
-
-
-class RobotHandler:
-    count = 0
-
-    def __init__(self, robot: RobotBase, scene: Scene) -> None:
-        self.robot = robot
-        self.scene = scene
-
-        if hasattr(robot, "name"):
-            self.name = getattr(robot, "name")
-        else:
-            self.name = f"panda{RobotHandler.count}"
-            RobotHandler.count += 1
-        self.type = getattr(robot, "type", "gripper_panda")
-
-    def get_robot_param_dict(self) -> dict:
-        param_date = {}
-        param_date["pos"] = list(mj2unity_pos(self.robot.base_position))
-        param_date["rot"] = list(mj2unity_quat(self.robot.base_orientation))
-        joints = list(self.robot.current_j_pos)
-        joints.extend([self.robot.gripper_width / 2, self.robot.gripper_width / 2])
-        param_date["joints"] = joints
-        return {
-            "attr": {
-                "type": self.type,
-                "interaction_method": getattr(self.robot, "interaction_method"),
-            },
-            "data": param_date,
-        }
-
-    def get_robot_state_dict(self) -> dict:
-        joints = list(self.robot.current_j_pos)
-        joints.extend([self.robot.gripper_width / 2, self.robot.gripper_width / 2])
-        return {
-            "data": {
-                "joints": joints,
-            }
-        }
+from . import object_handler, robot_handler
 
 
 class UnityStreamer:
@@ -110,9 +23,9 @@ class UnityStreamer:
 
         self.scene = scene
         if robots is not None:
-            self.robot_handlers = [RobotHandler(robot, scene) for robot in robots]
+            self.robot_handlers = [robot_handler.RobotHandler(robot, scene) for robot in robots]
         if objects is not None:
-            self.object_handlers = [ObjectHandler(obj, scene) for obj in objects]
+            self.object_handlers = [object_handler.ObjectHandler(obj, scene) for obj in objects]
 
         self.ws: server.WebSocketServerProtocol = None
         self.wsserver: server.WebSocketServer = None

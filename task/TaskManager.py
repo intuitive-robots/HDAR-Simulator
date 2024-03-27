@@ -8,7 +8,7 @@ from alr_sim.utils import sim_path
 from alr_sim.utils.geometric_transformation import euler2quat
 
 import utils, controllers
-from server.HDARModel import generate_HDARObj_from_dict
+from server.hdar_model import generate_HDARObj_from_dict
 
 from typing import List, Dict
 import yaml

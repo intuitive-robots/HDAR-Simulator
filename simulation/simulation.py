@@ -135,7 +135,7 @@ class Simulation:
         )
 
     def setup_recorder(self):
-        self.recorder = server.UnityHDRecorder(
+        self.recorder = server.UnityRecorder(
             self.vt_scene,
             self.vt_object_list,
             self.task_type,

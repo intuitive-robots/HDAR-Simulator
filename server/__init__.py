@@ -1,3 +1,3 @@
 # from .TaskManager import *
-from .UnityHDRecorder import UnityHDRecorder
-from .UnityStreamer import UnityStreamer
+from .unity_recorder import UnityRecorder
+from .unity_streamer import UnityStreamer
