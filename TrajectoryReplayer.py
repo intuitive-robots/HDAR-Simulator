@@ -10,17 +10,11 @@ from alr_sim.controllers.Controller import ControllerBase
 from alr_sim.sims.SimFactory import SimRepository
 
 
-# from alr_sim.sims.sl.multibot_teleop.src.teleop_controller import TeleopController
-from alr_sim.sims.sl.multibot_teleop.src.ui.cli import GeneralCLI
-from alr_sim.sims.sl.SlRobot import SlRobot
-from alr_sim.sims.sl.SlScene import SlScene
-from alr_sim.sims.sl.SlFactory import SlFactory
-
 from hdar_server.UnityHDRecorder import UnityHDRecorder
 from hdar_server.UnityStreamer import UnityStreamer
 from hdar_server.HDARController import *
 from hdar_server.utils import get_hdar_config, str2list
-from hdar_task.HDARTaskBase import TaskManager
+from hdar_task.TaskManager import TaskManager
 
 
 class TrajectoryReplayer:

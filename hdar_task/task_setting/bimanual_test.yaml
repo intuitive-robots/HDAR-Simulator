@@ -1,0 +1,64 @@
+task_type: grasp test
+discription: grasp test
+
+robots:
+  {
+    grasp_robot_0: {
+      base_position: [0.0, 0.0, 0.0],
+      base_rotation: [0.0, 0.0, 0.0],
+      init_end_eff_pos: [0.525, 0.0, 0.3],
+      init_end_eff_quat: [0.0, 1.0, 0.0, 0.0],
+    },
+    grasp_robot_1: {
+      base_position: [0.0, 0.70, 0.0],
+      base_rotation: [0.0, 0.0, 0.0],
+      init_end_eff_pos: [0.525, 0.0, 0.3],
+      init_end_eff_quat: [0.0, 1.0, 0.0, 0.0],
+    },
+  }
+
+
+objects:
+  {
+  box: {
+      type: Box,
+      init_pos: [0.6, 0.14, 0.04],
+      init_quat: [0, 1, 0, 0],
+      size: [0.05, 0.05, 0.05],
+      rgba: [0, 1, 0, 1],
+      mass: 1.,
+      static: False,
+      source: primitive_object
+    },
+  box2: {
+      type: Box,
+      init_pos: [0.6, 0.34, 0.04],
+      init_quat: [0, 1, 0, 0],
+      size: [0.05, 0.05, 0.05],
+      rgba: [1, .4, 0, 1],
+      mass: 1.,
+      static: False,
+      source: primitive_object
+    },
+  box3: {
+      type: Box,
+      init_pos: [0.6, 0.54, 0.04],
+      init_quat: [0, 1, 0, 0],
+      size: [0.05, 0.05, 0.05],
+      rgba: [0, 0, 1, 1],
+      mass: 1.,
+      static: False,
+      source: primitive_object
+    },
+  box4: {
+      type: Box,
+      init_pos: [0.4, 0.34, 0.12],
+      init_quat: [0, 1, 0, 0],
+      size: [0.06, 0.06, 0.17],
+      rgba: [0, 1, 1, 0.5],
+      mass: 1.,
+      static: True,
+      visual_only: True,
+      source: primitive_object
+    },
+  }

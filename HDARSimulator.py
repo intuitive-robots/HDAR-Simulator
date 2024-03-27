@@ -1,6 +1,6 @@
-import time
-from enum import Flag, auto, Enum
-import numpy as np
+from enum import Flag, auto
+
+import threading
 
 # from alr_sim.controllers.Controller import ControllerBase
 from alr_sim.core import Scene, RobotBase
@@ -8,18 +8,60 @@ from alr_sim.core.sim_object import SimObject
 from alr_sim.controllers.Controller import ControllerBase
 from alr_sim.sims.SimFactory import SimRepository
 
+from hdar_server.UnityHDRecorder import UnityHDRecorder
+from hdar_server.UnityStreamer import UnityStreamer
+from hdar_server.HDARController import *
+from hdar_server.utils import get_hdar_config
+from hdar_task.TaskManager import TaskManager
 
-# from alr_sim.sims.sl.multibot_teleop.src.teleop_controller import TeleopController
-from alr_sim.sims.sl.multibot_teleop.src.ui.cli import GeneralCLI
-from alr_sim.sims.sl.SlRobot import SlRobot
-from alr_sim.sims.sl.SlScene import SlScene
-from alr_sim.sims.sl.SlFactory import SlFactory
+import palrymetis
+import torch
 
-from server.HDARRecorder import UnityHDRecorder
-from server.HDARStreamer import HDARStreamer
-from server.HDARFactory import HDARFactory
-from server.utils import get_hdar_config, read_yaml_file
-from task.HDARTaskBase import HDARTask
+from typing import List
+
+
+class GeneralCLI(threading.Thread):
+    def __init__(self):
+        super().__init__(name="Teleoperation CLI")
+        self._func_map = {"Q": lambda: False}
+        self._instruction_map = {"Q": "Exit"}
+
+    def register_function(self, key: str, label: str, fn: callable):
+        _k = key.upper()
+        self._instruction_map[_k] = label
+        self._func_map[_k] = fn
+
+    def remove_function(self, key: str):
+        _k = key.upper()
+        if _k in self._func_map:
+            del self._instruction_map[_k]
+            del self._func_map[_k]
+
+    def print_instructions(self):
+        print()
+        for key, text in self._instruction_map.items():
+            print("({}) {}".format(key, text))
+
+    def exec_cmd(self, cmd: str):
+        if cmd not in self._func_map:
+            print("Wrong Command!")
+            return True
+
+        func = self._func_map[cmd]
+        cli_continue = func()
+
+        if cli_continue is None:
+            cli_continue = True
+        return cli_continue
+
+    def get_input(self) -> bool:
+        self.print_instructions()
+        cmd = str(input("Enter Command... ")).upper()
+        return self.exec_cmd(cmd)
+
+    def run(self):
+        while self.get_input():
+            continue
 
 
 class HDARCLI(GeneralCLI):
@@ -43,7 +85,9 @@ class SimFlag(Flag):
     WAITING_FOR_CONNECTION = auto()
     ON_TASK = auto()
     WAITING_FOR_RESET = auto()
-    RESETTING = auto()
+    # RESETTING = auto()
+    RESETTASK0, RESETTASK1, RESETTASK2, RESETTASK3 = auto(), auto(), auto(), auto()
+    RESETTING = RESETTASK0 | RESETTASK1 | RESETTASK2 | RESETTASK3
 
     CONNECTED = ON_TASK | WAITING_FOR_RESET | RESETTING
     RUNNING = WAITING_FOR_CONNECTION | CONNECTED
@@ -52,106 +96,71 @@ class SimFlag(Flag):
 class HDARSimulator:
     def __init__(
         self,
-        config_path,
+        task_type,
         record_mode=False,
+        time_limit=1000000000,
+        dt=0.002,
         downsample_steps=1,
     ) -> None:
 
-        config = read_yaml_file(config_path)
-        self.task: HDARTask = HDARFactory.create_task(config)
-        self.streamer = HDARStreamer(
-            config=config["HDARServerConfig"]
+        self.vt_factory = SimRepository.get_factory("mj_beta")
+
+        self.time_limit = time_limit
+        self.task_type = task_type
+        self.record_mode = record_mode
+        self.downsample_steps = downsample_steps
+        self.dt = dt
+
+        # virtual twin
+        self.task_manager: TaskManager = TaskManager.get_manager(
+            task_type, self.vt_factory, self.dt
         )
+        self.task_manager.create_task()
 
-        self.task.set_up_interface()
+        self.vt_scene: Scene = self.task_manager.get_scene()
+        self.vt_object_list = self.task_manager.get_object_list()
+        self.vt_robot_dict = self.task_manager.get_robot_dict()
 
-        # # controller setting
-        # self.vt_controller_dict: dict[
-        #     str, VTController | InteractiveTCPControllerBase
-        # ] = {}
-        # self.controller_list: list[ControllerBase] = list()
+        self.setup_controllers()
+        self.start_scenes()
+        self.start_controllers()
+        self.setup_callbacks()
 
-        # for robot_name, robot_config in self.scene_manager.robots_config.items():
-        #     # for vt_robot_handler in self.streamer.robot_handlers:
-        #     vt_robot = self.vt_robot_dict[robot_name]
-        #     interaction_method = getattr(vt_robot, "interaction_method")
-        #     if interaction_method == "real_robot":
-        #         # set up real scene
-        #         if self.real_sim_factory is None:
-        #             self.real_sim_factory = SimRepository.get_factory("sl")
-        #             self.real_scene = self.real_sim_factory.create_scene(skip_home=True)
-        #             self.scene_list.append(self.real_scene)
-        #         sl_config = get_hdar_config("SLConfig")[robot_name]
-        #         real_robot: SlRobot = self.real_sim_factory.create_robot(
-        #             self.real_scene,
-        #             robot_name=sl_config["sl_robot_name"],
-        #             backend_addr=sl_config["backend_addr"],
-        #             local_addr=sl_config["local_addr"],
-        #             gripper_actuation=True,
-        #         )
-        #         real_controller = RealRobotController(real_robot, regularize=True)
-        #         self.controller_list.append(real_controller)
-        #         self.robot_list.append(real_robot)
+        self.setup_streamer()
+        self.streamer.start()
 
-        #         vt_controller = VTController(
-        #             real_robot,
-        #             self.vt_scene,
-        #             lambda: real_robot.current_j_pos,
-        #             lambda: real_robot.current_j_vel,
-        #             robot_config,
-        #             lambda: real_robot.gripper_width,
-        #         )
+        self.setup_recorder()
 
-        #     elif interaction_method == "gamepad":
-        #         vt_controller = GamePadTCPController(
-        #             self.vt_scene,
-        #             vt_robot,
-        #             robot_config,
-        #         )
-        #     elif interaction_method == "virtual_robot":
-        #         vt_controller = VirtualRobotTCPController(
-        #             self.vt_scene,
-        #             vt_robot,
-        #             robot_config,
-        #         )
-        #     elif interaction_method == "hand_tracking":
-        #         vt_controller = HandTrackerTCPController(
-        #             self.vt_scene,
-        #             vt_robot,
-        #             robot_config,
-        #         )
-        #     elif interaction_method == "motion_controller":
-        #         vt_controller = ViveProMotionControllerTCPController(
-        #             self.vt_scene,
-        #             vt_robot,
-        #             robot_config,
-        #         )
+        self.setup_cli()
+        self.cli.start()
 
-            # self.vt_controller_dict[robot_name] = vt_controller
-            # self.controller_list.append(vt_controller)
-            # self.robot_list.append(vt_robot)
+        self.current_time = 0
+        self.status: SimFlag = SimFlag.RUNNING
 
-        self.task.start_simulation()
+        self.force_interval = 0.02
+        self.force_last_timestep = -self.force_interval
 
-        # the recorder for logging and saving
-        self.recorder: UnityHDRecorder = UnityHDRecorder(
-            self.vt_scene,
-            self.vt_object_dict.values(),
-            task_type,
-            self.streamer,
-            manager=self.scene_manager,
-            record_mode=record_mode,
-            downsample_steps=downsample_steps,
-        )
+    def setup_callbacks(self):
+        self.reset_flag = False
+        self.start_record_flag = False
+        self.stop_record_flag = False
+        self.save_record_flag = False
+        self.change_task_flag = None
+        self.vt_scene.register_callback(self._reset_clb)
+        self.vt_scene.register_callback(self._start_record_clb)
+        self.vt_scene.register_callback(self._stop_record_clb)
+        self.vt_scene.register_callback(self._save_record_clb)
+        self.vt_scene.register_callback(self._change_task_clb)
+        self.vt_scene.register_callback(self._max_time_clb)
+        self.vt_scene.register_callback(self._task_finished_clb)
 
-        # self.start_streamer()
-
+    def setup_cli(self):
         # GLI setting
         self.cli = HDARCLI()
         self.cli.register_function("Q", "close", self.shutdown_cli)
         self.cli.register_function("R", "Reset", self.reset)
-        # self.cli.register_function("A", "Open Gripper", self.open_grippers)
-        # self.cli.register_function("D", "Close Gripper", self.close_grippers)
+        # self.cli.register_function("OG", "Open Gripper", self.open_grippers)
+        # self.cli.register_function("CG", "Close Gripper", self.close_grippers)
         self.cli.register_function("D", "Start Record", self.start_record)
         # self.cli.register_function("SPR", "Stop Record", self.stop_record)
         self.cli.register_function("L", "Save and Reset", self.save_and_reset)
@@ -173,19 +182,112 @@ class HDARSimulator:
             "Deactivate End Effector Recorder",
             self.deactivate_end_effector_recorder,
         )
-        self.cli.start()
+        self.cli.register_function("0", "Reset Task 0", self.change2task("warm_up"))
+        self.cli.register_function(
+            "1", "Reset Task 1", self.change2task("box_stacking")
+        )
+        self.cli.register_function(
+            "2", "Reset Task 2", self.change2task("cup_stacking")
+        )
+        self.cli.register_function(
+            "3", "Reset Task 3", self.change2task("practical_manipulation")
+        )
 
-        self.status: SimFlag = SimFlag.RUNNING
+    def setup_recorder(self):
+        self.recorder: UnityHDRecorder = UnityHDRecorder(
+            self.vt_scene,
+            self.vt_object_list,
+            self.task_type,
+            self.streamer,
+            manager=self.task_manager,
+            record_mode=self.record_mode,
+            downsample_steps=self.downsample_steps,
+        )
 
-    def start_streamer(self):
-        self.streamer.register_callback(start_record=self.start_record)
-        self.streamer.register_callback(stop_record=self.stop_record)
+    def setup_streamer(self):
+        hdar_config = get_hdar_config("HDARConfig")
+        self.streamer = UnityStreamer(
+            self.vt_scene,
+            self.vt_robot_dict.values(),
+            self.vt_object_list,
+            **hdar_config,
+        )
+        # self.streamer.register_callback(start_record=self.start_record)
+        # self.streamer.register_callback(stop_record=self.stop_record)
         self.streamer.register_callback(reset=self.reset)
         self.streamer.register_callback(save_and_reset=self.save_and_reset)
         self.streamer.register_callback(open_grippers=self.open_grippers)
         self.streamer.register_callback(close_grippers=self.close_grippers)
 
-        self.streamer.start()
+    def setup_controllers(self):
+        self.controller_list: List[ControllerBase] = list()
+        self.robot_list: List[RobotBase] = list()
+        self.real_robot_list: List[palrymetis.Panda] = list()
+        self.scene_list: List[Scene] = [self.vt_scene]
+
+        for robot_name, robot_config in self.task_manager.robots_config.items():
+            # for vt_robot_handler in self.streamer.robot_handlers:
+            vt_robot = self.vt_robot_dict[robot_name]
+            interaction_method = getattr(vt_robot, "interaction_method")
+            if interaction_method == "real_robot":
+                # set up real scene
+                real_robot_config = get_hdar_config("RealRobotConfig")[robot_name]
+                real_robot = palrymetis.Panda(
+                    name=robot_name,
+                    ip=real_robot_config["ip"],
+                    robot_port=real_robot_config["robot_port"],
+                    gripper_port=real_robot_config["gripper_port"],
+                )
+                real_controller = RealRobotController(real_robot.robot, regularize=True)
+                start_poly_controller(real_robot, real_controller)
+                self.real_robot_list.append(real_robot)
+
+                vt_controller = VTController(
+                    real_robot,
+                    self.vt_scene,
+                    robot_config,
+                    use_gripper=True,
+                )
+
+            elif interaction_method == "gamepad":
+                vt_controller = GamePadTCPController(
+                    self.vt_scene,
+                    vt_robot,
+                    robot_config,
+                )
+            elif interaction_method == "virtual_robot":
+                vt_controller = VirtualRobotTCPController(
+                    self.vt_scene,
+                    vt_robot,
+                    robot_config,
+                )
+            elif interaction_method == "hand_tracking":
+                vt_controller = HandTrackerTCPController(
+                    self.vt_scene,
+                    vt_robot,
+                    robot_config,
+                )
+            elif interaction_method == "motion_controller":
+                vt_controller = ViveProMotionControllerTCPController(
+                    self.vt_scene,
+                    vt_robot,
+                    robot_config,
+                )
+
+            self.controller_list.append(vt_controller)
+            self.robot_list.append(vt_robot)
+
+    def start_scenes(self):
+        for scene in self.scene_list:
+            scene.start()
+
+    def start_controllers(self):
+        for robot, controller in zip(self.robot_list, self.controller_list):
+            if isinstance(controller, VTController):
+                robot.beam_to_joint_pos(
+                    controller.real_robot.robot.get_joint_positions().numpy()
+                )
+            controller.executeController(robot, maxDuration=1000, block=False)
 
     def start_qr_teleport(self):
         qr_config = get_hdar_config("QRConfig")
@@ -220,86 +322,137 @@ class HDARSimulator:
     def deactivate_end_effector_recorder(self):
         self.streamer.send_message("deactivate_end_effector_recorder")
 
-    def start_record(self, *args, **kwargs):
-        self.current_time = time.time()
-        self.recorder.start_record()
+    def change2task(self, task_type):
+        def f():
+            self.change_task_flag = task_type
 
-    def stop_record(self, *args, **kwargs):
-        self.recorder.stop_record()
+        return f
 
-    def reset(self, *args, **kwargs):
-        self.recorder.stop_record()
-        self.status = SimFlag.RESETTING
+    def _change_task_clb(self):
+        if self.change_task_flag is not None:
+            task_type = self.change_task_flag
+            self.change_task_flag = None
+            if hasattr(self.task_manager, "change2task"):
+                self.task_manager.change2task(task_type)
 
-    def save_and_reset(self, *args, **kwargs):
-        self.recorder.save_record()
-        self.status = SimFlag.RESETTING
+    def reset(self):
+        self.stop_record_flag = True
+        self.reset_flag = True
 
-    # TODO: open close fingers by robot id
-    def open_grippers(self, *args, **kwargs):
-        self.vt_robot_dict["grasp_robot"].open_fingers()
+    def _reset_clb(self):
+        if self.reset_flag:
+            self.reset_flag = False
+            self.reset_initial_pose()
 
-    def close_grippers(self, *args, **kwargs):
-        self.vt_robot_dict["grasp_robot"].close_fingers(duration=0)
+    def start_record(self):
+        self.start_record_flag = True
+
+    def _start_record_clb(self):
+        if self.start_record_flag:
+            self.start_record_flag = False
+            self.stop_record_flag = False
+            self.recorder.start_record()
+
+    def stop_record(self):
+        self.stop_record_flag = True
+
+    def _stop_record_clb(self):
+        if self.stop_record_flag:
+            self.stop_record_flag = False
+            self.recorder.stop_record()
+
+    def save_and_reset(self):
+        self.save_record_flag = True
+        self.reset_flag = True
+
+    def _save_record_clb(self):
+        if self.save_record_flag:
+            self.save_record_flag = False
+            self.recorder.save_record()
+
+    def _max_time_clb(self):
+        if self.recorder.on_logging:
+            if self.current_time < self.time_limit:
+                self.current_time += 1
+            else:
+                self.current_time = 0
+                print("Time is up")
+                self.stop_record_flag = True
+
+    def _task_finished_clb(self):
+        if self.task_manager.is_task_finished() and self.status is SimFlag.ON_TASK:
+            self.stop_record_flag = True
+            self.streamer.send_message("task_finished")
+            self.status = SimFlag.WAITING_FOR_RESET
+
+    def open_grippers(self, *args, robot_name="grasp_robot_0", **kwargs):
+        self.vt_robot_dict[robot_name].open_fingers()
+
+    def close_grippers(self, *args, robot_name="grasp_robot_0", **kwargs):
+        self.vt_robot_dict[robot_name].close_fingers(duration=0)
+
+    def terminate_policies(self):
+        for real_robot in self.real_robot_list:
+            if real_robot.is_running_policy():
+                real_robot.robot.terminate_current_policy()
 
     def shutdown_cli(self, *args, **kwargs):
         self.recorder.stop_record()
         self.streamer.close_server()
         for controller in self.controller_list:
             controller._max_duration = 0
+        self.terminate_policies()
         self.status = SimFlag.SHUTDOWN
         self.streamer.shutdown()
         return False
 
     def reset_initial_pose(self):
-        # print("Recovering initial pose")
-        self.scene_manager.reset_objects()
-        for controller in self.vt_controller_dict.values():
-            controller.reset_robot()
+        self.status = SimFlag.RESETTING
+        self.task_manager.reset_objects()
+        self.task_manager.reset_robots()
 
         self.streamer.send_message("new_task_ready")
         self.status = SimFlag.ON_TASK
 
-        # just for flying object bug test
-        # for obj in self.streamer.obj_list:
-        #     self.data[obj.name]["pos"] = self.vt_scene.get_obj_pos(obj)
+    def update_force_feedback(self):
+        if (
+            self.scene_list[0].time_stamp
+            > self.force_last_timestep + self.force_interval
+        ):
+            self.force_last_timestep = self.scene_list[0].time_stamp
+            for vt_robot, real_robot in zip(self.robot_list, self.real_robot_list):
+                if not real_robot.is_running_policy():
+                    continue
+                qfrc = np.array(
+                    [
+                        self.vt_scene.data.joint(name).qfrc_constraint[0]
+                        for name in vt_robot.joint_names
+                    ]
+                )
+                try:
+                    real_robot.robot.update_current_policy(
+                        {"virtual_load": -torch.tensor(qfrc) / 5.0}
+                    )
+                except Exception:
+                    pass
 
     def run(self):
-        cam = self.vt_scene.viewer.cam
-        cam.azimuth = 135
-        cam.elevation = -25
-        cam.distance = 2
-
+        self.terminate_policies()
         self.reset_initial_pose()
-        # last_time = time.time()
+        steps = 0
+        start = time.time()
         while self.status in SimFlag.RUNNING:
-            # check whether current is finished
-            if self.scene_manager.is_task_finished() and self.status is SimFlag.ON_TASK:
-                self.recorder.stop_record()
-                self.streamer.send_message("task_finished")
-                self.status = SimFlag.WAITING_FOR_RESET
-            # check the resetting status
-
-            if self.status is SimFlag.RESETTING:
-                self.reset_initial_pose()
-
+            while steps * self.dt > time.time() - start:
+                pass
+            steps += 1
+            self.update_force_feedback()
             for scene in self.scene_list:
                 scene.next_step()
-
-            if (
-                self.recorder.on_logging
-                and time.time() - self.current_time >= self.time_limit
-            ):
-                print("Time is up")
-                self.stop_record()
-
-        # Shutdown Procedure
         print("Goodbye")
 
 
 if __name__ == "__main__":
     # s = HDARSimulator(debug_mode=True)
-    simulator = HDARSimulator(
-        config_path="./config.yaml"
-    )
-    simulator.run()
+    simulator_config = get_hdar_config("SimulatorConfig")
+    s = HDARSimulator(**simulator_config)
+    s.run()

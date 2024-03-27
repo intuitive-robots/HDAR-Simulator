@@ -1,0 +1,66 @@
+task_type: grasp test
+discription: grasp test
+
+robots:
+  {
+    grasp_robot_0: {
+      base_position: [0.0, 0.0, 0.0],
+      base_rotation: [0.0, 0.0, 0.0],
+      init_end_eff_pos: [0.525, 0.0, 0.3],
+      init_end_eff_quat: [0.0, 1.0, 0.0, 0.0],
+    },
+    grasp_robot_1: {
+      base_position: [0.0, 0.68, 0.0],
+      base_rotation: [0.0, 0.0, 0.0],
+      init_end_eff_pos: [0.525, 0.0, 0.3],
+      init_end_eff_quat: [0.0, 1.0, 0.0, 0.0],
+    },
+  }
+
+
+objects:
+  {
+  peach: {
+      type: 015_peach,
+      init_pos: [0.4, 0.78, 0.05],
+      init_quat: [0, 1, 0, 0],
+      source: ycb,
+    },
+    orange: {
+      type: 017_orange,
+      init_pos: [0.5, 0.78, 0.05],
+      init_quat: [0, 1, 0, 0],
+      source: ycb,
+    },
+    banana: {
+      type: 011_banana,
+      init_pos: [0.6, 0.78, 0.05],
+      init_quat: [0.0, 1.0, 0.0, 0.0],
+      source: ycb,
+    },
+  
+  target_peach: {
+      type: 015_peach,
+      init_pos: [0.4, -0.1, 0.05],
+      init_quat: [0, 1, 0, 0],
+      source: ycb,
+      visual_only: True,
+      static: True,
+    },
+    target_orange: {
+      type: 017_orange,
+      init_pos: [0.5, -0.1, 0.05],
+      init_quat: [0, 1, 0, 0],
+      source: ycb,
+      visual_only: True,
+      static: True,
+    },
+    target_banana: {
+      type: 011_banana,
+      init_pos: [0.6, -0.1, 0.05],
+      init_quat: [0.0, 1.0, 0.0, 0.0],
+      source: ycb,
+      visual_only: True,
+      static: True,
+    },
+  }

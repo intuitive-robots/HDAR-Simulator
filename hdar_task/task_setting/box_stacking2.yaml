@@ -1,0 +1,79 @@
+task_type: grasp test
+discription: grasp test
+
+robots:
+  {
+    grasp_robot_0: {
+      base_position: [0.0, 0.0, 0.0],
+      base_rotation: [0.0, 0.0, 0.0],
+      init_end_eff_pos: [0.525, 0.0, 0.3],
+      init_end_eff_quat: [0.0, 1.0, 0.0, 0.0],
+    },
+    grasp_robot_1: {
+      base_position: [0.0, 0.68, 0.0],
+      base_rotation: [0.0, 0.0, 0.0],
+      init_end_eff_pos: [0.525, 0.0, 0.3],
+      init_end_eff_quat: [0.0, 1.0, 0.0, 0.0],
+    },
+  }
+
+
+objects:
+  {
+  box: {
+      type: Box,
+      init_pos: [0.5, 0.0, 0.0],
+      init_quat: [0, 1, 0, 0],
+      size: [0.03, 0.03, 0.03],
+      rgba: [0, 1, 0, 1],
+      mass: 0.2,
+      static: False,
+      source: primitive_object,
+      solimp: [0.9999, 0.9999, 0.001, 0.5, 2]
+    },
+  box2: {
+      type: Box,
+      init_pos: [0.4, 0.0, 0.0],
+      init_quat: [0, 1, 0, 0],
+      size: [0.03, 0.03, 0.03],
+      rgba: [1, .4, 0, 1],
+      mass: 0.2,
+      static: False,
+      source: primitive_object,
+      solimp: [0.9999, 0.9999, 0.001, 0.5, 2]
+    },
+  box3: {
+      type: Box,
+      init_pos: [0.5, 0.68, 0.0],
+      init_quat: [0, 1, 0, 0],
+      size: [0.03, 0.03, 0.03],
+      rgba: [0, 0, 1, 1],
+      mass: 0.2,
+      static: False,
+      source: primitive_object,
+      solimp: [0.9999, 0.9999, 0.001, 0.5, 2]
+    },
+  box4: {
+      type: Box,
+      init_pos: [0.4, 0.68, 0.0],
+      init_quat: [0, 1, 0, 0],
+      size: [0.03, 0.03, 0.03],
+      rgba: [0, 1, 1, 1],
+      mass: 0.2,
+      static: False,
+      source: primitive_object,
+      solimp: [0.9999, 0.9999, 0.001, 0.5, 2]
+    },
+ 
+  
+  target_box: {
+      type: Box,
+      init_pos: [0.5, 0.34, 0.07],
+      init_quat: [0.0, 1.0, 0.0, 0.0],
+      rgba: [0.5, 0.0, 0.5, 0.5],
+      size: [0.04, 0.04, 0.15],
+      source: primitive_object,
+      visual_only: True,
+      static: True,
+    },
+  }

@@ -1,59 +1,83 @@
-# task: grasp_object,
-# task: bimanual_test,
-# task: stacking,
-# task: cube_stacking,
-# task: warm_up,
-# task: box_stacking,
-# task: cup_stacking,
-task: practical_manipulation,
-
-RecorderConfig: {
-  record_mode: False,
-  downsample_steps: 1,
-}
-
 RobotConfig: {
-  grasp_robot:
+  grasp_robot_0:
   {
-    # interaction: real_robot,
-    # interaction: virtual_robot,
-    interaction: hand_tracking,
-    # interaction: gamepad,
-    # interaction: motion_controller,
-    auto_recorder: true
+    # interaction_method: "real_robot",
+    # interaction_method: "virtual_robot",
+    # interaction_method: "hand_tracking",
+    # interaction_method: "gamepad",
+    # interaction_method: "motion_controller",
+  },
+  grasp_robot_1:
+  {
+    # interaction_method: "real_robot",
+    # interaction_method: "virtual_robot",
+    # interaction_method: "hand_tracking",
+    # interaction_method: "gamepad",
+    # interaction_method: "motion_controller",
   },
 }
 
-SLConfig: {
-  grasp_robot:
+RealRobotConfig: {
+  grasp_robot_0:
   {
     # IRL Setting
-    sl_robot_name: panda201,
-    backend_addr: tcp://10.10.10.210:51201,
-    local_addr: 10.10.10.220,
-    
+    #sl_robot_name: panda201,
+    #backend_addr: tcp://10.10.10.210:51201,
+    #local_addr: 10.10.10.220,
     # ALR Setting
-    # sl_robot_name: panda2,
-    # backend_addr: tcp://141.3.53.152:51102,
-    # local_addr: 141.3.53.158,
-  }
+    robot_name: "panda1",
+    ip: "141.3.53.152",
+    robot_port: "1234", 
+    gripper_port: "1235", 
+  },
+  grasp_robot_1:
+  {
+    # IRL Setting
+    # robot_name: panda201,
+    # backend_addr: tcp://10.10.10.210:51201,
+    # local_addr: 10.10.10.220,
+    # ALR Setting
+    robot_name: "panda2",
+    ip: "141.3.53.152",
+    robot_port: "4321", 
+    gripper_port: "4322", 
+  },
 }
 
-ServerConfig: {
-  # hdar_addr: 192.168.178.102,
-  # hdar_addr: 192.168.0.143,
-  server_addr: 192.168.0.215,
-  # hdar_addr: 192.168.0.215, # virtual robot test
-  # hdar_addr: 192.168.0.246,
-  # hdar_addr: 10.42.0.1, # irl-220 hot spot
-  # hdar_addr: 141.3.53.54,
-  server_port: 8052,
+HDARConfig: {
+  # host: "192.168.178.102",
+  host: "192.168.0.143",
+  # host: 192.168.122.1,
+  # host: "192.168.0.215",
+  # host: "192.168.0.215", # virtual robot test
+  # host: "192.168.0.246",
+  # host: "10.42.0.1", # irl-220 hot spot
+  # host: 141.3.53.54,
+  port: 8052,
 }
 
 
-AnchorQRConfig: {
-  QRText: SFBase,
-  offsetPos: [0.045,  -0.14, 0.005],
-  # offsetPos: [0.0,  0.0, 0.5],
-  offsetRot: [-90.0, 179.0, 0.0],
+QRConfig: {
+  QRText: "SFBase",
+  offsetPos: [-0.72,  -0.19, 0.015],
+  offsetRot: [-90.0, 180.0, 0.0],
+}
+
+SimulatorConfig: {
+  # task_type: "grasp_object",
+  task_type: "bimanual_test",
+  # task_type: "box_stacking2",
+  # task_type: "object_passing",
+  # task_type: "box_passing",
+  # task_type: "hole_stick",
+  # task_type: "cube_stacking",
+  # task_type: "warm_up",
+  # task_type: "cup_stacking",
+  # task_type: "practical_manipulation",
+  # task_type: "box_stacking",
+  # task_type: "user_study",
+  record_mode: True,
+  time_limit: 10000,
+  dt: 0.002,
+  downsample_steps: 10,
 }
