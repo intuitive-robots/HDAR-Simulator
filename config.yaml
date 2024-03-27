@@ -1,15 +1,15 @@
 VirtualRobotConfig: {
-  grasp_robot_0:
+  panda1:
   {
-    # interaction_method: "real_robot",
+    interaction_method: "real_robot",
     # interaction_method: "virtual_robot",
     # interaction_method: "hand_tracking",
     # interaction_method: "gamepad",
     # interaction_method: "motion_controller",
   },
-  grasp_robot_1:
+  panda2:
   {
-    # interaction_method: "real_robot",
+    interaction_method: "real_robot",
     # interaction_method: "virtual_robot",
     # interaction_method: "hand_tracking",
     # interaction_method: "gamepad",
@@ -18,26 +18,24 @@ VirtualRobotConfig: {
 }
 
 RealRobotConfig: {
-  grasp_robot_0:
+  panda1:
   {
     # IRL Setting
     #sl_robot_name: panda201,
     #backend_addr: tcp://10.10.10.210:51201,
     #local_addr: 10.10.10.220,
     # ALR Setting
-    robot_name: "panda1",
     ip: "141.3.53.152",
     robot_port: "1234", 
     gripper_port: "1235", 
   },
-  grasp_robot_1:
+  panda2:
   {
     # IRL Setting
     # robot_name: panda201,
     # backend_addr: tcp://10.10.10.210:51201,
     # local_addr: 10.10.10.220,
     # ALR Setting
-    robot_name: "panda2",
     ip: "141.3.53.152",
     robot_port: "4321", 
     gripper_port: "4322", 

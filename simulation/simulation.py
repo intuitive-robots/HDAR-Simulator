@@ -169,15 +169,13 @@ class Simulation:
         for robot_name, robot_config in self.task_manager.robots_config.items():
             # for vt_robot_handler in self.streamer.robot_handlers:
             vt_robot = self.vt_robot_dict[robot_name]
-            interaction_method = getattr(vt_robot, "interaction_method")
+            interaction_method = vt_robot.interaction_method
             if interaction_method == "real_robot":
                 # set up real scene
                 real_robot_config = utils.get_real_robot_config()[robot_name]
                 real_robot = poly_controllers.Panda(
                     name=robot_name,
-                    ip=real_robot_config["ip"],
-                    robot_port=real_robot_config["robot_port"],
-                    gripper_port=real_robot_config["gripper_port"],
+                    **real_robot_config,
                 )
                 real_controller = controllers.RealRobotController(real_robot, regularize=True)
                 self.real_robot_list.append(real_robot)
@@ -292,10 +290,10 @@ class Simulation:
             self.streamer.send_message("task_finished")
             self.status = SimFlag.WAITING_FOR_RESET
 
-    def open_grippers(self, *args, robot_name="grasp_robot_0", **kwargs):
+    def open_grippers(self, *args, robot_name="panda1", **kwargs):
         self.vt_robot_dict[robot_name].open_fingers()
 
-    def close_grippers(self, *args, robot_name="grasp_robot_0", **kwargs):
+    def close_grippers(self, *args, robot_name="panda1", **kwargs):
         self.vt_robot_dict[robot_name].close_fingers(duration=0)
 
     def terminate_policies(self):

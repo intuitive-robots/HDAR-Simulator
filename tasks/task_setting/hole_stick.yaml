@@ -3,14 +3,14 @@ discription: grasp test
 
 robots:
   {
-    grasp_robot_0: {
+    panda1: {
       base_position: [0.0, 0.0, 0.0],
       base_rotation: [0.0, 0.0, 0.0],
       init_end_eff_pos: [0.525, 0.0, 0.3],
       init_end_eff_quat: [0.0, 1.0, 0.0, 0.0],
       type: "panda_rod",
     },
-    grasp_robot_1: {
+    panda2: {
       base_position: [0.0, 0.68, 0.0],
       base_rotation: [0.0, 0.0, 0.0],
       init_end_eff_pos: [0.525, 0.0, 0.3],

@@ -101,7 +101,7 @@ discription: practical_manipulation
 
 robots:
   {
-    grasp_robot_0: {
+    panda1: {
       base_position: [0.0, 0.0, 0.0],
       base_rotation: [0.0, 0.0, 0.0],
       init_end_eff_pos: [0.525, 0.0, 0.6],
