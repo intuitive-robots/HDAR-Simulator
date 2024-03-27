@@ -60,9 +60,7 @@ def get_task_setting(task_type: str):
 
 
 def get_hdar_config(config_name):
-    qr_config_path = sim_framework_path(
-        "demos", "unity", "human_demostration_ar", "config.yaml"
-    )
+    qr_config_path = "config.yaml" 
     with open(qr_config_path, "r") as f:
         task_setting = yaml.load(f, Loader=yaml.FullLoader)
     return task_setting[config_name]
