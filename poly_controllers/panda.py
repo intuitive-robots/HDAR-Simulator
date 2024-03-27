@@ -46,6 +46,9 @@ class Panda:
         if self.robot:
             return self.robot.is_running_policy()
         return False
+    
+    def update_constraint_forces(self, constraint_forces):
+        self.robot.update_current_policy({"constraint_forces": constraint_forces})
 
     def get_state(self) -> Dict:
         try:

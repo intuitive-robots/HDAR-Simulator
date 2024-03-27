@@ -37,22 +37,24 @@ class ForceFeedbackController(toco.PolicyModule):
 
         self.torque_dgain = 0.5 * torch.tensor([50.0, 50.0, 50.0, 50.0, 15.0, 8.0, 8.0])
         self.tau_moving_average = torch.zeros(7)
-        self.avg_load = torch.zeros(7)
+        self.avg_feedback = torch.zeros(7)
         self.alpha = 0.9
         self.smoothing_force = 0.95
 
-        self.virtual_load = torch.nn.Parameter(torch.zeros((7,)))
+        self.constraint_forces = torch.nn.Parameter(torch.zeros((7,)))
 
     def forward(self, state_dict: Dict[str, torch.Tensor]) -> Dict[str, torch.Tensor]:
         ext = state_dict["motor_torques_external"]
 
-        self.avg_load = (
-            self.avg_load * self.smoothing_force
-            + (1 - self.smoothing_force) * self.virtual_load
+        feedback = -self.constraint_forces / 5 
+
+        self.avg_feedback = (
+            self.avg_feedback * self.smoothing_force
+            + (1 - self.smoothing_force) * feedback
         )
 
         plain_feedback = total_force_clip(
-            self.fb_gain * self.avg_load, a=4.66, b=4.0, max_force=60.0
+            self.fb_gain * self.avg_feedback, a=4.66, b=4.0, max_force=60.0
         )
 
         primary_j_vel = state_dict["joint_velocities"]

@@ -322,9 +322,9 @@ class Simulation:
                         self.vt_scene.data.joint(name).qfrc_constraint[0]
                         for name in vt_robot.joint_names
                     ]
-                    constraint_forces = -torch.tensor(np.array(constraint_forces)) / 5.0
+                    constraint_forces = torch.tensor(np.array(constraint_forces))
                     try:
-                        real_robot.robot.update_current_policy({"virtual_load": constraint_forces})
+                        real_robot.update_constraint_forces(constraint_forces)
                     except:
                         pass
 
