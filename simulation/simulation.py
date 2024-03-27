@@ -105,23 +105,23 @@ class Simulation:
         self.cli.register_function("D", "Start Record", self.start_record)
         # self.cli.register_function("SPR", "Stop Record", self.stop_record)
         self.cli.register_function("L", "Save and Reset", self.save_and_reset)
-        self.cli.register_function("SQR", "Start QR Teleport", self.start_qr_teleport)
-        self.cli.register_function("CQR", "Close QR Teleport", self.close_qr_teleport)
+        self.cli.register_function("SQR", "Start QR Teleport", self.streamer.start_qr_teleport)
+        self.cli.register_function("CQR", "Close QR Teleport", self.streamer.close_qr_teleport)
         self.cli.register_function(
-            "MT", "Set Objects Manipulable True", self.set_objects_manipulable_true
+            "MT", "Set Objects Manipulable True", self.streamer.set_objects_manipulable_true
         )
         self.cli.register_function(
-            "MF", "Set Objects Manipulable False", self.set_objects_manipulable_false
+            "MF", "Set Objects Manipulable False", self.streamer.set_objects_manipulable_false
         )
         self.cli.register_function(
             "AEER",
             "Activate End Effector Recorder",
-            self.activate_end_effector_recorder,
+            self.streamer.activate_end_effector_recorder,
         )
         self.cli.register_function(
             "DEER",
             "Deactivate End Effector Recorder",
-            self.deactivate_end_effector_recorder,
+            self.streamer.deactivate_end_effector_recorder,
         )
         self.cli.register_function("0", "Reset Task 0", self.change2task("warm_up"))
         self.cli.register_function(
@@ -229,40 +229,7 @@ class Simulation:
                     controller.real_robot.robot.get_joint_positions().numpy()
                 )
             controller.executeController(robot, maxDuration=1000, block=False)
-
-    def start_qr_teleport(self):
-        qr_config = utils.get_qr_config()
-        self.streamer.send_dict(
-            {
-                "Header": "text_message",
-                "TextMessage": "start_qr_teleport",
-                "Data": {
-                    "QRConfig": {
-                        "attr": {"QRText": qr_config["QRText"]},
-                        "data": {
-                            "offsetPos": qr_config["offsetPos"],
-                            "offsetRot": qr_config["offsetRot"],
-                        },
-                    },
-                },
-            }
-        )
-
-    def close_qr_teleport(self):
-        self.streamer.send_message("close_qr_teleport")
-
-    def set_objects_manipulable_true(self):
-        self.streamer.send_message("set_objects_manipulable_true")
-
-    def set_objects_manipulable_false(self):
-        self.streamer.send_message("set_objects_manipulable_false")
-
-    def activate_end_effector_recorder(self):
-        self.streamer.send_message("activate_end_effector_recorder")
-
-    def deactivate_end_effector_recorder(self):
-        self.streamer.send_message("deactivate_end_effector_recorder")
-
+    
     def change2task(self, task_type):
         def f():
             self.change_task_flag = task_type

@@ -9,6 +9,7 @@ from alr_sim.core.Robots import RobotBase
 from alr_sim.core.sim_object import SimObject
 
 from . import object_handler, robot_handler
+import utils
 
 
 class UnityStreamer:
@@ -285,3 +286,36 @@ class UnityStreamer:
         for obj_handler in self.object_handlers:
             data[obj_handler.name] = obj_handler.get_obj_state_dict()
         return msg
+
+    def start_qr_teleport(self):
+        qr_config = utils.get_qr_config()
+        self.send_dict(
+            {
+                "Header": "text_message",
+                "TextMessage": "start_qr_teleport",
+                "Data": {
+                    "QRConfig": {
+                        "attr": {"QRText": qr_config["QRText"]},
+                        "data": {
+                            "offsetPos": qr_config["offsetPos"],
+                            "offsetRot": qr_config["offsetRot"],
+                        },
+                    },
+                },
+            }
+        )
+
+    def close_qr_teleport(self):
+        self.send_message("close_qr_teleport")
+
+    def set_objects_manipulable_true(self):
+        self.send_message("set_objects_manipulable_true")
+
+    def set_objects_manipulable_false(self):
+        self.send_message("set_objects_manipulable_false")
+
+    def activate_end_effector_recorder(self):
+        self.send_message("activate_end_effector_recorder")
+
+    def deactivate_end_effector_recorder(self):
+        self.send_message("deactivate_end_effector_recorder")
