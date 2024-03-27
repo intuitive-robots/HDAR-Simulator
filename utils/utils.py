@@ -8,6 +8,13 @@ from alr_sim.core.Scene import Scene
 from alr_sim.utils.sim_path import sim_framework_path
 
 
+def get_hdar_config(config_name):
+    qr_config_path = "config.yaml" 
+    with open(qr_config_path, "r") as f:
+        task_setting = yaml.load(f, Loader=yaml.FullLoader)
+    return task_setting[config_name]
+
+
 def degEuler2radEuler(degEuler):
     return [radians(x) for x in degEuler]
 
@@ -44,14 +51,7 @@ def unity2mj_quat(quat):
     # note that the order is "[x, y, z, w]"
     return [quat[2], -quat[3], -quat[1], quat[0]]
 
-
-def get_hdar_config(config_name):
-    qr_config_path = "config.yaml" 
-    with open(qr_config_path, "r") as f:
-        task_setting = yaml.load(f, Loader=yaml.FullLoader)
-    return task_setting[config_name]
-
-
+    
 def objects_distance(obj1_name: str, obj2_name: str, scene: Scene):
     pos1 = scene.get_obj_pos(obj_name=obj1_name)
     pos2 = scene.get_obj_pos(obj_name=obj2_name)

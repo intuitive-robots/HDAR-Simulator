@@ -1,5 +1,4 @@
-from .TaskManager import TaskManager
-from server.utils import get_task_setting
+from .TaskManager import TaskManager, get_task_setting
 
 
 class UserStudyManager(TaskManager):

@@ -8,10 +8,18 @@ from alr_sim.utils import sim_path
 from alr_sim.utils.geometric_transformation import euler2quat
 
 from controllers import *
-from server.utils import get_task_setting, get_hdar_config
+from server.utils import get_hdar_config
 from server.HDARModel import generate_HDARObj_from_dict
 
 from typing import List, Dict
+import yaml
+
+
+def get_task_setting(task_type: str):
+    task_setting_path = f"task/task_setting/{task_type}.yaml"
+    with open(task_setting_path, "r") as f:
+        task_setting = yaml.load(f, Loader=yaml.FullLoader)
+    return task_setting
 
 
 class TaskManager:

@@ -6,16 +6,13 @@ from alr_sim.core import Scene, RobotBase
 from alr_sim.controllers.Controller import ControllerBase
 from alr_sim.sims.SimFactory import SimRepository
 
-from server.UnityHDRecorder import UnityHDRecorder
-from server.UnityStreamer import UnityStreamer
-from controllers import *
-from server.utils import get_hdar_config
-from task.TaskManager import TaskManager
+import server, controllers, utils, task
+from task import TaskManager
+import poly_controllers
 
 import torch
 
 from typing import List
-import poly_controllers
 import time
 import numpy as np
 
@@ -194,7 +191,7 @@ class HDARSimulator:
         )
 
     def setup_recorder(self):
-        self.recorder: UnityHDRecorder = UnityHDRecorder(
+        self.recorder = server.UnityHDRecorder(
             self.vt_scene,
             self.vt_object_list,
             self.task_type,
@@ -205,8 +202,8 @@ class HDARSimulator:
         )
 
     def setup_streamer(self):
-        hdar_config = get_hdar_config("HDARConfig")
-        self.streamer = UnityStreamer(
+        hdar_config = utils.get_hdar_config("HDARConfig")
+        self.streamer = server.UnityStreamer(
             self.vt_scene,
             self.vt_robot_dict.values(),
             self.vt_object_list,
@@ -231,18 +228,18 @@ class HDARSimulator:
             interaction_method = getattr(vt_robot, "interaction_method")
             if interaction_method == "real_robot":
                 # set up real scene
-                real_robot_config = get_hdar_config("RealRobotConfig")[robot_name]
+                real_robot_config = utils.get_hdar_config("RealRobotConfig")[robot_name]
                 real_robot = poly_controllers.Panda(
                     name=robot_name,
                     ip=real_robot_config["ip"],
                     robot_port=real_robot_config["robot_port"],
                     gripper_port=real_robot_config["gripper_port"],
                 )
-                real_controller = RealRobotController(real_robot.robot, regularize=True)
-                start_poly_controller(real_robot, real_controller)
+                real_controller = controllers.RealRobotController(real_robot.robot, regularize=True)
+                controllers.start_poly_controller(real_robot, real_controller)
                 self.real_robot_list.append(real_robot)
 
-                vt_controller = VTController(
+                vt_controller = controllers.VTController(
                     real_robot,
                     self.vt_scene,
                     robot_config,
@@ -250,25 +247,25 @@ class HDARSimulator:
                 )
 
             elif interaction_method == "gamepad":
-                vt_controller = GamePadTCPController(
+                vt_controller = controllers.GamePadTCPController(
                     self.vt_scene,
                     vt_robot,
                     robot_config,
                 )
             elif interaction_method == "virtual_robot":
-                vt_controller = VirtualRobotTCPController(
+                vt_controller = controllers.VirtualRobotTCPController(
                     self.vt_scene,
                     vt_robot,
                     robot_config,
                 )
             elif interaction_method == "hand_tracking":
-                vt_controller = HandTrackerTCPController(
+                vt_controller = controllers.HandTrackerTCPController(
                     self.vt_scene,
                     vt_robot,
                     robot_config,
                 )
             elif interaction_method == "motion_controller":
-                vt_controller = ViveProMotionControllerTCPController(
+                vt_controller = controllers.ViveProMotionControllerTCPController(
                     self.vt_scene,
                     vt_robot,
                     robot_config,
@@ -283,14 +280,14 @@ class HDARSimulator:
 
     def start_controllers(self):
         for robot, controller in zip(self.robot_list, self.controller_list):
-            if isinstance(controller, VTController):
+            if isinstance(controller, controllers.VTController):
                 robot.beam_to_joint_pos(
                     controller.real_robot.robot.get_joint_positions().numpy()
                 )
             controller.executeController(robot, maxDuration=1000, block=False)
 
     def start_qr_teleport(self):
-        qr_config = get_hdar_config("QRConfig")
+        qr_config = utils.get_hdar_config("QRConfig")
         self.streamer.send_dict(
             {
                 "Header": "text_message",
@@ -453,6 +450,6 @@ class HDARSimulator:
 
 if __name__ == "__main__":
     # s = HDARSimulator(debug_mode=True)
-    simulator_config = get_hdar_config("SimulatorConfig")
+    simulator_config = utils.get_hdar_config("SimulatorConfig")
     s = HDARSimulator(**simulator_config)
     s.run()
