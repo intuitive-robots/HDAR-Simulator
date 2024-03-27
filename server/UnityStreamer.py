@@ -1,20 +1,14 @@
 import asyncio
 import json
 import threading
-import numpy as np
-import time
-
-from mujoco import MjData, MjModel, mj_name2id, mjtObj
+from typing import List
+from websockets import server
 
 from alr_sim.core.Scene import Scene
 from alr_sim.core.Robots import RobotBase
 from alr_sim.core.sim_object import SimObject
-from alr_sim.sims.universal_sim.PrimitiveObjects import Box, Sphere
-from .utils import mj2unity_size, mj2unity_pos, mj2unity_quat, str2list
 
-from websockets import server
-
-from typing import List
+from utils import mj2unity_size, mj2unity_pos, mj2unity_quat
 
 
 class ObjectHandler:

@@ -1,8 +1,9 @@
-from .TaskManager import TaskManager
-
 import numpy as np
 from gym.spaces import Box as gym_box
+
 from alr_sim.utils.geometric_transformation import euler2quat
+
+from .TaskManager import TaskManager
 
 
 class PracticalManipulationManager(TaskManager):

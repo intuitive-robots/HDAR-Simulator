@@ -1,8 +1,9 @@
-from .TaskManager import TaskManager
-
 import numpy as np
 from gym.spaces import Box as GymBox
+
 from alr_sim.utils.geometric_transformation import euler2quat
+
+from . import TaskManager
 
 
 class CubeStackingManager(TaskManager):

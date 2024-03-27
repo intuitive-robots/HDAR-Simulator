@@ -7,8 +7,7 @@ from alr_sim.core.sim_object import SimObject
 from alr_sim.utils import sim_path
 from alr_sim.utils.geometric_transformation import euler2quat
 
-from controllers import *
-from server.utils import get_hdar_config
+import utils, controllers
 from server.HDARModel import generate_HDARObj_from_dict
 
 from typing import List, Dict
@@ -41,7 +40,7 @@ class TaskManager:
         task_setting = get_task_setting(task_type)
         self.objects_config: Dict[str, dict] = task_setting["objects"]
         self.robots_config: Dict[str, dict] = task_setting["robots"]
-        robots_interaction_config = get_hdar_config("RobotConfig")
+        robots_interaction_config = utils.get_virtual_robot_config()
         for robot_name, config in self.robots_config.items():
             config.update(robots_interaction_config[robot_name])
 
@@ -113,7 +112,7 @@ class TaskManager:
 
     def reset_robots(self):
         for robot in self.get_robot_list():
-            if robot.activeController is not RealRobotController:
+            if robot.activeController is not controllers.RealRobotController:
                 robot.activeController.reset_robot()
 
     def _add_robot_attr():

@@ -1,11 +1,11 @@
-from polymetis import RobotInterface, GripperInterface
-from polymetis_pb2 import RobotState
-from typing import List, Dict
-
 import torchcontrol as toco
 import spdlog
 import time
 import yaml
+from typing import List, Dict
+
+from polymetis import RobotInterface, GripperInterface
+from polymetis_pb2 import RobotState
 
 
 class Panda:
@@ -19,18 +19,6 @@ class Panda:
         self.last_policy = None
 
         self.connect()
-
-    @classmethod
-    def from_alr_name(cls, name):
-        # TODO: config path (maybe env var?)
-        panda_config = yaml.load(open("configs/robots.yaml"), yaml.FullLoader)[name]
-
-        ip = "141.3.53.152"  # TODO: localhost for now, ip of rt PC otherwise
-
-        panda_robot_port = panda_config["robot_port"]
-        panda_gripper_port = panda_config["gripper_port"]
-
-        return cls(name, ip, panda_robot_port, panda_gripper_port)
 
     def load_policy(
         self,

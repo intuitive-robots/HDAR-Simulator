@@ -1,4 +1,5 @@
-from .TaskManager import TaskManager, get_task_setting
+from . import TaskManager
+from .TaskManager import get_task_setting
 
 
 class UserStudyManager(TaskManager):

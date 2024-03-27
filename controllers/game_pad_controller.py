@@ -1,4 +1,4 @@
-from typing import List, Dict
+from typing import List
 from alr_sim.sims.mj_beta import MjScene
 from .binary_signal import BinarySingal
 from alr_sim.sims.mujoco.mj_interactive.devices.gamepad import GamePad

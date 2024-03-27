@@ -1,14 +1,12 @@
 import os
 import abc
-from xml.etree import ElementTree as Et
 import yaml
+from xml.etree import ElementTree as Et
 from math import radians
 
-from alr_sim.core.sim_object.sim_object import SimObject
-from alr_sim.sims.mj_beta.MjLoadable import MjXmlLoadable
 from alr_sim.utils.sim_path import sim_framework_path
 from alr_sim.utils.geometric_transformation import euler2quat
-from alr_sim.sims.universal_sim.PrimitiveObjects import Box, Sphere, Cylinder
+from alr_sim.sims.universal_sim.PrimitiveObjects import Box, Sphere
 from alr_sim.sims.mj_beta.mj_utils.mj_scene_object import YCBMujocoObject
 
 
