@@ -88,9 +88,7 @@ class TaskManager:
                 gravity_comp=True,
                 clip_actions=False,
                 root=sim_path.FRAMEWORK_DIR,
-                xml_path=sim_path.sim_framework_path(
-                    f"./models/mj/robot/{model_name}.xml"
-                ),
+                xml_path=f"./model/robot/{model_name}.xml",
             )
             new_robot.name = robot_name
             new_robot.init_end_eff_pos = robot_config["init_end_eff_pos"]
