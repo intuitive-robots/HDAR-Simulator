@@ -93,11 +93,10 @@ class Panda:
         connected = False
         if self.robot and self.gripper:
             try:
+                start = time.time()
                 state = self.robot.get_robot_state()
-                delay = time.time() - (
-                    state.timestamp.seconds + 1e-9 * state.timestamp.nanos
-                )
-                assert delay < 20, "Acquired state is stale by {} seconds".format(delay)
+                delay = time.time() - start
+                assert delay < 10, "Acquired state is stale by {} seconds".format(delay)
                 connected = True
             except:
                 self.robot = None
