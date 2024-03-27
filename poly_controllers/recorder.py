@@ -8,7 +8,7 @@ from queue import Queue
 from typing import Optional, List
 
 from polymetis_pb2 import RobotState
-from palrymetis import Panda
+from poly_controllers import Panda
 
 ROBOT_STATE_MEMBERS = [
     "joint_positions",

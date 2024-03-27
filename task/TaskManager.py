@@ -7,11 +7,11 @@ from alr_sim.core.sim_object import SimObject
 from alr_sim.utils import sim_path
 from alr_sim.utils.geometric_transformation import euler2quat
 
-from hdar_server.HDARController import *
-from hdar_server.utils import get_task_setting, get_hdar_config
-from hdar_server.HDARModel import generate_HDARObj_from_dict
+from controllers import *
+from server.utils import get_task_setting, get_hdar_config
+from server.HDARModel import generate_HDARObj_from_dict
 
-from typing import List
+from typing import List, Dict
 
 
 class TaskManager:

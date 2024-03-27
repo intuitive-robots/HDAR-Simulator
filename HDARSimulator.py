@@ -2,22 +2,22 @@ from enum import Flag, auto
 
 import threading
 
-# from alr_sim.controllers.Controller import ControllerBase
 from alr_sim.core import Scene, RobotBase
-from alr_sim.core.sim_object import SimObject
 from alr_sim.controllers.Controller import ControllerBase
 from alr_sim.sims.SimFactory import SimRepository
 
-from hdar_server.UnityHDRecorder import UnityHDRecorder
-from hdar_server.UnityStreamer import UnityStreamer
-from hdar_server.HDARController import *
-from hdar_server.utils import get_hdar_config
-from hdar_task.TaskManager import TaskManager
+from server.UnityHDRecorder import UnityHDRecorder
+from server.UnityStreamer import UnityStreamer
+from controllers import *
+from server.utils import get_hdar_config
+from task.TaskManager import TaskManager
 
-import palrymetis
 import torch
 
 from typing import List
+import poly_controllers
+import time
+import numpy as np
 
 
 class GeneralCLI(threading.Thread):
@@ -222,7 +222,7 @@ class HDARSimulator:
     def setup_controllers(self):
         self.controller_list: List[ControllerBase] = list()
         self.robot_list: List[RobotBase] = list()
-        self.real_robot_list: List[palrymetis.Panda] = list()
+        self.real_robot_list: List[poly_controllers.Panda] = list()
         self.scene_list: List[Scene] = [self.vt_scene]
 
         for robot_name, robot_config in self.task_manager.robots_config.items():
@@ -232,7 +232,7 @@ class HDARSimulator:
             if interaction_method == "real_robot":
                 # set up real scene
                 real_robot_config = get_hdar_config("RealRobotConfig")[robot_name]
-                real_robot = palrymetis.Panda(
+                real_robot = poly_controllers.Panda(
                     name=robot_name,
                     ip=real_robot_config["ip"],
                     robot_port=real_robot_config["robot_port"],

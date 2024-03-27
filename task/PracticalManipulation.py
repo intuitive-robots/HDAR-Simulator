@@ -1,22 +1,50 @@
-from alr_sim.sims.SimFactory import SimFactory
-from .HDARTaskBase import *
-from alr_sim.utils.sim_path import sim_framework_path
-from hdar_server.HDARModel import HDARSimObject
-from alr_sim.sims.mj_beta.mj_utils.mj_scene_object import YCBMujocoObject
+from .TaskManager import TaskManager
+
+import numpy as np
+from gym.spaces import Box as gym_box
+from alr_sim.utils.geometric_transformation import euler2quat
 
 
-class PracticalManipulation(TaskManager):
-    def __init__(self) -> None:
-        super().__init__("practical_manipulation")
-
-    def create_objects(self):
-        super().create_objects()
-
-    def create_robots(self, sim_factory: SimFactory):
-        super().create_robots(sim_factory)
+class PracticalManipulationManager(TaskManager):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, task_type="practical_manipulation", **kwargs)
 
     def reset_objects(self):
         super().reset_objects()
+        self.banana_space = gym_box(
+            low=np.array([0.3, -0.1, -90]),
+            high=np.array([0.35, 0.05, 90]),  # , seed=seed
+        )
+        self.mug_space = gym_box(
+            low=np.array([0.4, 0.2, -90]), high=np.array([0.45, 0.3, 90])  # , seed=seed
+        )
+        self.context = self.sample()
+        self.set_context(self.context)
 
-    def is_task_finished(self):
-        False
+    def set_context(self, context):
+        red_pos, quat, green_pos, quat2 = context
+
+        self.scene.set_obj_pos_and_quat(
+            [red_pos[0], red_pos[1], 0.3],
+            quat,
+            obj_name="banana",
+        )
+
+        self.scene.set_obj_pos_and_quat(
+            [green_pos[0], green_pos[1], 0.4],
+            quat2,
+            obj_name="mug",
+        )
+
+    def sample(self):
+        banana_pos = self.banana_space.sample()
+        mug_pos = self.mug_space.sample()
+
+        goal_angle = [0, 0, banana_pos[-1] * np.pi / 180]
+        quat = euler2quat(goal_angle)
+
+        goal_angle2 = [0, 0, mug_pos[-1] * np.pi / 180]
+        # quat2 = euler2quat(goal_angle2)
+        quat2 = [0.0, 1.0, 0.0, 0.0]
+
+        return [banana_pos, quat, mug_pos, quat2]

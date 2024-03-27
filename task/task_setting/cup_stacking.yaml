@@ -3,7 +3,7 @@ discription: grasp_object
 
 robots:
   {
-    grasp_robot: {
+    grasp_robot_0: {
       base_position: [0.0, 0.0, 0.0],
       base_rotation: [0.0, 0.0, 0.0],
       init_end_eff_pos: [0.525, 0.0, 0.3],
@@ -32,13 +32,6 @@ objects:
       init_quat: [1.0, 0.0, 0.0, 0.0],
       source: ycb,
     },
-    # d_cups_1: {
-    #   type: 065-d_cups,
-    #   init_pos: [0.43, -0.29, 0.06],
-    #   init_quat: [-45.0, 45.0, 0.0],
-    #   static: True,
-    #   source: ycb,
-    # },
     h_cups-1: {
       type: 065-h_cups,
       init_pos: [0.4, -0.3, 0.1],

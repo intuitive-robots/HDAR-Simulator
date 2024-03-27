@@ -1,78 +1,29 @@
-from .HDARTaskBase import *
+from .TaskManager import TaskManager
+
+import numpy as np
+from gym.spaces import Box as GymBox
+from alr_sim.utils.geometric_transformation import euler2quat
 
 
 class CubeStackingManager(TaskManager):
-    def __init__(self) -> None:
-        super().__init__("cube_stacking")
+    def __init__(self, *args, **kwargs) -> None:
+        super().__init__(*args, task_type="cube_stacking", **kwargs)
 
         np.random.seed(42)
         self.red_space = GymBox(
             low=np.array([0.35, -0.25, -90]),
             high=np.array([0.45, -0.15, 90]),  # , seed=seed
         )
-
         self.green_space = GymBox(
             low=np.array([0.35, -0.1, -90]), high=np.array([0.45, 0, 90])  # , seed=seed
         )
-
         self.blue_space = GymBox(
             low=np.array([0.55, -0.2, -90]), high=np.array([0.6, 0, 90])  # , seed=seed
         )
-
         self.target_space = GymBox(
             low=np.array([0.4, 0.15, -90]),
             high=np.array([0.6, 0.25, 90]),  # , seed=seed
         )
-
-    def create_objects(self):
-        object_name = "red_box"
-        object_config = self.objects_config[object_name]
-        red_box = Box(
-            name=object_name,
-            init_pos=object_config["init_pos"],
-            init_quat=object_config["init_quat"],
-            rgba=object_config["rgba"],
-            mass=object_config["mass"],
-            size=object_config["size"],
-        )
-        self.object_dict[object_name] = red_box
-
-        object_name = "green_box"
-        object_config = self.objects_config[object_name]
-        green_box = Box(
-            name=object_name,
-            init_pos=object_config["init_pos"],
-            init_quat=object_config["init_quat"],
-            rgba=object_config["rgba"],
-            mass=object_config["mass"],
-            size=object_config["size"],
-        )
-        self.object_dict[object_name] = green_box
-
-        object_name = "blue_box"
-        object_config = self.objects_config[object_name]
-        blue_box = Box(
-            name=object_name,
-            init_pos=object_config["init_pos"],
-            init_quat=object_config["init_quat"],
-            rgba=object_config["rgba"],
-            mass=object_config["mass"],
-            size=object_config["size"],
-        )
-        self.object_dict[object_name] = blue_box
-
-        object_name = "target_box"
-        object_config = self.objects_config[object_name]
-        target_box = Box(
-            name=object_name,
-            init_pos=object_config["init_pos"],
-            init_quat=object_config["init_quat"],
-            rgba=object_config["rgba"],
-            size=object_config["size"],
-            visual_only=True,
-            static=True,
-        )
-        self.object_dict[object_name] = target_box
 
     def reset_task(self, random=True, context=None):
         for robot in self.robot_dict.values():
@@ -88,12 +39,11 @@ class CubeStackingManager(TaskManager):
     def reset_objects(self):
         return self.reset_task()
 
-    def is_task_finished(self):
-        # return (
-        #     objects_xy_distance("target_box", "blue_box", self.scene) < 0.01
-        #     and objects_xy_distance("target_box", "blue_box", self.scene) < 0.01
-        # )
-        return False
+    # def is_task_finished(self):
+    #     return (
+    #          objects_xy_distance("target_box", "blue_box", self.scene) < 0.01
+    #         and objects_xy_distance("target_box", "blue_box", self.scene) < 0.01
+    #     )
 
     def sample(self):
 

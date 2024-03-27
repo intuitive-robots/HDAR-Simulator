@@ -10,11 +10,11 @@ from alr_sim.controllers.Controller import ControllerBase
 from alr_sim.sims.SimFactory import SimRepository
 
 
-from hdar_server.UnityHDRecorder import UnityHDRecorder
-from hdar_server.UnityStreamer import UnityStreamer
-from hdar_server.HDARController import *
-from hdar_server.utils import get_hdar_config, str2list
-from hdar_task.TaskManager import TaskManager
+from server.UnityHDRecorder import UnityHDRecorder
+from server.UnityStreamer import UnityStreamer
+from server.HDARController import *
+from server.utils import get_hdar_config, str2list
+from task.TaskManager import TaskManager
 
 
 class TrajectoryReplayer:

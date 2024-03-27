@@ -1,5 +1,5 @@
 from .TaskManager import TaskManager
-from hdar_server.utils import get_task_setting
+from server.utils import get_task_setting
 
 
 class UserStudyManager(TaskManager):

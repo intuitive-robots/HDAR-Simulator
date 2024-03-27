@@ -5,8 +5,8 @@ import threading
 
 import torchcontrol as toco
 
-from palrymetis.panda import Panda
-from palrymetis.controllers import HumanController, ImitationController
+from poly_controllers.panda import Panda
+from poly_controllers.controllers import HumanController, ImitationController
 from polymetis import RobotInterface
 
 
