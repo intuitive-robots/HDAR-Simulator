@@ -39,7 +39,7 @@ class Panda:
             self.logger.warn("Overwriting policy")
 
         self.last_policy = policy
-        self.logger.debug(f"Loading {policy.__class__}")
+        # self.logger.debug(f"Loading {policy.__class__}")
         return self.robot.send_torch_policy(policy, blocking, timeout, use_mirror)
 
     def is_running_policy(self) -> bool:
