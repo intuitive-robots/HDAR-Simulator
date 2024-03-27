@@ -1,4 +1,4 @@
-RobotConfig: {
+VirtualRobotConfig: {
   grasp_robot_0:
   {
     # interaction_method: "real_robot",
