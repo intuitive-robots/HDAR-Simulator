@@ -1,19 +1,9 @@
-import pickle
-import time
-from enum import Flag, auto, Enum
 import numpy as np
 
-# from alr_sim.controllers.Controller import ControllerBase
-from alr_sim.core import Scene, RobotBase
-from alr_sim.core.sim_object import SimObject
-from alr_sim.controllers.Controller import ControllerBase
+from alr_sim.core import Scene
 from alr_sim.sims.SimFactory import SimRepository
 
-
-from server.UnityHDRecorder import UnityHDRecorder
-from server.UnityStreamer import UnityStreamer
-from server.HDARController import *
-from task.TaskManager import TaskManager
+import server, controllers, task
 
 
 class TrajectoryReplayer:
@@ -22,17 +12,17 @@ class TrajectoryReplayer:
         self.data = data
         # virtual twin
         self.vt_sim_factory = SimRepository.get_factory("mj_beta")
-        self.scene_manager: TaskManager = TaskManager.get_manager(task_type)
+        self.scene_manager = task.TaskManager.get_manager(task_type)
         self.scene_manager.create_task(self.vt_sim_factory)
 
         self.vt_scene: Scene = self.scene_manager.get_scene()
         self.vt_object_dict = self.scene_manager.get_object_dict()
         self.vt_robot_dict = self.scene_manager.get_robot_dict()
-        self.vt_controller_dict: dict[str, ReplayerController] = dict()
+        self.vt_controller_dict: dict[str, controllers.ReplayerController] = dict()
 
         for robot_name in self.scene_manager.robots_config.keys():
             vt_robot = self.vt_robot_dict[robot_name]
-            vt_controller = ReplayerController(
+            vt_controller = controllers.ReplayerController(
                 replay_data=data["robot"],
                 robot=vt_robot,
                 downsample_steps=50,
@@ -40,7 +30,7 @@ class TrajectoryReplayer:
             self.vt_controller_dict[robot_name] = vt_controller
 
         # just for hri paper
-        self.streamer = UnityStreamer(
+        self.streamer = server.UnityStreamer(
             self.vt_scene,
             [],
             [],
