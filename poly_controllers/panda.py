@@ -1,7 +1,6 @@
 import torchcontrol as toco
 import spdlog
 import time
-import yaml
 from typing import List, Dict
 
 from polymetis import RobotInterface, GripperInterface

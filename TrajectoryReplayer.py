@@ -3,7 +3,7 @@ import numpy as np
 from alr_sim.core import Scene
 from alr_sim.sims.SimFactory import SimRepository
 
-import server, controllers, task
+import server, controllers, tasks
 
 
 class TrajectoryReplayer:
@@ -12,7 +12,7 @@ class TrajectoryReplayer:
         self.data = data
         # virtual twin
         self.vt_sim_factory = SimRepository.get_factory("mj_beta")
-        self.scene_manager = task.TaskManager.get_manager(task_type)
+        self.scene_manager = tasks.get_manager(task_type)
         self.scene_manager.create_task(self.vt_sim_factory)
 
         self.vt_scene: Scene = self.scene_manager.get_scene()

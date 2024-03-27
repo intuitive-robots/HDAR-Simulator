@@ -3,7 +3,7 @@ from gym.spaces import Box as GymBox
 
 from alr_sim.utils.geometric_transformation import euler2quat
 
-from . import TaskManager
+from .task_manager import TaskManager
 
 
 class CubeStackingManager(TaskManager):

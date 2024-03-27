@@ -1,36 +1,34 @@
 import numpy as np
+from typing import List, Dict
+import yaml
 
 from alr_sim.core import RobotBase, Scene
 from alr_sim.sims.SimFactory import SimFactory
 from alr_sim.core.sim_object import SimObject
-
 from alr_sim.utils import sim_path
 from alr_sim.utils.geometric_transformation import euler2quat
 
 import utils, controllers
 from server.hdar_model import generate_HDARObj_from_dict
 
-from typing import List, Dict
-import yaml
 
+_repository = {}
 
 def get_task_setting(task_type: str):
-    task_setting_path = f"task/task_setting/{task_type}.yaml"
+    task_setting_path = f"tasks/task_setting/{task_type}.yaml"
     with open(task_setting_path, "r") as f:
         task_setting = yaml.load(f, Loader=yaml.FullLoader)
     return task_setting
 
 
+def get_manager(task_type: str, sim_factory: SimFactory, dt: float):
+    if task_type in _repository:
+        return _repository[task_type](sim_factory=sim_factory, dt=dt)
+    print("Using default task manager")
+    return TaskManager(task_type=task_type, sim_factory=sim_factory, dt=dt)
+
+
 class TaskManager:
-    _repository = {}
-
-    @classmethod
-    def get_manager(cls, task_type: str, sim_factory: SimFactory, dt: float):
-        if task_type in cls._repository:
-            return cls._repository[task_type](sim_factory=sim_factory, dt=dt)
-        print("Using default task manager")
-        return TaskManager(task_type=task_type, sim_factory=sim_factory, dt=dt)
-
     def __init__(self, task_type: str, sim_factory: SimFactory, dt: float) -> None:
         self.sim_factory = sim_factory
         self.object_dict: Dict[str, SimObject] = {}
@@ -112,8 +110,8 @@ class TaskManager:
 
     def reset_robots(self):
         for robot in self.get_robot_list():
-            if robot.activeController is not controllers.RealRobotController:
-                robot.activeController.reset_robot()
+            # if robot.activeController is not controllers.RealRobotController:
+            robot.activeController.reset_robot()
 
     def _add_robot_attr():
         pass

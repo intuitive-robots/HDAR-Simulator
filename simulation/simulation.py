@@ -8,7 +8,7 @@ from alr_sim.core import Scene, RobotBase
 from alr_sim.controllers.Controller import ControllerBase
 from alr_sim.sims.SimFactory import SimRepository
 
-import server, controllers, utils, task, poly_controllers
+import server, controllers, utils, tasks, poly_controllers
 
 
 class SimFlag(Flag):
@@ -53,7 +53,7 @@ class Simulation:
         self.dt = dt
 
         # virtual twin
-        self.task_manager = task.TaskManager.get_manager(
+        self.task_manager = tasks.get_manager(
             task_type, self.vt_factory, self.dt
         )
         self.task_manager.create_task()

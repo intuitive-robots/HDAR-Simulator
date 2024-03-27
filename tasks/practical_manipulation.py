@@ -3,7 +3,7 @@ from gym.spaces import Box as gym_box
 
 from alr_sim.utils.geometric_transformation import euler2quat
 
-from .TaskManager import TaskManager
+from .task_manager import TaskManager
 
 
 class PracticalManipulationManager(TaskManager):
