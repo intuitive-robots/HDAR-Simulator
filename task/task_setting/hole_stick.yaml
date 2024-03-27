@@ -8,14 +8,14 @@ robots:
       base_rotation: [0.0, 0.0, 0.0],
       init_end_eff_pos: [0.525, 0.0, 0.3],
       init_end_eff_quat: [0.0, 1.0, 0.0, 0.0],
-      model: "panda_rod",
+      type: "panda_rod",
     },
     grasp_robot_1: {
       base_position: [0.0, 0.68, 0.0],
       base_rotation: [0.0, 0.0, 0.0],
       init_end_eff_pos: [0.525, 0.0, 0.3],
       init_end_eff_quat: [0.0, 1.0, 0.0, 0.0],
-      model: "panda_hole",
+      type: "panda_hole",
     },
   }
 
