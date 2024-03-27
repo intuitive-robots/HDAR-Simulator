@@ -1,11 +1,9 @@
-import os
 import yaml
 import numpy as np
 from math import radians
 
 from alr_sim.sims.universal_sim.PrimitiveObjects import PrimitiveObject
 from alr_sim.core.Scene import Scene
-from alr_sim.utils.sim_path import sim_framework_path
 
 
 def get_hdar_config(config_name):
