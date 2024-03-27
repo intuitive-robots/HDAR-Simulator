@@ -79,7 +79,7 @@ class TaskManager:
             base_quat = euler2quat(
                 np.array(robot_config["base_rotation"]) * np.pi / 180
             )
-            model_name = robot_config.get("model", "panda")
+            model_name = robot_config.get("type", "gripper_panda")
             new_robot = self.sim_factory.create_robot(
                 self.scene,
                 num_DoF=7,
@@ -90,6 +90,7 @@ class TaskManager:
                 root=sim_path.FRAMEWORK_DIR,
                 xml_path=f"./model/robot/{model_name}.xml",
             )
+            new_robot.type = model_name
             new_robot.name = robot_name
             new_robot.init_end_eff_pos = robot_config["init_end_eff_pos"]
             new_robot.init_end_eff_quat = robot_config["init_end_eff_quat"]
