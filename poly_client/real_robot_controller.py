@@ -1,9 +1,9 @@
-import poly_controllers
+import poly_client
 import time
 import threading
 
 
-class RealRobotController(poly_controllers.ForceFeedbackController):
+class RealRobotController(poly_client.ForceFeedbackController):
     def __init__(self, robot, regularize=True):
         super().__init__(robot.robot, regularize)
         self.robot = robot

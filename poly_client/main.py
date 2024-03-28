@@ -1,4 +1,4 @@
-import poly_controllers, utils
+import poly_client, utils
 import websockets
 import asyncio
 import json
@@ -12,13 +12,13 @@ robot_config = utils.get_real_robot_config()
 robots = {}
 
 for robot_name, config in robot_config.items():
-    real_robot = poly_controllers.Panda(
+    real_robot = poly_client.Panda(
         name=robot_name,
         ip=config["ip"],
         robot_port=config["robot_port"],
         gripper_port=config["gripper_port"],
     )
-    real_controller = poly_controllers.RealRobotController(real_robot)
+    real_controller = poly_client.RealRobotController(real_robot)
     robots[robot_name] = real_robot
 
 def get_joint_msg():
