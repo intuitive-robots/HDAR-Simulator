@@ -12,14 +12,15 @@ from alr_sim.sims.mj_beta.mj_utils.mj_scene_object import YCBMujocoObject
 
 def generate_HDARObj_from_dict(obj_name, obj_config: dict):
     if obj_config["source"] == "ycb":
-        return HDARYCBObject(
-            obj_type=obj_config["type"],
-            obj_name=obj_name,
-            init_pos=obj_config["init_pos"],
-            init_quat=obj_config["init_quat"],
-            static=obj_config.get("static", False),
-            visual_only=obj_config.get("visual_only", False),
-        )
+        # return HDARYCBObject(
+        #     obj_type=obj_config["type"],
+        #     obj_name=obj_name,
+        #     init_pos=obj_config["init_pos"],
+        #     init_quat=obj_config["init_quat"],
+        #     static=obj_config.get("static", False),
+        #     visual_only=obj_config.get("visual_only", False),
+        # )
+        pass
     elif obj_config["source"] == "primitive_object":
         if obj_config["type"] == "Box":
             obj_class = Box

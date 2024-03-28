@@ -3,23 +3,25 @@ import json
 import threading
 from typing import List
 from websockets import server
+import torch
+import numpy as np
 
-from alr_sim.core.Robots import RobotBase
-from alr_sim.core.Scene import Scene
+# from alr_sim.core.Robots import RobotBase
+# from alr_sim.core.Scene import Scene
 
 
 class PolyServer:
     def __init__(
         self,
-        robots: List[RobotBase],
+        # robots: List[RobotBase],
         vt_controllers,
-        scene: Scene,
+        # scene: Scene,
         host="127.0.0.1",
         port=8053,
     ) -> None:
 
-        self.robots = robots
-        self.scene = scene
+        # self.robots = robots
+        # self.scene = scene
         self.vt_controllers = vt_controllers
 
         self.ws: server.WebSocketServerProtocol = None
@@ -45,7 +47,11 @@ class PolyServer:
         data = msg['data']
         for robot_name, joint_info in data.items():
             controller = self.vt_controllers[robot_name]
-            controller.update_real_joints(joint_info)
+            joint_pos = joint_info['joint_pos']
+            gripper_width = joint_info['gripper_width']
+            command = torch.tensor(np.array(joint_pos + [-gripper_width / 2, gripper_width / 2]))[None]
+            controller.set_command(command)
+            print('test')
     
     async def start_stream(self, *args, **kwargs):
         print("Start stream to client")
@@ -100,16 +106,16 @@ class PolyServer:
             if not self.on_stream:
                 await asyncio.sleep(0.02)
                 continue
-            msg = self.get_msg()
-            try:
-                await self._send_dict_msg(msg, ws, 0.02)
-            except:
-                print("error occured when sending messages!!!!!")
-                self.connected = False
-                await ws.close()
-                break
-            finally:
-                pass
+            # msg = self.get_msg()
+            # try:
+            #     await self._send_dict_msg(msg, ws, 0.02)
+            # except:
+            #     print("error occured when sending messages!!!!!")
+            #     self.connected = False
+            #     await ws.close()
+            #     break
+            # finally:
+            #     pass
         print("finish the stream handler")
 
     async def request_handler(self, ws: server.WebSocketServerProtocol):
