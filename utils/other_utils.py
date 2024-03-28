@@ -1,7 +1,7 @@
 import numpy as np
 from math import radians
 
-from alr_sim.core.Scene import Scene
+# from alr_sim.core.Scene import Scene
 
 
 def degEuler2radEuler(degEuler):

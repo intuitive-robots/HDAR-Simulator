@@ -1,7 +1,7 @@
 from alr_sim.core.Scene import Scene
 from alr_sim.core.Robots import RobotBase
 
-from utils import mj2unity_pos, mj2unity_quat
+from utils.unity_utils import mj2unity_pos, mj2unity_quat
 
 
 class RobotHandler:

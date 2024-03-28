@@ -1,7 +1,7 @@
 from alr_sim.core.Scene import Scene
 from alr_sim.core.sim_object import SimObject
 
-from utils import mj2unity_size, mj2unity_pos, mj2unity_quat
+from utils.unity_utils import mj2unity_size, mj2unity_pos, mj2unity_quat
 
 
 class ObjectHandler:

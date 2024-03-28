@@ -1,14 +1,11 @@
-import torch
 import time
-import numpy as np
 from typing import List
 from enum import Flag, auto
 
 from alr_sim.core import Scene, RobotBase
-from alr_sim.controllers.Controller import ControllerBase
 from alr_sim.sims.SimFactory import SimRepository
 
-import server, controllers, utils, tasks, poly_controllers
+import server, controllers, utils, tasks, poly_server
 
 
 class SimFlag(Flag):
@@ -74,6 +71,9 @@ class Simulation:
 
         self.setup_cli()
         self.cli.start()
+
+        self.poly_streamer = poly_server.PolyServer(self.robot_list, self.controller_list, self.vt_scene)
+        self.poly_streamer.start()
 
         self.current_time = 0
         self.status: SimFlag = SimFlag.RUNNING
@@ -161,49 +161,31 @@ class Simulation:
         self.streamer.register_callback(close_grippers=self.close_grippers)
 
     def setup_controllers(self):
-        self.controller_list: List[ControllerBase] = list()
+        self.controller_list = {}
         self.robot_list: List[RobotBase] = list()
-        self.real_robot_list: List[poly_controllers.Panda] = list()
         self.scene_list: List[Scene] = [self.vt_scene]
 
         for robot_name, robot_config in self.task_manager.robots_config.items():
             # for vt_robot_handler in self.streamer.robot_handlers:
             vt_robot = self.vt_robot_dict[robot_name]
             interaction_method = vt_robot.interaction_method
-            real_robot = None 
             if interaction_method == "real_robot":
-                # set up real scene
-                real_robot_config = utils.get_real_robot_config()[robot_name]
-                real_robot = poly_controllers.Panda(
-                    name=robot_name,
-                    **real_robot_config,
-                )
-                real_controller = controllers.RealRobotController(real_robot)
-                self.real_robot_list.append(real_robot)
+                controller_cls = controllers.VTController
+            elif interaction_method == "gamepad":
+                controller_cls = controllers.GamePadTCPController
+            elif interaction_method == "virtual_robot":
+                controller_cls = controllers.VirtualRobotTCPController
+            elif interaction_method == "hand_tracking":
+                controller_cls = controllers.HandTrackerTCPController
+            elif interaction_method == "motion_controller":
+                controller_cls = controllers.ViveProMotionControllerTCPController
+            vt_controller = controller_cls(
+                self.vt_scene,
+                vt_robot,
+                robot_config,
+            )
 
-                vt_controller = controllers.VTController(
-                    vt_robot,
-                    real_robot,
-                    self.vt_scene,
-                    robot_config,
-                )
-
-            else:
-                if interaction_method == "gamepad":
-                    controller_cls = controllers.GamePadTCPController
-                elif interaction_method == "virtual_robot":
-                    controller_cls = controllers.VirtualRobotTCPController
-                elif interaction_method == "hand_tracking":
-                    controller_cls = controllers.HandTrackerTCPController
-                elif interaction_method == "motion_controller":
-                    controller_cls = controllers.ViveProMotionControllerTCPController
-                vt_controller = controller_cls(
-                    self.vt_scene,
-                    vt_robot,
-                    robot_config,
-                )
-
-            self.controller_list.append(vt_controller)
+            self.controller_list[robot_name] = vt_controller
             self.robot_list.append(vt_robot)
 
     def start_scenes(self):
@@ -211,17 +193,12 @@ class Simulation:
             scene.start()
 
     def start_controllers(self):
-        for robot, controller in zip(self.robot_list, self.controller_list):
-            if isinstance(controller, controllers.VTController):
-                robot.beam_to_joint_pos(
-                    controller.real_robot.robot.get_joint_positions().numpy()
-                )
+        for robot, controller in zip(self.robot_list, self.controller_list.values()):
             controller.executeController(robot, maxDuration=1000, block=False)
     
     def change2task(self, task_type):
         def f():
             self.change_task_flag = task_type
-
         return f
 
     def _change_task_clb(self):
@@ -287,19 +264,14 @@ class Simulation:
     def close_grippers(self, *args, robot_name="panda1", **kwargs):
         self.vt_robot_dict[robot_name].close_fingers(duration=0)
 
-    def terminate_policies(self):
-        for real_robot in self.real_robot_list:
-            if real_robot.is_running_policy():
-                real_robot.robot.terminate_current_policy()
-
     def shutdown_cli(self, *args, **kwargs):
         self.recorder.stop_record()
         self.streamer.close_server()
-        for controller in self.controller_list:
+        for controller in self.controller_list.values():
             controller._max_duration = 0
-        self.terminate_policies()
         self.status = SimFlag.SHUTDOWN
         self.streamer.shutdown()
+        self.poly_streamer.shutdown()
         return False
 
     def reset_initial_pose(self):
@@ -310,26 +282,7 @@ class Simulation:
         self.streamer.send_message("new_task_ready")
         self.status = SimFlag.ON_TASK
 
-    def update_force_feedback(self):
-        if (
-            self.scene_list[0].time_stamp
-            > self.force_last_timestep + self.force_interval
-        ):
-            self.force_last_timestep = self.scene_list[0].time_stamp
-            for vt_robot, real_robot in zip(self.robot_list, self.real_robot_list):
-                if real_robot.is_running_policy():
-                    constraint_forces = [
-                        self.vt_scene.data.joint(name).qfrc_constraint[0]
-                        for name in vt_robot.joint_names
-                    ]
-                    constraint_forces = torch.tensor(np.array(constraint_forces))
-                    try:
-                        real_robot.update_constraint_forces(constraint_forces)
-                    except:
-                        pass
-
     def run(self):
-        self.terminate_policies()
         self.reset_initial_pose()
         steps = 0
         start = time.time()
@@ -337,7 +290,6 @@ class Simulation:
             while steps * self.dt > time.time() - start:
                 pass
             steps += 1
-            self.update_force_feedback()
             for scene in self.scene_list:
                 scene.next_step()
         print("Goodbye")

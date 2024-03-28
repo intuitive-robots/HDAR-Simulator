@@ -3,7 +3,6 @@ from .cart_kalm_filter import CartKalmanFilter
 from .game_pad_controller import GamePadTCPController, MjViewGamePadController
 from .hololens_controller import HandTrackerTCPController, HoloLensTCPController, VirtualRobotTCPController
 from .kalman_filter import KalmanFilter
-from .real_robot_controller import RealRobotController
 from .replay_controller import ReplayerController
 from .tcp_controller import InteractiveTCPControllerBase
 from .vive_pro_controller import ViveProMotionControllerTCPController

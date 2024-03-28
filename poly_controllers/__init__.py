@@ -2,3 +2,4 @@
 from .panda import Panda
 from .human_controller import HumanController
 from .force_feedback_controller import ForceFeedbackController
+from .real_robot_controller import RealRobotController
