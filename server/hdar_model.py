@@ -6,7 +6,8 @@ from math import radians
 
 from alr_sim.utils.sim_path import sim_framework_path
 from alr_sim.utils.geometric_transformation import euler2quat
-from alr_sim.sims.universal_sim.PrimitiveObjects import Box, Sphere
+from alr_sim.sims.universal_sim.PrimitiveObjects import Box, Sphere, Cylinder
+
 from alr_sim.sims.mj_beta.mj_utils.mj_scene_object import YCBMujocoObject
 
 
@@ -25,6 +26,8 @@ def generate_HDARObj_from_dict(obj_name, obj_config: dict):
             obj_class = Box
         elif obj_config["type"] == "Sphere":
             obj_class = Sphere
+        elif obj_config["type"] == "Cylinder":
+            obj_class =  Cylinder
         return obj_class(
             name=obj_name,
             init_pos=obj_config["init_pos"],
@@ -35,6 +38,18 @@ def generate_HDARObj_from_dict(obj_name, obj_config: dict):
             static=obj_config.get("static", False),
             visual_only=obj_config.get("visual_only", False),
         )
+    # elif obj_config["source"] == "custom_object":
+    #         if obj_config["type"] == "Ring":
+    #            return Ring(
+    #             name=obj_name,
+    #             init_pos=obj_config["init_pos"],
+    #             init_quat=obj_config["init_quat"],
+    #             mass=obj_config.get("mass", 0.5),
+    #             rgba=obj_config.get("rgba", (1, 0.5, 0, 1)),
+    #             static=obj_config.get("static", False),
+    #             visual_only=obj_config.get("visual_only", False),
+    #         )
+
 
 
 class HDARSimObject(abc.ABC):
@@ -64,6 +79,24 @@ class HDARSimObject(abc.ABC):
 
         self.type = obj_type
         self.name = obj_name
+
+# class Ring(HDARSimObject):
+   
+#     def __init__(self, name, init_pos, init_quat, xml_file, mass=0.5, rgba=(1, 1, 1, 1)):
+#         super().__init__(obj_type="Ring", obj_name=name, init_pos=init_pos, init_quat=init_quat)
+#         self.mass = mass
+#         self.rgba = rgba
+#         self.xml_file = xml_file
+
+#     def load_model(self):
+#         # 从本地文件加载XML文件
+#         with open(self.xml_file, 'r') as file:
+#             self.xml_content = file.read()
+
+#     def get_model(self):
+#         return self.xml_content    
+#     #  
+    
 
 
 class HDARYCBObject(HDARSimObject, YCBMujocoObject):

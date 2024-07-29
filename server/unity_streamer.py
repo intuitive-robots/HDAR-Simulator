@@ -174,7 +174,7 @@ class UnityStreamer:
         if self.server_future is not None:
             self.server_future.set_result(True)
         # self.wsserver.get_loop().stop()
-
+#异步函数:直接调用异步函数不会返回结果，而是返回一个coroutine对象。协程需要通过其他方式来驱动，可以通过这个协程对象的send方法给协程发送一个值。在协程函数中，可以通过await语法来挂起自身的协程，并等待另一个协程完成直到返回结果。
     async def stream_handler(self, ws: server.WebSocketServerProtocol):
         # assert self.robots is not None and self.scene is not None
         while self.connected:
@@ -207,7 +207,7 @@ class UnityStreamer:
         self.connected = True
         # self.last_time = time.time()
         assert self.robot_handlers is not None
-        _, pending = await asyncio.wait(
+        _, pending = await asyncio.wait(            # _, pending 是什么？   #asyncio是异步I/O
             [
                 asyncio.create_task(self.stream_handler(ws)),
                 asyncio.create_task(self.request_handler(ws)),
@@ -239,7 +239,7 @@ class UnityStreamer:
 
     def start(self, block=False):
         threading.Thread(target=self.start_server_task).start()
-        while block and not self.connected:
+        while block and not self.connected:    #什么作用？
             pass
 
     async def _send_dict_msg(self, msg: str, ws: server.WebSocketServerProtocol, t=0):

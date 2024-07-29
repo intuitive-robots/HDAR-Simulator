@@ -1,16 +1,17 @@
-<mujocoinclude>
+<mujoco>
+<!--<mujocoinclude>-->
  <compiler angle="radian" discardvisual="false"/>
  <asset>
-  <mesh file="link0v.stl" name="link0v"/>
-  <mesh file="link1v.stl" name="link1v"/>
-  <mesh file="link2v.stl" name="link2v"/>
-  <mesh file="link3v.stl" name="link3v"/>
-  <mesh file="link4v.stl" name="link4v"/>
-  <mesh file="link5v.stl" name="link5v"/>
-  <mesh file="link6v.stl" name="link6v"/>
-  <mesh file="link7v.stl" name="link7v"/>
-  <mesh file="handv.stl" name="handv"/>
-  <mesh file="fingerv.stl" name="fingerv"/>
+  <mesh file="assets/link0v.stl" name="link0v"/>
+  <mesh file="assets/link1v.stl" name="link1v"/>
+  <mesh file="assets/link2v.stl" name="link2v"/>
+  <mesh file="assets/link3v.stl" name="link3v"/>
+  <mesh file="assets/link4v.stl" name="link4v"/>
+  <mesh file="assets/link5v.stl" name="link5v"/>
+  <mesh file="assets/link6v.stl" name="link6v"/>
+  <mesh file="assets/link7v.stl" name="link7v"/>
+  <mesh file="assets/handv.stl" name="handv"/>
+  <mesh file="assets/fingerv.stl" name="fingerv"/>
  </asset>
  <contact>
   <exclude body1="panda_link0" body2="panda_link1"/>
@@ -131,4 +132,6 @@
   <position ctrllimited="true" ctrlrange="0.001 0.04" forcelimited="true" forcerange="-70 70" joint="panda_finger_joint2" kp="1000000" name="panda_finger_joint2_act"/>-->
 
  </actuator>
-</mujocoinclude>
+
+<!-- </mujocoinclude> -->
+</mujoco>

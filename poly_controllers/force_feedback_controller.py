@@ -47,7 +47,7 @@ class ForceFeedbackController(toco.PolicyModule):
         ext = state_dict["motor_torques_external"]
 
         feedback = -self.constraint_forces / 5 
-
+                                     
         self.avg_feedback = (
             self.avg_feedback * self.smoothing_force
             + (1 - self.smoothing_force) * feedback

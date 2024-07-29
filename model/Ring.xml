@@ -1,0 +1,23 @@
+<mujoco model="Ring">
+   <asset>
+        <mesh name="torusmedium" file="assets/torusmedium.stl" scale="1 1 1"/>
+        <mesh name="contact0" file="assets/contact0.stl" scale="1 1 1"/>
+        <mesh name="contact1" file="assets/contact1.stl" scale="1 1 1"/>
+        <mesh name="contact2" file="assets/contact2.stl" scale="1 1 1"/>
+        <mesh name="contact3" file="assets/contact3.stl" scale="1 1 1"/>
+        <mesh name="contact4" file="assets/contact4.stl" scale="1 1 1"/>
+    </asset>
+
+    <worldbody>
+      <body name="Ring">
+    <geom name="torusmedium_visual" mesh="torusmedium"/>
+    <geom name="torusmedium_contact0" mesh="contact0" />
+    <geom name="torusmedium_contact1" mesh="contact1" />
+    <geom name="torusmedium_contact2" mesh="contact2" />
+    <geom name="torusmedium_contact3" mesh="contact3" />
+    <geom name="torusmedium_contact4" mesh="contact4" />
+        <joint name="ring_joint" type="free"/>
+      </body>
+    </worldbody>
+
+</mujoco>

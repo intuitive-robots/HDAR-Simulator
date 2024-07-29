@@ -16,5 +16,6 @@
         <joint name="cup_joint" type="free"/>
       </body>
     </worldbody>
+    
 
 </mujoco>

@@ -1,4 +1,4 @@
-import torch
+# import torch
 import time
 import numpy as np
 from typing import List
@@ -8,7 +8,26 @@ from alr_sim.core import Scene, RobotBase
 from alr_sim.controllers.Controller import ControllerBase
 from alr_sim.sims.SimFactory import SimRepository
 
-import server, controllers, utils, tasks, poly_controllers
+#测试
+import sys
+import os
+
+# 获取当前文件的目录
+current_dir = os.path.dirname(os.path.abspath(__file__))
+# 获取项目根目录
+project_root = os.path.dirname(os.path.dirname(current_dir))
+# 添加项目根目录到 sys.path
+sys.path.append(project_root)
+
+# 打印 sys.path 以进行调试
+print(sys.path)
+
+from SimPublisher.simpub.sim.sf_publisher import SFPublisher
+# import server.unity_publisher
+import server, controllers, utils, tasks
+import mujoco
+
+
 
 
 class SimFlag(Flag):
@@ -41,7 +60,7 @@ class Simulation:
         record_mode=False,
         time_limit=1000000000,
         dt=0.002,
-        downsample_steps=1,
+        downsample_steps=1        
     ) -> None:
 
         self.vt_factory = SimRepository.get_factory("mj_beta")
@@ -52,12 +71,18 @@ class Simulation:
         self.downsample_steps = downsample_steps
         self.dt = dt
 
+        self.collision_finger_list = []
+
+        
+        
+
         # virtual twin
+        #task manage
         self.task_manager = tasks.get_manager(
             task_type, self.vt_factory, self.dt
         )
         self.task_manager.create_task()
-
+        #scene and object
         self.vt_scene: Scene = self.task_manager.get_scene()
         self.vt_object_list = self.task_manager.get_object_list()
         self.vt_robot_dict = self.task_manager.get_robot_dict()
@@ -67,10 +92,12 @@ class Simulation:
         self.start_controllers()
         self.setup_callbacks()
 
-        self.setup_streamer()
-        self.streamer.start()
+        # self.setup_streamer()
+        # self.streamer.start()
+        self.setup_publisher()
+        self.publisher.start()
 
-        self.setup_recorder()
+        # self.setup_recorder()
 
         self.setup_cli()
         self.cli.start()
@@ -105,24 +132,24 @@ class Simulation:
         self.cli.register_function("D", "Start Record", self.start_record)
         # self.cli.register_function("SPR", "Stop Record", self.stop_record)
         self.cli.register_function("L", "Save and Reset", self.save_and_reset)
-        self.cli.register_function("SQR", "Start QR Teleport", self.streamer.start_qr_teleport)
-        self.cli.register_function("CQR", "Close QR Teleport", self.streamer.close_qr_teleport)
-        self.cli.register_function(
-            "MT", "Set Objects Manipulable True", self.streamer.set_objects_manipulable_true
-        )
-        self.cli.register_function(
-            "MF", "Set Objects Manipulable False", self.streamer.set_objects_manipulable_false
-        )
-        self.cli.register_function(
-            "AEER",
-            "Activate End Effector Recorder",
-            self.streamer.activate_end_effector_recorder,
-        )
-        self.cli.register_function(
-            "DEER",
-            "Deactivate End Effector Recorder",
-            self.streamer.deactivate_end_effector_recorder,
-        )
+        # self.cli.register_function("SQR", "Start QR Teleport", self.streamer.start_qr_teleport)
+        # self.cli.register_function("CQR", "Close QR Teleport", self.streamer.close_qr_teleport)
+        # self.cli.register_function(
+        #     "MT", "Set Objects Manipulable True", self.streamer.set_objects_manipulable_true
+        # )
+        # self.cli.register_function(
+        #     "MF", "Set Objects Manipulable False", self.streamer.set_objects_manipulable_false
+        # )
+        # self.cli.register_function(
+        #     "AEER",
+        #     "Activate End Effector Recorder",
+        #     self.streamer.activate_end_effector_recorder,
+        # )
+        # self.cli.register_function(
+        #     "DEER",
+        #     "Deactivate End Effector Recorder",
+        #     self.streamer.deactivate_end_effector_recorder,
+        # )
         self.cli.register_function("0", "Reset Task 0", self.change2task("warm_up"))
         self.cli.register_function(
             "1", "Reset Task 1", self.change2task("box_stacking")
@@ -139,26 +166,34 @@ class Simulation:
             self.vt_scene,
             self.vt_object_list,
             self.task_type,
-            self.streamer,
+            # self.streamer,
             manager=self.task_manager,
             record_mode=self.record_mode,
             downsample_steps=self.downsample_steps,
         )
 
-    def setup_streamer(self):
-        hdar_config = utils.get_hdar_config()
-        self.streamer = server.UnityStreamer(
+    def setup_publisher(self):
+        hdar_config = utils.get_hdar_config()    #host address
+        self.publisher = SFPublisher(        
             self.vt_scene,
-            self.vt_robot_dict.values(),
-            self.vt_object_list,
             **hdar_config,
+            no_tracked_objects=[]
         )
-        # self.streamer.register_callback(start_record=self.start_record)
-        # self.streamer.register_callback(stop_record=self.stop_record)
-        self.streamer.register_callback(reset=self.reset)
-        self.streamer.register_callback(save_and_reset=self.save_and_reset)
-        self.streamer.register_callback(open_grippers=self.open_grippers)
-        self.streamer.register_callback(close_grippers=self.close_grippers)
+
+    # def setup_streamer(self):
+    #     hdar_config = utils.get_hdar_config()    #host address
+    #     self.streamer = SFPublisher(
+    #         self.vt_scene,
+    #         self.vt_robot_dict.values(),
+    #         self.vt_object_list,
+    #         **hdar_config,
+    #     )
+    #     self.streamer.register_callback(start_record=self.start_record)
+    #     self.streamer.register_callback(stop_record=self.stop_record)
+    #     self.streamer.register_callback(reset=self.reset)
+    #     self.streamer.register_callback(save_and_reset=self.save_and_reset)
+    #     self.streamer.register_callback(open_grippers=self.open_grippers)
+    #     self.streamer.register_callback(close_grippers=self.close_grippers)
 
     def setup_controllers(self):
         self.controller_list: List[ControllerBase] = list()
@@ -172,6 +207,7 @@ class Simulation:
             interaction_method = vt_robot.interaction_method
             real_robot = None 
             if interaction_method == "real_robot":
+                continue
                 # set up real scene
                 real_robot_config = utils.get_real_robot_config()[robot_name]
                 real_robot = poly_controllers.Panda(
@@ -195,8 +231,11 @@ class Simulation:
                     controller_cls = controllers.VirtualRobotTCPController
                 elif interaction_method == "hand_tracking":
                     controller_cls = controllers.HandTrackerTCPController
+                elif interaction_method == "keyboard":
+                    controller_cls = controllers.KeyboardTCPController
                 elif interaction_method == "motion_controller":
                     controller_cls = controllers.ViveProMotionControllerTCPController
+                
                 vt_controller = controller_cls(
                     self.vt_scene,
                     vt_robot,
@@ -267,6 +306,7 @@ class Simulation:
             self.recorder.save_record()
 
     def _max_time_clb(self):
+        return
         if self.recorder.on_logging:
             if self.current_time < self.time_limit:
                 self.current_time += 1
@@ -278,7 +318,7 @@ class Simulation:
     def _task_finished_clb(self):
         if self.task_manager.is_task_finished() and self.status is SimFlag.ON_TASK:
             self.stop_record_flag = True
-            self.streamer.send_message("task_finished")
+            # self.streamer.send_message("task_finished")
             self.status = SimFlag.WAITING_FOR_RESET
 
     def open_grippers(self, *args, robot_name="panda1", **kwargs):
@@ -294,20 +334,20 @@ class Simulation:
 
     def shutdown_cli(self, *args, **kwargs):
         self.recorder.stop_record()
-        self.streamer.close_server()
+        # self.streamer.close_server()
         for controller in self.controller_list:
             controller._max_duration = 0
         self.terminate_policies()
         self.status = SimFlag.SHUTDOWN
-        self.streamer.shutdown()
+        # self.streamer.shutdown()
+        self.publisher.shutdown()
         return False
 
     def reset_initial_pose(self):
         self.status = SimFlag.RESETTING
         self.task_manager.reset_objects()
         self.task_manager.reset_robots()
-
-        self.streamer.send_message("new_task_ready")
+        # self.streamer.send_message("new_task_ready")
         self.status = SimFlag.ON_TASK
 
     def update_force_feedback(self):
@@ -328,16 +368,254 @@ class Simulation:
                     except:
                         pass
 
+#collision force update
+# target_geom1_target = 'target:geom'
+# target_geom2_body1 = 'finger1_rb0_tip_collision'
+# target_geom2_body2 = 'finger2_rb0_tip_collision'
+# target_geom2_body3 = 'aim:geom'
+
+#collision force for left finger
+    def check_collision_finger1(self):
+        collision_finger1_list=[]    
+        filename1 = 'collision_finger1.txt'  
+        target_pairs1 = {('target:geom', 'finger1_rb0_tip_collision')}
+        #target_geom_ids = [self.model.geom_name2id(name) for name in target_geoms]
+        tt=range(self.vt_scene.data.ncon)
+        for i in range(self.vt_scene.data.ncon):
+
+            contact = self.vt_scene.data.contact[i]    
+            pos = np.array(contact.pos[:3])
+            geom1_name = mujoco.mj_id2name(self.vt_scene.model, mujoco.mjtObj.mjOBJ_GEOM, contact.geom1)
+            geom2_name = mujoco.mj_id2name(self.vt_scene.model, mujoco.mjtObj.mjOBJ_GEOM, contact.geom2)
+            force = np.zeros(6)
+            mujoco.mj_contactForce(self.vt_scene.model, self.vt_scene.data, i, force)
+            time=self.vt_scene.data.time
+            #if geom1_name == "finger1_rb0_tip_collision" or geom2_name == "finger1_rb0_tip_collision":
+            if (geom1_name, geom2_name) in target_pairs1 or (geom2_name, geom1_name) in target_pairs1:
+                collision_finger1_list.append({
+                'geom1': geom1_name,
+                'geom2': geom2_name,
+                'position': pos.astype(float),
+                'force': force[:3].astype(float), # Only take the first three elements (force)
+                'time': time,
+                'number': i
+                })
+                with open(filename1, 'a', newline='') as file:
+                    file.write(f"Collision object:{geom1_name} with {geom2_name} at {pos}, Force: {force[:3]}, time:{time},number:{i}:{tt}\n")
+        return collision_finger1_list
+#collision resultant force for left finger
+    def finger1_resultant_force(self):
+        collision_finger1_list = self.check_collision_finger1()
+        collision_finger_resultant = {}
+        for collision in collision_finger1_list:
+            geom1=collision['geom1']
+            geom2=collision['geom2']
+            pos=collision['position']
+            force=collision['force']
+            time=collision['time']
+            time_key=round(collision['time'],4)
+            geom_pair=tuple(sorted((geom1, geom2)))
+            if (time_key, geom_pair) not in collision_finger_resultant:
+                collision_finger_resultant[(time_key, geom_pair)] = {
+                    'geom1': geom1,
+                    'geom2': geom2,
+                    'position_sum': pos,
+                    'force': force,
+                    'newtime': time_key,
+                    'number': 1
+                }
+            else:
+                collision_finger_resultant[(time_key, geom_pair)]['force'] += force
+                collision_finger_resultant[(time_key, geom_pair)]['position_sum'] += pos
+                collision_finger_resultant[(time_key, geom_pair)]['number'] += 1
+        collision_finger1_resultant_result = []
+        for (time_key, geom_pair),data in collision_finger_resultant.items():
+            avg_position = data['position_sum'] / data['number']
+            collision_finger1_resultant_result.append({
+                'geom1': geom1,
+                'geom2': geom2,
+                'position': avg_position,
+                'force': force,
+                'time': time
+            })
+            filename3 = 'collision_finger1_resultant.txt'
+            with open(filename3, 'a', newline='') as file:
+                 file.write(f"Collision object:{geom1} with {geom2} at {avg_position}, Force: {force[:3]}, time:{time}\n")
+        return collision_finger1_resultant_result
+    
+#collision force for right finger
+    def check_collision_finger2(self):
+        collision_finger2_list=[]    
+        filename1 = 'collision_finger2.txt'  
+        target_pairs1 = { ('target:geom', 'finger2_rb0_tip_collision')}
+        #target_geom_ids = [self.model.geom_name2id(name) for name in target_geoms]
+        tt=range(self.vt_scene.data.ncon)
+        for i in range(self.vt_scene.data.ncon):
+
+            contact = self.vt_scene.data.contact[i]    
+            pos = np.array(contact.pos[:3])
+            geom1_name = mujoco.mj_id2name(self.vt_scene.model, mujoco.mjtObj.mjOBJ_GEOM, contact.geom1)
+            geom2_name = mujoco.mj_id2name(self.vt_scene.model, mujoco.mjtObj.mjOBJ_GEOM, contact.geom2)
+            force = np.zeros(6)
+            mujoco.mj_contactForce(self.vt_scene.model, self.vt_scene.data, i, force)
+            time=self.vt_scene.data.time
+            #if geom1_name == "finger1_rb0_tip_collision" or geom2_name == "finger1_rb0_tip_collision":
+            if (geom1_name, geom2_name) in target_pairs1 or (geom2_name, geom1_name) in target_pairs1:
+                collision_finger2_list.append({
+                'geom1': geom1_name,
+                'geom2': geom2_name,
+                'position': pos.astype(float),
+                'force': force[:3].astype(float), # Only take the first three elements (force)
+                'time': time,
+                'number': i
+                })
+                with open(filename1, 'a', newline='') as file:
+                    file.write(f"Collision object:{geom1_name} with {geom2_name} at {pos}, Force: {force[:3]}, time:{time},number:{i}:{tt}\n")
+        return collision_finger2_list
+#collision resultant force for right finger
+    def finger2_resultant_force(self):
+        collision_finger2_list = self.check_collision_finger2()
+        collision_finger_resultant = {}
+        for collision in collision_finger2_list:
+            geom1=collision['geom1']
+            geom2=collision['geom2']
+            pos=collision['position']
+            force=collision['force']
+            time=collision['time']
+            time_key=round(collision['time'],4)
+            geom_pair=tuple(sorted((geom1, geom2)))
+            if (time_key, geom_pair) not in collision_finger_resultant:
+                collision_finger_resultant[(time_key, geom_pair)] = {
+                    'geom1': geom1,
+                    'geom2': geom2,
+                    'position_sum': pos,
+                    'force': force,
+                    'newtime': time_key,
+                    'number': 1
+                }
+            else:
+                collision_finger_resultant[(time_key, geom_pair)]['force'] += force
+                collision_finger_resultant[(time_key, geom_pair)]['position_sum'] += pos
+                collision_finger_resultant[(time_key, geom_pair)]['number'] += 1
+        collision_finger2_resultant_result = []
+        for (time_key, geom_pair),data in collision_finger_resultant.items():
+            avg_position = data['position_sum'] / data['number']
+            collision_finger2_resultant_result.append({
+                'geom1': geom1,
+                'geom2': geom2,
+                'position': avg_position,
+                'force': force,
+                'time': time
+            })
+            filename3 = 'collision_finger2_resultant.txt'
+            with open(filename3, 'a', newline='') as file:
+                 file.write(f"Collision object:{geom1} with {geom2} at {avg_position}, Force: {force[:3]}, time:{time}\n")
+        return collision_finger2_resultant_result
+    
+
+#collision force for aim
+    def check_collision_aim(self):
+        collision_aim_list=[]
+            
+        filename2 = 'collision_aim.txt'  
+        target_pairs2={('target:geom', 'aim:geom')}
+        #target_geom_ids = [self.model.geom_name2id(name) for name in target_geoms]
+        tt=range(self.vt_scene.data.ncon)
+        for i in range(self.vt_scene.data.ncon):
+            contact = self.vt_scene.data.contact[i]    
+            pos = np.array(contact.pos[:3])
+            geom1_name = mujoco.mj_id2name(self.vt_scene.model, mujoco.mjtObj.mjOBJ_GEOM, contact.geom1)
+            geom2_name = mujoco.mj_id2name(self.vt_scene.model, mujoco.mjtObj.mjOBJ_GEOM, contact.geom2)
+            force = np.zeros(6)
+            mujoco.mj_contactForce(self.vt_scene.model, self.vt_scene.data, i, force)
+            time=self.vt_scene.data.time
+            #if geom1_name == "aim:geom" or geom2_name == "aim:geom":
+            if (geom1_name, geom2_name) in target_pairs2 or (geom2_name, geom1_name) in target_pairs2:
+                collision_aim_list.append({
+                'geom1': geom1_name,
+                'geom2': geom2_name,
+                'position': pos.astype(float),
+                'force': force[:3].astype(float), # Only take the first three elements (force)
+                'time': time,
+                'number': i
+                })
+                with open(filename2, 'a', newline='') as file:
+                     file.write(f"Collision object:{geom1_name} with {geom2_name} at {pos}, Force: {force[:3]}, time:{time},number:{i}:{tt}\n")
+        return collision_aim_list
+    
+    def aim_resultant_force(self):
+        collision_aim_list = self.check_collision_aim()
+        collision_aim_resultant={}
+        filename4 = 'collision_aim_resultant.txt'
+        for collision in collision_aim_list:
+            geom1=collision['geom1']
+            geom2=collision['geom2']
+            pos=collision['position']
+            force=collision['force']
+            time=collision['time']
+            time_key=round(collision['time'],4)
+            geom_pair=tuple(sorted((geom1, geom2)))
+            
+                
+            if (time_key,geom_pair) not in collision_aim_resultant:
+                collision_aim_resultant[(time_key, geom_pair)] = {
+                        'geom1': geom1,
+                        'geom2': geom2,
+                        'position_sum': pos,
+                        'force': force,
+                        'newtime': time_key,
+                        'number': 1
+                 }
+            else:
+                collision_aim_resultant[(time_key,geom_pair)]['force'] += force[:3]
+                collision_aim_resultant[(time_key,geom_pair)]['position_sum'] += pos
+                collision_aim_resultant[(time_key,geom_pair)]['number'] += 1
+                
+        collision_aim_resultant_result=[]
+        for (time_key,geom_pair), data in collision_aim_resultant.items():
+            avg_position = data['position_sum'] / data['number']
+            collision_aim_resultant_result.append({
+                'geom1': geom1,
+                'geom2': geom2,
+                'position': avg_position,
+                'force': force,
+                'time': time
+            })
+            with open(filename4, 'a', newline='') as file:
+                file.write(f"Collision object:{geom1} with {geom2} at {avg_position}, Force: {force[:3]}, time:{time}\n")
+
+        return collision_aim_resultant_result
+        
+
+      
     def run(self):
         self.terminate_policies()
         self.reset_initial_pose()
+        print('ok1')
         steps = 0
         start = time.time()
+        collision_time_interval=0.01
+        last_check_time=time.time()
         while self.status in SimFlag.RUNNING:
             while steps * self.dt > time.time() - start:
                 pass
             steps += 1
             self.update_force_feedback()
+#check collision
+            current_time =time.time()
+            if current_time - last_check_time >= collision_time_interval:
+                self.check_collision_finger1()
+                self.check_collision_finger2()
+                self.finger1_resultant_force()
+                self.finger2_resultant_force()
+                self.check_collision_aim()
+                self. aim_resultant_force()
+                last_check_time = current_time
+
+            
             for scene in self.scene_list:
                 scene.next_step()
+            
+                
         print("Goodbye")
+                

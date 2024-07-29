@@ -1,6 +1,6 @@
 from alr_sim.core.Scene import Scene
 from alr_sim.core.Robots import RobotBase
-
+import numpy as np
 from utils import mj2unity_pos, mj2unity_quat
 
 
@@ -18,6 +18,8 @@ class RobotHandler:
             RobotHandler.count += 1
         self.type = getattr(robot, "type", "gripper_panda")
 
+        #update tcp force&direction
+        # self.tcp_force=np.zeros(6)
     def get_robot_param_dict(self) -> dict:
         param_date = {}
         param_date["pos"] = list(mj2unity_pos(self.robot.base_position))
@@ -25,6 +27,7 @@ class RobotHandler:
         joints = list(self.robot.current_j_pos)
         joints.extend([self.robot.gripper_width / 2, self.robot.gripper_width / 2])
         param_date["joints"] = joints
+        #tcp force
         return {
             "attr": {
                 "type": self.type,

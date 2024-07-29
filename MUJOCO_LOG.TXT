@@ -1,0 +1,912 @@
+Sat Jun 29 11:04:23 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_93fd4372-35f6-11ef-aeb9-00155dc9ed0f.xml' with default provider at slot 1
+
+Sat Jun 29 11:04:23 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb1_93fe7ba2-35f6-11ef-aeb9-00155dc9ed0f.xml' with default provider at slot 1
+
+Sat Jun 29 16:34:31 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_b26cd420-3624-11ef-b474-00155dc9ed0f.xml' with default provider at slot 1
+
+Sat Jun 29 16:34:31 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb1_b26e804a-3624-11ef-b474-00155dc9ed0f.xml' with default provider at slot 1
+
+Mon Jul  1 09:16:53 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_e4bccfc4-3779-11ef-af3b-00155d1f3812.xml' with default provider at slot 1
+
+Mon Jul  1 09:16:53 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb1_e4bde9f4-3779-11ef-af3b-00155d1f3812.xml' with default provider at slot 1
+
+Mon Jul  1 09:35:01 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_6cc3bf52-377c-11ef-a8b1-00155d1f3812.xml' with default provider at slot 1
+
+Mon Jul  1 09:35:01 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb1_6cc4bdc6-377c-11ef-a8b1-00155d1f3812.xml' with default provider at slot 1
+
+Mon Jul  1 09:52:05 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_cf92b186-377e-11ef-ac4d-00155d1f3812.xml' with default provider at slot 1
+
+Mon Jul  1 09:52:05 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb1_cf93a884-377e-11ef-ac4d-00155d1f3812.xml' with default provider at slot 1
+
+Mon Jul  1 10:26:19 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_97a12852-3783-11ef-beb0-00155d1f3812.xml' with default provider at slot 1
+
+Mon Jul  1 10:26:19 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb1_97a291f6-3783-11ef-beb0-00155d1f3812.xml' with default provider at slot 1
+
+Mon Jul  1 22:00:08 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_84875f3c-37e4-11ef-b3d6-00155d1f3812.xml' with default provider at slot 1
+
+Mon Jul  1 22:22:54 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_b272037c-37e7-11ef-b668-00155d1f3812.xml' with default provider at slot 1
+
+Mon Jul  1 22:23:47 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_d226c45a-37e7-11ef-8b29-00155d1f3812.xml' with default provider at slot 1
+
+Mon Jul  1 22:25:42 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_16720b56-37e8-11ef-afe8-00155d1f3812.xml' with default provider at slot 1
+
+Mon Jul  1 23:29:12 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_f59fe200-37f0-11ef-9138-00155d1f3812.xml' with default provider at slot 1
+
+Mon Jul  1 23:32:54 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_7a440fd6-37f1-11ef-823c-00155d1f3812.xml' with default provider at slot 1
+
+Mon Jul  1 23:34:49 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_be6a4a90-37f1-11ef-ada6-00155d1f3812.xml' with default provider at slot 1
+
+Mon Jul  1 23:38:33 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_445550e6-37f2-11ef-98c3-00155d1f3812.xml' with default provider at slot 1
+
+Mon Jul  1 23:41:10 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_a1b20f54-37f2-11ef-91e7-00155d1f3812.xml' with default provider at slot 1
+
+Mon Jul  1 23:51:14 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_09a8ba3a-37f4-11ef-8016-00155d1f3812.xml' with default provider at slot 1
+
+Tue Jul  2 00:04:59 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_f586c0cc-37f5-11ef-a287-00155d1f3812.xml' with default provider at slot 1
+
+Tue Jul  2 00:06:41 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_326dc3d2-37f6-11ef-b550-00155d1f3812.xml' with default provider at slot 1
+
+Tue Jul  2 00:09:08 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_89e1316c-37f6-11ef-95d3-00155d1f3812.xml' with default provider at slot 1
+
+Tue Jul  2 00:14:12 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_3ec36550-37f7-11ef-b701-00155d1f3812.xml' with default provider at slot 1
+
+Tue Jul  2 00:19:04 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_ed003bd4-37f7-11ef-8bae-00155d1f3812.xml' with default provider at slot 1
+
+Tue Jul  2 00:19:36 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_003d6758-37f8-11ef-b2db-00155d1f3812.xml' with default provider at slot 1
+
+Tue Jul  2 00:27:57 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_2ace2e3e-37f9-11ef-a4c0-00155d1f3812.xml' with default provider at slot 1
+
+Tue Jul  2 00:36:43 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_641bc9a2-37fa-11ef-b066-00155d1f3812.xml' with default provider at slot 1
+
+Tue Jul  2 00:41:29 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_0e92d0d8-37fb-11ef-8df9-00155d1f3812.xml' with default provider at slot 1
+
+Tue Jul  2 00:45:23 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_9a586c90-37fb-11ef-b66a-00155d1f3812.xml' with default provider at slot 1
+
+Tue Jul  2 10:06:29 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_fc84c55a-3849-11ef-8898-00155d1f3d3a.xml' with default provider at slot 1
+
+Tue Jul  2 10:08:26 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_42799d88-384a-11ef-a149-00155d1f3d3a.xml' with default provider at slot 1
+
+Tue Jul  2 10:55:13 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_cb967ce8-3850-11ef-8200-00155d1f3d3a.xml' with default provider at slot 1
+
+Tue Jul  2 10:56:20 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_f3826762-3850-11ef-b14b-00155d1f3d3a.xml' with default provider at slot 1
+
+Tue Jul  2 10:57:50 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_28d8a200-3851-11ef-9f32-00155d1f3d3a.xml' with default provider at slot 1
+
+Tue Jul  2 10:59:32 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_65acfc26-3851-11ef-b260-00155d1f3d3a.xml' with default provider at slot 1
+
+Tue Jul  2 13:24:53 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_b3dabe6a-3865-11ef-8213-00155d1f3d3a.xml' with default provider at slot 1
+
+Tue Jul  2 13:48:09 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_f4212da8-3868-11ef-94d1-00155d1f3d3a.xml' with default provider at slot 1
+
+Tue Jul  2 13:48:44 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_08c1ba70-3869-11ef-af7c-00155d1f3d3a.xml' with default provider at slot 1
+
+Tue Jul  2 13:50:18 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_41463f9c-3869-11ef-b792-00155d1f3d3a.xml' with default provider at slot 1
+
+Tue Jul  2 13:52:04 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_807073f4-3869-11ef-afec-00155d1f3d3a.xml' with default provider at slot 1
+
+Tue Jul  2 13:53:10 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_a7aab79a-3869-11ef-af94-00155d1f3d3a.xml' with default provider at slot 1
+
+Tue Jul  2 13:55:52 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_083a1a88-386a-11ef-9426-00155d1f3d3a.xml' with default provider at slot 1
+
+Tue Jul  2 15:07:50 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_15f781ba-3874-11ef-b06b-00155d1f3d3a.xml' with default provider at slot 1
+
+Tue Jul  2 15:08:44 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_35ef0984-3874-11ef-9806-00155d1f3d3a.xml' with default provider at slot 1
+
+Tue Jul  2 21:32:55 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_e14222dc-38a9-11ef-b443-00155d1f3d3a.xml' with default provider at slot 1
+
+Tue Jul  2 21:34:17 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_1210ffa0-38aa-11ef-bff9-00155d1f3d3a.xml' with default provider at slot 1
+
+Sun Jul  7 15:32:34 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_5e4ce65e-3c65-11ef-8125-00155d69f1c3.xml' with default provider at slot 1
+
+Mon Jul  8 16:13:37 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_45290dea-3d34-11ef-81eb-00155d69f485.xml' with default provider at slot 1
+
+Mon Jul  8 16:15:10 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_7c74f746-3d34-11ef-b019-00155d69f485.xml' with default provider at slot 1
+
+Mon Jul  8 16:21:34 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_612dc03e-3d35-11ef-ab2a-00155d69f485.xml' with default provider at slot 1
+
+Mon Jul  8 16:24:42 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_d175e740-3d35-11ef-a663-00155d69f485.xml' with default provider at slot 1
+
+Mon Jul  8 21:19:46 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_09678d9c-3d5f-11ef-8f26-00155d69f485.xml' with default provider at slot 1
+
+Mon Jul  8 21:24:59 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_c478a15c-3d5f-11ef-995c-00155d69f485.xml' with default provider at slot 1
+
+Mon Jul  8 22:30:58 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_fbbd3d2c-3d68-11ef-9669-00155d69f485.xml' with default provider at slot 1
+
+Mon Jul  8 22:38:29 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_0886769e-3d6a-11ef-bff8-00155d69f485.xml' with default provider at slot 1
+
+Mon Jul  8 22:43:30 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_bc4cfdd8-3d6a-11ef-93ae-00155d69f485.xml' with default provider at slot 1
+
+Mon Jul  8 23:30:17 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_45640be2-3d71-11ef-8926-00155d69f485.xml' with default provider at slot 1
+
+Mon Jul  8 23:31:40 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_76c974ec-3d71-11ef-b058-00155d69f485.xml' with default provider at slot 1
+
+Wed Jul 10 20:39:24 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_badba346-3eeb-11ef-a875-00155d69f46d.xml' with default provider at slot 1
+
+Thu Jul 11 14:26:26 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_cb07a374-3f80-11ef-ac8f-00155d69f9bc.xml' with default provider at slot 1
+
+Thu Jul 11 14:29:57 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_48cbf102-3f81-11ef-b253-00155d69f9bc.xml' with default provider at slot 1
+
+Fri Jul 12 00:39:09 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_639a54d8-3fd6-11ef-831f-00155d69f9bc.xml' with default provider at slot 1
+
+Fri Jul 12 00:41:37 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_bbe81d96-3fd6-11ef-be12-00155d69f9bc.xml' with default provider at slot 1
+
+Fri Jul 12 01:13:11 2024
+WARNING: mju_openResource: unknown file 'saved_model.xml'
+
+Fri Jul 12 01:13:59 2024
+WARNING: mju_openResource: unknown file 'saved_model.xml'
+
+Fri Jul 12 01:15:03 2024
+WARNING: mju_openResource: unknown file 'model.robot.saved_model.xml'
+
+Fri Jul 12 01:16:39 2024
+WARNING: mju_openResource: unknown file 'path/to/model/directory/saved_model.xml'
+
+Fri Jul 12 01:36:20 2024
+WARNING: mju_openResource: unknown file './saved_model.xml'
+
+Fri Jul 12 01:43:20 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_5aaecda0-3fdf-11ef-b86f-00155d69f9bc.xml' with default provider at slot 1
+
+Fri Jul 12 01:44:56 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_93e2ad08-3fdf-11ef-a28d-00155d69f9bc.xml' with default provider at slot 1
+
+Fri Jul 12 11:56:00 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_f13d596c-4034-11ef-9668-00155d69fca1.xml' with default provider at slot 1
+
+Fri Jul 12 13:53:00 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_496b165a-4045-11ef-bef6-00155d69fca1.xml' with default provider at slot 1
+
+Fri Jul 12 14:08:38 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_7907d11c-4047-11ef-87eb-00155d69fca1.xml' with default provider at slot 1
+
+Fri Jul 12 14:23:01 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_7b114888-4049-11ef-b3dc-00155d69fca1.xml' with default provider at slot 1
+
+Fri Jul 12 21:49:38 2024
+WARNING: mju_openResource: unknown file './saved_model.xml'
+
+Fri Jul 12 23:04:02 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_4472a580-4092-11ef-9d56-00155d69fca1.xml' with default provider at slot 1
+
+Fri Jul 12 23:32:07 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_3051028c-4096-11ef-880c-00155d69fca1.xml' with default provider at slot 1
+
+Fri Jul 12 23:37:07 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_e388a59e-4096-11ef-9eb3-00155d69fca1.xml' with default provider at slot 1
+
+Fri Jul 12 23:45:54 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_1d6527aa-4098-11ef-85f2-00155d69fca1.xml' with default provider at slot 1
+
+Fri Jul 12 23:58:08 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_d317f1e4-4099-11ef-836f-00155d69fca1.xml' with default provider at slot 1
+
+Sat Jul 13 00:05:01 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_c91ad23c-409a-11ef-84f1-00155d69fca1.xml' with default provider at slot 1
+
+Sat Jul 13 00:23:17 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_569d22b6-409d-11ef-a172-00155d69fca1.xml' with default provider at slot 1
+
+Sat Jul 13 23:49:31 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_c9162fee-4161-11ef-9a13-00155d69f10a.xml' with default provider at slot 1
+
+Sat Jul 13 23:50:19 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_e5ea8aa2-4161-11ef-848e-00155d69f10a.xml' with default provider at slot 1
+
+Sun Jul 14 00:02:13 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_8f85862e-4163-11ef-8309-00155d69f10a.xml' with default provider at slot 1
+
+Sun Jul 14 00:08:10 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_64079f68-4164-11ef-a8c6-00155d69f10a.xml' with default provider at slot 1
+
+Sun Jul 14 01:44:06 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_cb059f00-4171-11ef-90fb-00155d69f10a.xml' with default provider at slot 1
+
+Sun Jul 14 01:50:55 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_becbbd5e-4172-11ef-a043-00155d69f10a.xml' with default provider at slot 1
+
+Sun Jul 14 13:01:50 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_789bb3e4-41d0-11ef-821a-00155d69f30a.xml' with default provider at slot 1
+
+Sun Jul 14 15:36:57 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_23e7db78-41e6-11ef-871a-00155d46602f.xml' with default provider at slot 1
+
+Sun Jul 14 15:50:00 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_f7073d68-41e7-11ef-b34a-00155d46602f.xml' with default provider at slot 1
+
+Sun Jul 14 15:50:58 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_198a7ab2-41e8-11ef-8d0d-00155d46602f.xml' with default provider at slot 1
+
+Sun Jul 14 15:53:02 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_62fe264e-41e8-11ef-9f67-00155d46602f.xml' with default provider at slot 1
+
+Sun Jul 14 15:58:11 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_1b79d01a-41e9-11ef-a71c-00155d46602f.xml' with default provider at slot 1
+
+Sun Jul 14 16:03:51 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_e65a3bee-41e9-11ef-a6b8-00155d46602f.xml' with default provider at slot 1
+
+Sun Jul 14 16:04:49 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_08e2cf96-41ea-11ef-b0b8-00155d46602f.xml' with default provider at slot 1
+
+Sun Jul 14 16:09:38 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_b5337368-41ea-11ef-be44-00155d46602f.xml' with default provider at slot 1
+
+Sun Jul 14 16:13:04 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_2f902a84-41eb-11ef-80e3-00155d46602f.xml' with default provider at slot 1
+
+Sun Jul 14 16:23:44 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_ad66c2aa-41ec-11ef-bfa7-00155d46602f.xml' with default provider at slot 1
+
+Sun Jul 14 16:24:58 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_d92d067e-41ec-11ef-ab54-00155d46602f.xml' with default provider at slot 1
+
+Sun Jul 14 16:29:06 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_6d1884f8-41ed-11ef-b090-00155d46602f.xml' with default provider at slot 1
+
+Sun Jul 14 16:29:50 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_8723edce-41ed-11ef-80fb-00155d46602f.xml' with default provider at slot 1
+
+Sun Jul 14 16:33:10 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_feb61ac4-41ed-11ef-9405-00155d46602f.xml' with default provider at slot 1
+
+Sun Jul 14 16:36:09 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_6923282a-41ee-11ef-bc42-00155d46602f.xml' with default provider at slot 1
+
+Sun Jul 14 16:42:26 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_49fd312e-41ef-11ef-bc73-00155d46602f.xml' with default provider at slot 1
+
+Sun Jul 14 16:43:15 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_66dba366-41ef-11ef-bdcb-00155d46602f.xml' with default provider at slot 1
+
+Sun Jul 14 16:45:38 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_bc4a9f96-41ef-11ef-a826-00155d46602f.xml' with default provider at slot 1
+
+Sun Jul 14 16:54:25 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_f662deae-41f0-11ef-bb78-00155d46602f.xml' with default provider at slot 1
+
+Sun Jul 14 17:00:02 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_bf6ac91a-41f1-11ef-996a-00155d46602f.xml' with default provider at slot 1
+
+Sun Jul 14 17:03:52 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_483d6d56-41f2-11ef-a2c8-00155d46602f.xml' with default provider at slot 1
+
+Sun Jul 14 17:11:48 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_64548cf8-41f3-11ef-b1a1-00155d46602f.xml' with default provider at slot 1
+
+Sun Jul 14 17:13:53 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_aec8c75e-41f3-11ef-959c-00155d46602f.xml' with default provider at slot 1
+
+Sun Jul 14 17:14:25 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_c2065b7e-41f3-11ef-8a7e-00155d46602f.xml' with default provider at slot 1
+
+Sun Jul 14 17:15:32 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_e96616f0-41f3-11ef-97db-00155d46602f.xml' with default provider at slot 1
+
+Sun Jul 14 17:17:02 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_1f981cc8-41f4-11ef-9812-00155d46602f.xml' with default provider at slot 1
+
+Sun Jul 14 17:48:43 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_8c717f52-41f8-11ef-9287-00155d46602f.xml' with default provider at slot 1
+
+Sun Jul 14 18:27:03 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_e71033e0-41fd-11ef-8dc0-00155d46602f.xml' with default provider at slot 1
+
+Sun Jul 14 18:29:33 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_40859d7a-41fe-11ef-babb-00155d46602f.xml' with default provider at slot 1
+
+Sun Jul 14 18:32:04 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_9ad839c2-41fe-11ef-be64-00155d46602f.xml' with default provider at slot 1
+
+Sun Jul 14 18:35:54 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_23dbe1ba-41ff-11ef-a0c5-00155d46602f.xml' with default provider at slot 1
+
+Sun Jul 14 18:38:47 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_8aee30a6-41ff-11ef-ad3c-00155d46602f.xml' with default provider at slot 1
+
+Sun Jul 14 19:44:47 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_c3838a16-4208-11ef-a338-00155d46602f.xml' with default provider at slot 1
+
+Sun Jul 14 20:05:31 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_a8f0b9f0-420b-11ef-97e6-00155d46602f.xml' with default provider at slot 1
+
+Sun Jul 14 20:12:15 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_9982d678-420c-11ef-9a92-00155d46602f.xml' with default provider at slot 1
+
+Sun Jul 14 20:31:54 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_5826d5fa-420f-11ef-a3d5-00155d46602f.xml' with default provider at slot 1
+
+Sun Jul 14 20:56:03 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_b80fc064-4212-11ef-a517-00155d46602f.xml' with default provider at slot 1
+
+Sun Jul 14 20:57:07 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_de5e4b82-4212-11ef-9d99-00155d46602f.xml' with default provider at slot 1
+
+Sun Jul 14 22:43:37 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_bf242c50-4221-11ef-86fb-00155d46602f.xml' with default provider at slot 1
+
+Sun Jul 14 22:44:28 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_dd6ea9d8-4221-11ef-bfae-00155d46602f.xml' with default provider at slot 1
+
+Mon Jul 15 01:04:58 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_7e351772-4235-11ef-8b93-00155d46602f.xml' with default provider at slot 1
+
+Mon Jul 15 01:21:17 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_c5911934-4237-11ef-9a78-00155d46602f.xml' with default provider at slot 1
+
+Mon Jul 15 01:22:17 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_e93681bc-4237-11ef-a0f6-00155d46602f.xml' with default provider at slot 1
+
+Mon Jul 15 01:23:10 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_08a62980-4238-11ef-a5c2-00155d46602f.xml' with default provider at slot 1
+
+Mon Jul 15 11:37:53 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_e90f25bc-428d-11ef-9bea-00155d466399.xml' with default provider at slot 1
+
+Mon Jul 15 11:39:59 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_339764d2-428e-11ef-8123-00155d466399.xml' with default provider at slot 1
+
+Mon Jul 15 11:41:38 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_6eab1a1e-428e-11ef-9352-00155d466399.xml' with default provider at slot 1
+
+Mon Jul 15 16:48:39 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_52c5c760-42b9-11ef-af5b-00155d466399.xml' with default provider at slot 1
+
+Mon Jul 15 16:54:32 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_24de290e-42ba-11ef-9335-00155d466399.xml' with default provider at slot 1
+
+Mon Jul 15 17:07:27 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_f2dd8a24-42bb-11ef-a7fc-00155d466399.xml' with default provider at slot 1
+
+Mon Jul 15 17:18:34 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_80484010-42bd-11ef-a1be-00155d466399.xml' with default provider at slot 1
+
+Mon Jul 15 17:24:34 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_57585ce8-42be-11ef-829c-00155d466399.xml' with default provider at slot 1
+
+Mon Jul 15 17:26:05 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_8d91b462-42be-11ef-8b60-00155d466399.xml' with default provider at slot 1
+
+Mon Jul 15 17:33:39 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_9c17afc2-42bf-11ef-ae10-00155d466399.xml' with default provider at slot 1
+
+Mon Jul 15 17:35:20 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_d84d0a0a-42bf-11ef-be47-00155d466399.xml' with default provider at slot 1
+
+Mon Jul 15 17:36:43 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_09b43a64-42c0-11ef-8ffe-00155d466399.xml' with default provider at slot 1
+
+Mon Jul 15 17:37:26 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_235dc962-42c0-11ef-adcf-00155d466399.xml' with default provider at slot 1
+
+Mon Jul 15 18:17:36 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_bfbf30ca-42c5-11ef-be72-00155d466399.xml' with default provider at slot 1
+
+Mon Jul 15 18:19:00 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_f1f9dca2-42c5-11ef-bb40-00155d466399.xml' with default provider at slot 1
+
+Mon Jul 15 18:25:22 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_d5d111de-42c6-11ef-9b7e-00155d466399.xml' with default provider at slot 1
+
+Mon Jul 15 18:30:36 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_90871f50-42c7-11ef-b858-00155d466399.xml' with default provider at slot 1
+
+Mon Jul 15 18:31:40 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_b6f0a166-42c7-11ef-8555-00155d466399.xml' with default provider at slot 1
+
+Mon Jul 15 19:57:13 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_aa4dd31e-42d3-11ef-87b6-00155d466399.xml' with default provider at slot 1
+
+Mon Jul 15 20:00:48 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_2a96b9d2-42d4-11ef-a92d-00155d466399.xml' with default provider at slot 1
+
+Mon Jul 15 20:11:02 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_98463d44-42d5-11ef-a72f-00155d466399.xml' with default provider at slot 1
+
+Mon Jul 15 20:17:37 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_83fb6bb0-42d6-11ef-ab20-00155d466399.xml' with default provider at slot 1
+
+Mon Jul 15 20:20:25 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_e822fe28-42d6-11ef-a079-00155d466399.xml' with default provider at slot 1
+
+Mon Jul 15 20:23:31 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_56ee5faa-42d7-11ef-bee3-00155d466399.xml' with default provider at slot 1
+
+Mon Jul 15 20:24:20 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_740e5838-42d7-11ef-9c36-00155d466399.xml' with default provider at slot 1
+
+Mon Jul 15 20:26:33 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_c37cf42e-42d7-11ef-aee7-00155d466399.xml' with default provider at slot 1
+
+Mon Jul 15 20:34:48 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_ea3df5bc-42d8-11ef-a417-00155d466399.xml' with default provider at slot 1
+
+Mon Jul 15 20:35:38 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_0851c092-42d9-11ef-9968-00155d466399.xml' with default provider at slot 1
+
+Mon Jul 15 20:36:50 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_32f31c92-42d9-11ef-a1c3-00155d466399.xml' with default provider at slot 1
+
+Mon Jul 15 20:43:43 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_29823bba-42da-11ef-bd17-00155d466399.xml' with default provider at slot 1
+
+Mon Jul 15 20:45:47 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_72eb0084-42da-11ef-bba8-00155d466399.xml' with default provider at slot 1
+
+Mon Jul 15 20:53:51 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_93dcfeb8-42db-11ef-b050-00155d466399.xml' with default provider at slot 1
+
+Mon Jul 15 21:04:02 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_ffb93416-42dc-11ef-9179-00155d466399.xml' with default provider at slot 1
+
+Mon Jul 15 23:38:23 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_901e58aa-42f2-11ef-bc13-00155d466399.xml' with default provider at slot 1
+
+Mon Jul 15 23:57:31 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_3c62031c-42f5-11ef-a852-00155d466399.xml' with default provider at slot 1
+
+Tue Jul 16 00:25:51 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_317507ca-42f9-11ef-a57b-00155d466399.xml' with default provider at slot 1
+
+Tue Jul 16 00:26:20 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_427745e2-42f9-11ef-a43e-00155d466399.xml' with default provider at slot 1
+
+Tue Jul 16 00:50:53 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_b0f22eee-42fc-11ef-957d-00155d466399.xml' with default provider at slot 1
+
+Tue Jul 16 01:06:43 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_e6efb7d0-42fe-11ef-aa1b-00155d466399.xml' with default provider at slot 1
+
+Tue Jul 16 01:07:52 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_103b75d4-42ff-11ef-aaae-00155d466399.xml' with default provider at slot 1
+
+Tue Jul 16 01:09:58 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_5b3cef86-42ff-11ef-be76-00155d466399.xml' with default provider at slot 1
+
+Tue Jul 16 09:38:00 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_53b9a1b8-4346-11ef-85ff-00155d4666bb.xml' with default provider at slot 1
+
+Tue Jul 16 09:38:58 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_7690a0a6-4346-11ef-8103-00155d4666bb.xml' with default provider at slot 1
+
+Tue Jul 16 09:39:40 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_8fa250a8-4346-11ef-ac6b-00155d4666bb.xml' with default provider at slot 1
+
+Tue Jul 16 10:20:26 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_41a5c6a4-434c-11ef-bc5c-00155d4666bb.xml' with default provider at slot 1
+
+Tue Jul 16 10:25:43 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_fe12717a-434c-11ef-81d2-00155d4666bb.xml' with default provider at slot 1
+
+Tue Jul 16 10:33:40 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_1a97d08c-434e-11ef-8313-00155d4666bb.xml' with default provider at slot 1
+
+Tue Jul 16 10:36:26 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_7d7a5ff8-434e-11ef-8176-00155d4666bb.xml' with default provider at slot 1
+
+Tue Jul 16 10:38:16 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_bf340c96-434e-11ef-9578-00155d4666bb.xml' with default provider at slot 1
+
+Tue Jul 16 16:32:58 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_4be668e2-4380-11ef-b97e-00155d4666bb.xml' with default provider at slot 1
+
+Tue Jul 16 17:17:52 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_91d1a6ea-4386-11ef-bd65-00155d4666bb.xml' with default provider at slot 1
+
+Tue Jul 16 17:18:36 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_ac31e02c-4386-11ef-b78b-00155d4666bb.xml' with default provider at slot 1
+
+Tue Jul 16 18:30:56 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_c7003f8e-4390-11ef-983f-00155d4666bb.xml' with default provider at slot 1
+
+Tue Jul 16 18:32:42 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_0656919c-4391-11ef-820f-00155d4666bb.xml' with default provider at slot 1
+
+Tue Jul 16 18:33:42 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_2a2c6506-4391-11ef-89fe-00155d4666bb.xml' with default provider at slot 1
+
+Tue Jul 16 19:41:23 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_9eaed040-439a-11ef-9708-00155d4666bb.xml' with default provider at slot 1
+
+Tue Jul 16 19:42:37 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_ca879c9c-439a-11ef-9a0d-00155d4666bb.xml' with default provider at slot 1
+
+Tue Jul 16 20:33:30 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_e63bce3e-43a1-11ef-b700-00155d4666bb.xml' with default provider at slot 1
+
+Tue Jul 16 20:34:35 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_0d4e9bf0-43a2-11ef-ab6c-00155d4666bb.xml' with default provider at slot 1
+
+Tue Jul 16 21:10:04 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_022b4372-43a7-11ef-9456-00155d4666bb.xml' with default provider at slot 1
+
+Tue Jul 16 21:12:19 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_52b143c8-43a7-11ef-9dd6-00155d4666bb.xml' with default provider at slot 1
+
+Tue Jul 16 21:12:45 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_61fdb96a-43a7-11ef-9ad7-00155d4666bb.xml' with default provider at slot 1
+
+Tue Jul 16 21:13:10 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_71255af6-43a7-11ef-ad1a-00155d4666bb.xml' with default provider at slot 1
+
+Tue Jul 16 21:13:25 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_7a054e9c-43a7-11ef-949f-00155d4666bb.xml' with default provider at slot 1
+
+Tue Jul 16 21:13:48 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_87625bca-43a7-11ef-998d-00155d4666bb.xml' with default provider at slot 1
+
+Tue Jul 16 21:14:40 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_a6cacc54-43a7-11ef-9682-00155d4666bb.xml' with default provider at slot 1
+
+Wed Jul 17 19:13:14 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_da5f7af2-445f-11ef-a6d8-00155d529bf4.xml' with default provider at slot 1
+
+Wed Jul 17 19:19:37 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_be7e175c-4460-11ef-b473-00155d529bf4.xml' with default provider at slot 1
+
+Wed Jul 17 19:25:02 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_8029bb36-4461-11ef-81bb-00155d529bf4.xml' with default provider at slot 1
+
+Wed Jul 17 19:25:52 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_9e321132-4461-11ef-bc6b-00155d529bf4.xml' with default provider at slot 1
+
+Wed Jul 17 19:33:58 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_bf65dd92-4462-11ef-9029-00155d529bf4.xml' with default provider at slot 1
+
+Wed Jul 17 20:33:45 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_19df099e-446b-11ef-8458-00155d529bf4.xml' with default provider at slot 1
+
+Wed Jul 17 20:42:16 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_4a1ba198-446c-11ef-9e8f-00155d529bf4.xml' with default provider at slot 1
+
+Wed Jul 17 21:07:24 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_cd15254e-446f-11ef-9b9c-00155d529bf4.xml' with default provider at slot 1
+
+Wed Jul 17 21:08:08 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_e7315240-446f-11ef-bddc-00155d529bf4.xml' with default provider at slot 1
+
+Wed Jul 17 21:09:44 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_206f01c4-4470-11ef-ba92-00155d529bf4.xml' with default provider at slot 1
+
+Wed Jul 17 21:10:30 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_3bb8175e-4470-11ef-bc44-00155d529bf4.xml' with default provider at slot 1
+
+Wed Jul 17 21:11:56 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_6f74bf98-4470-11ef-91ff-00155d529bf4.xml' with default provider at slot 1
+
+Wed Jul 17 21:19:38 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_82d96042-4471-11ef-b10b-00155d529bf4.xml' with default provider at slot 1
+
+Wed Jul 17 21:21:54 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_d3ec93a0-4471-11ef-95c9-00155d529bf4.xml' with default provider at slot 1
+
+Wed Jul 17 21:23:47 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_16e904d6-4472-11ef-b00f-00155d529bf4.xml' with default provider at slot 1
+
+Wed Jul 17 21:25:27 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_525eb3da-4472-11ef-a979-00155d529bf4.xml' with default provider at slot 1
+
+Wed Jul 17 21:49:13 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_a47c3e0a-4475-11ef-9ab5-00155d529bf4.xml' with default provider at slot 1
+
+Wed Jul 17 21:52:02 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_09845012-4476-11ef-be4e-00155d529bf4.xml' with default provider at slot 1
+
+Wed Jul 17 21:57:31 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_cdad3daa-4476-11ef-abd3-00155d529bf4.xml' with default provider at slot 1
+
+Thu Jul 18 12:10:20 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_f045340e-44ed-11ef-aac4-00155d529e10.xml' with default provider at slot 1
+
+Thu Jul 18 12:11:26 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_17a03062-44ee-11ef-852b-00155d529e10.xml' with default provider at slot 1
+
+Thu Jul 18 12:14:25 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_8249e764-44ee-11ef-a8e4-00155d529e10.xml' with default provider at slot 1
+
+Thu Jul 18 12:16:59 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_de0f610a-44ee-11ef-b57c-00155d529e10.xml' with default provider at slot 1
+
+Thu Jul 18 12:17:49 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_fc712a02-44ee-11ef-99fe-00155d529e10.xml' with default provider at slot 1
+
+Thu Jul 18 12:29:06 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_8fc6466a-44f0-11ef-afb6-00155d529e10.xml' with default provider at slot 1
+
+Thu Jul 18 12:29:49 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_a91e9298-44f0-11ef-a1e1-00155d529e10.xml' with default provider at slot 1
+
+Thu Jul 18 12:32:29 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_08f11ea2-44f1-11ef-83e8-00155d529e10.xml' with default provider at slot 1
+
+Thu Jul 18 12:45:33 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_dbd81194-44f2-11ef-8fec-00155d529e10.xml' with default provider at slot 1
+
+Thu Jul 18 12:57:15 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_7e3a4df2-44f4-11ef-9af3-00155d529e10.xml' with default provider at slot 1
+
+Thu Jul 18 12:59:41 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_d56656c0-44f4-11ef-975d-00155d529e10.xml' with default provider at slot 1
+
+Thu Jul 18 13:01:24 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_1315a2a0-44f5-11ef-8b77-00155d529e10.xml' with default provider at slot 1
+
+Thu Jul 18 13:03:02 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_4d4b4ad8-44f5-11ef-8678-00155d529e10.xml' with default provider at slot 1
+
+Thu Jul 18 13:05:49 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_b0954f1c-44f5-11ef-8572-00155d529e10.xml' with default provider at slot 1
+
+Thu Jul 18 13:06:15 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_c05c0dfa-44f5-11ef-8045-00155d529e10.xml' with default provider at slot 1
+
+Thu Jul 18 13:07:02 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_dc7adf34-44f5-11ef-8e4f-00155d529e10.xml' with default provider at slot 1
+
+Thu Jul 18 13:08:21 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_0b113e42-44f6-11ef-9e75-00155d529e10.xml' with default provider at slot 1
+
+Thu Jul 18 13:11:08 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_6eedd07e-44f6-11ef-b98c-00155d529e10.xml' with default provider at slot 1
+
+Thu Jul 18 13:11:56 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_8b41a282-44f6-11ef-a6d5-00155d529e10.xml' with default provider at slot 1
+
+Thu Jul 18 13:15:26 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_08e214e2-44f7-11ef-a338-00155d529e10.xml' with default provider at slot 1
+
+Thu Jul 18 15:04:21 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_3fe4cc50-4506-11ef-999e-00155d5296b8.xml' with default provider at slot 1
+
+Thu Jul 18 15:06:47 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_97223232-4506-11ef-93de-00155d5296b8.xml' with default provider at slot 1
+
+Thu Jul 18 16:31:49 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_78170906-4512-11ef-ae75-00155d529c01.xml' with default provider at slot 1
+
+Thu Jul 18 16:36:27 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_1dd40f42-4513-11ef-89cc-00155d529c01.xml' with default provider at slot 1
+
+Thu Jul 18 16:42:42 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_fd61ede6-4513-11ef-ae09-00155d529c01.xml' with default provider at slot 1
+
+Thu Jul 18 16:43:31 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_1a3bbf1e-4514-11ef-94ec-00155d529c01.xml' with default provider at slot 1
+
+Thu Jul 18 16:58:47 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_3c3e78b6-4516-11ef-8256-00155d529c01.xml' with default provider at slot 1
+
+Wed Jul 24 16:12:54 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_d1b2bcae-49c6-11ef-9415-00155d83b205.xml' with default provider at slot 1
+
+Wed Jul 24 16:13:35 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_ea6783b0-49c6-11ef-a4ba-00155d83b205.xml' with default provider at slot 1
+
+Wed Jul 24 18:31:45 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_3749b71c-49da-11ef-8394-00155d83b205.xml' with default provider at slot 1
+
+Wed Jul 24 18:32:37 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_56a57e84-49da-11ef-b394-00155d83b205.xml' with default provider at slot 1
+
+Wed Jul 24 18:33:34 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_788c9a50-49da-11ef-903d-00155d83b205.xml' with default provider at slot 1
+
+Wed Jul 24 18:35:04 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_ae2b299c-49da-11ef-b25c-00155d83b205.xml' with default provider at slot 1
+
+Wed Jul 24 18:36:13 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_d7746598-49da-11ef-ae10-00155d83b205.xml' with default provider at slot 1
+
+Wed Jul 24 18:36:48 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_ec5767bc-49da-11ef-be23-00155d83b205.xml' with default provider at slot 1
+
+Wed Jul 24 18:37:48 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_0fd0da8e-49db-11ef-b1b1-00155d83b205.xml' with default provider at slot 1
+
+Wed Jul 24 18:38:11 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_1dbeaa4a-49db-11ef-a6b1-00155d83b205.xml' with default provider at slot 1
+
+Wed Jul 24 18:38:52 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_36031e38-49db-11ef-bb20-00155d83b205.xml' with default provider at slot 1
+
+Wed Jul 24 18:40:08 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_63588b66-49db-11ef-a725-00155d83b205.xml' with default provider at slot 1
+
+Wed Jul 24 18:40:49 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_7bdd0568-49db-11ef-848d-00155d83b205.xml' with default provider at slot 1
+
+Wed Jul 24 18:41:03 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_840bb158-49db-11ef-96bb-00155d83b205.xml' with default provider at slot 1
+
+Wed Jul 24 18:41:32 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_9561125e-49db-11ef-9f57-00155d83b205.xml' with default provider at slot 1
+
+Wed Jul 24 18:41:49 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_9fd5ccac-49db-11ef-918c-00155d83b205.xml' with default provider at slot 1
+
+Wed Jul 24 18:42:23 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_b3e8d27a-49db-11ef-a6ba-00155d83b205.xml' with default provider at slot 1
+
+Wed Jul 24 18:42:59 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_c958291c-49db-11ef-9a6e-00155d83b205.xml' with default provider at slot 1
+
+Wed Jul 24 18:43:24 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_d8136890-49db-11ef-b8d5-00155d83b205.xml' with default provider at slot 1
+
+Wed Jul 24 18:43:43 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_e3957c30-49db-11ef-a51c-00155d83b205.xml' with default provider at slot 1
+
+Wed Jul 24 18:44:10 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_f375a2b0-49db-11ef-bc9d-00155d83b205.xml' with default provider at slot 1
+
+Wed Jul 24 18:44:30 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_ff5db4be-49db-11ef-8872-00155d83b205.xml' with default provider at slot 1
+
+Wed Jul 24 18:44:52 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_0c94922e-49dc-11ef-bbfe-00155d83b205.xml' with default provider at slot 1
+
+Wed Jul 24 18:45:16 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_1b27a0a6-49dc-11ef-80f4-00155d83b205.xml' with default provider at slot 1
+
+Wed Jul 24 18:45:48 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_2e3b823e-49dc-11ef-8dad-00155d83b205.xml' with default provider at slot 1
+
+Wed Jul 24 18:46:07 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_397709c0-49dc-11ef-87b8-00155d83b205.xml' with default provider at slot 1
+
+Wed Jul 24 18:46:29 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_4699a3ce-49dc-11ef-9d28-00155d83b205.xml' with default provider at slot 1
+
+Wed Jul 24 18:47:33 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_6cbd857a-49dc-11ef-986e-00155d83b205.xml' with default provider at slot 1
+
+Wed Jul 24 18:47:54 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_78d4bf9a-49dc-11ef-bd2f-00155d83b205.xml' with default provider at slot 1
+
+Wed Jul 24 18:48:36 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_92615572-49dc-11ef-95ca-00155d83b205.xml' with default provider at slot 1
+
+Wed Jul 24 18:49:16 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_a9fa60ac-49dc-11ef-b029-00155d83b205.xml' with default provider at slot 1
+
+Wed Jul 24 18:50:31 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_d69526e2-49dc-11ef-b04d-00155d83b205.xml' with default provider at slot 1
+
+Wed Jul 24 18:50:55 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_e4b5bba6-49dc-11ef-8938-00155d83b205.xml' with default provider at slot 1
+
+Wed Jul 24 18:51:17 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_f24d7d58-49dc-11ef-9963-00155d83b205.xml' with default provider at slot 1
+
+Mon Jul 29 13:16:50 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_0d48cd34-4d9c-11ef-ad64-00155dde6a95.xml' with default provider at slot 1
+
+Mon Jul 29 13:18:24 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_4538ca46-4d9c-11ef-ae4f-00155dde6a95.xml' with default provider at slot 1
+
+Mon Jul 29 13:19:03 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_5c7585b4-4d9c-11ef-9b2a-00155dde6a95.xml' with default provider at slot 1
+
+Mon Jul 29 13:20:42 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_974d74d0-4d9c-11ef-a956-00155dde6a95.xml' with default provider at slot 1
+
+Mon Jul 29 13:21:22 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_af4a303c-4d9c-11ef-9fac-00155dde6a95.xml' with default provider at slot 1
+
+Mon Jul 29 13:24:20 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_19bf73dc-4d9d-11ef-873b-00155dde6a95.xml' with default provider at slot 1
+
+Mon Jul 29 15:35:51 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_792354e4-4daf-11ef-99ca-00155dde6a95.xml' with default provider at slot 1
+
+Mon Jul 29 15:43:01 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_794b5c36-4db0-11ef-8267-00155dde6a95.xml' with default provider at slot 1
+
+Mon Jul 29 15:49:27 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_5f2aa59a-4db1-11ef-a287-00155dde6a95.xml' with default provider at slot 1
+
+Mon Jul 29 15:56:44 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_63fca14e-4db2-11ef-b1e9-00155dde6a95.xml' with default provider at slot 1
+
+Mon Jul 29 16:01:48 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_18d5ccb2-4db3-11ef-aa49-00155dde6a95.xml' with default provider at slot 1
+
+Mon Jul 29 16:04:19 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_72cefdd8-4db3-11ef-969c-00155dde6a95.xml' with default provider at slot 1
+
+Mon Jul 29 16:05:19 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_96b74368-4db3-11ef-a9c7-00155dde6a95.xml' with default provider at slot 1
+
+Mon Jul 29 16:06:58 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_d1938b2c-4db3-11ef-999c-00155dde6a95.xml' with default provider at slot 1
+
+Mon Jul 29 16:11:37 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_77e3115a-4db4-11ef-ab2c-00155dde6a95.xml' with default provider at slot 1
+
+Mon Jul 29 16:16:00 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_15061bda-4db5-11ef-bf85-00155dde6a95.xml' with default provider at slot 1
+
+Mon Jul 29 16:19:27 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_906ef9a4-4db5-11ef-be3a-00155dde6a95.xml' with default provider at slot 1
+
+Mon Jul 29 16:20:57 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_c5edf468-4db5-11ef-8533-00155dde6a95.xml' with default provider at slot 1
+
+Mon Jul 29 16:21:48 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_e40b6b88-4db5-11ef-87f5-00155dde6a95.xml' with default provider at slot 1
+
+Mon Jul 29 16:24:01 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_33be4cb8-4db6-11ef-a733-00155dde6a95.xml' with default provider at slot 1
+
+Mon Jul 29 18:49:28 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_855d3548-4dca-11ef-8b04-00155dde6a95.xml' with default provider at slot 1
+
+Mon Jul 29 19:08:30 2024
+WARNING: mju_openResource: could not open resource '/home/lee/project/SimulationFrameworkPublic/models/mj/robot/panda_tmp_rb0_2e1ee670-4dcd-11ef-b177-00155dde6a95.xml' with default provider at slot 1
+

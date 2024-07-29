@@ -50,7 +50,7 @@ class TaskManager:
             render=Scene.RenderMode.HUMAN,
             # render=Scene.RenderMode.OFFSCREEN,
             surrounding=sim_path.sim_framework_path(
-                "./models/mujoco/surroundings/kit_lab_surrounding2.xml"
+                "./models/mujoco/surroundings/kit_lab_surrounding.xml"
             ),
         )
         self.create_robots()

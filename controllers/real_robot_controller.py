@@ -2,7 +2,7 @@ import poly_controllers
 import time
 import threading
 
-
+#physical joint forcefeedback 
 class RealRobotController(poly_controllers.ForceFeedbackController):
     def __init__(self, robot, regularize=True):
         super().__init__(robot.robot, regularize)

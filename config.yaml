@@ -1,11 +1,12 @@
 VirtualRobotConfig: {
   panda1:
   {
-    interaction_method: "real_robot",
+   #interaction_method: "real_robot",
     # interaction_method: "virtual_robot",
     # interaction_method: "hand_tracking",
     # interaction_method: "gamepad",
     # interaction_method: "motion_controller",
+     interaction_method: "keyboard",
   },
   panda2:
   {
@@ -51,7 +52,7 @@ HDARConfig: {
   # host: "192.168.0.246",
   # host: "10.42.0.1", # irl-220 hot spot
   # host: 141.3.53.54,
-  port: 8052,
+  # port: 8052,
 }
 
 
@@ -63,7 +64,7 @@ QRConfig: {
 
 SimulatorConfig: {
   # task_type: "grasp_object",
-  task_type: "bimanual_test",
+  # task_type: "bimanual_test",
   # task_type: "box_stacking2",
   # task_type: "object_passing",
   # task_type: "box_passing",
@@ -74,6 +75,9 @@ SimulatorConfig: {
   # task_type: "practical_manipulation",
   # task_type: "box_stacking",
   # task_type: "user_study",
+   task_type: "Pick_and_Place",
+  # task_type: "Box_Push",
+  # task_type: "Assemble_Box",
   record_mode: True,
   time_limit: 10000,
   dt: 0.002,
