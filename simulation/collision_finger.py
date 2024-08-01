@@ -69,7 +69,7 @@ class Collision_finger:
                 # Update replace value
                 setattr(self, replace_attr, replace)
 
-    def process_collisions(self):
+    def get_collisions(self):
         # left
         collision_finger1_list = self.check_collision(self.target_pairs1, 'collision_finger1.txt')
         self.calculate_resultant_force(collision_finger1_list, 'collision_finger1_resultant.txt', 'replace_l')
