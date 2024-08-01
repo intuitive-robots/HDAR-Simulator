@@ -56,10 +56,8 @@ class Simulation:
         self.downsample_steps = downsample_steps
         self.dt = dt
 
-        self.collision_finger_list = []
-
-        
-        
+        self.replace_l=0
+        self.replace_r=0        
 
         # virtual twin
         #task manage
