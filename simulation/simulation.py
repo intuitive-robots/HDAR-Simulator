@@ -649,7 +649,7 @@ class Simulation:
                 self.rb0_finger_collison()
                 
                 #collision rb1
-                replace_rb1_l, replace_rb1_r = self.rb1_finger_collision.process_collisions()
+                replace_rb1_l, replace_rb1_r = self.rb1_finger_collision.get_collisions()
                 rb1_finger_collision = (replace_rb1_l + replace_rb1_r) / 2
                 if rb1_finger_collision != 0:
                     print(f"Left Finger Value: {replace_rb1_l}")
