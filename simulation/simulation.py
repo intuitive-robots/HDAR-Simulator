@@ -82,7 +82,7 @@ class Simulation:
         self.setup_publisher()
         self.publisher.start()
 
-        # self.setup_recorder()
+        self.setup_recorder()
 
         self.setup_cli()
         self.cli.start()
