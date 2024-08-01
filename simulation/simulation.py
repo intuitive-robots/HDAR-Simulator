@@ -7,21 +7,6 @@ from enum import Flag, auto
 from alr_sim.core import Scene, RobotBase
 from alr_sim.controllers.Controller import ControllerBase
 from alr_sim.sims.SimFactory import SimRepository
-
-#测试
-import sys
-import os
-
-# 获取当前文件的目录
-current_dir = os.path.dirname(os.path.abspath(__file__))
-# 获取项目根目录
-project_root = os.path.dirname(os.path.dirname(current_dir))
-# 添加项目根目录到 sys.path
-sys.path.append(project_root)
-
-# 打印 sys.path 以进行调试
-print(sys.path)
-
 from SimPublisher.simpub.sim.sf_publisher import SFPublisher
 # import server.unity_publisher
 import server, controllers, utils, tasks
@@ -407,6 +392,7 @@ class Simulation:
     def finger1_resultant_force(self):
         collision_finger1_list = self.check_collision_finger1()
         collision_finger_resultant = {}
+        replace=0
         for collision in collision_finger1_list:
             geom1=collision['geom1']
             geom2=collision['geom2']
@@ -438,10 +424,24 @@ class Simulation:
                 'force': force,
                 'time': time
             })
+                        
+            force_x, force_y, force_z = force
+            resultantforce=math.sqrt(force_x**2 + force_y**2 + force_z**2)
+            
+           #replace force to 0-1,in the userstudy threshold:10
+            if resultantforce >= 10:
+                replace=1,
+            else:
+                normalized_value = resultantforce / 10
+                replace= np.sqrt(normalized_value)
+           
             filename3 = 'collision_finger1_resultant.txt'
+            
+            self.replace_l=replace
             with open(filename3, 'a', newline='') as file:
-                 file.write(f"Collision object:{geom1} with {geom2} at {avg_position}, Force: {force[:3]}, time:{time}\n")
-        return collision_finger1_resultant_result
+                 file.write(f"Collision object:{geom1} with {geom2} at {avg_position}, Force: {force}{replace}, time:{time}\n")
+            
+            return collision_finger1_resultant_result, self.replace_l
     
 #collision force for right finger
     def check_collision_finger2(self):
@@ -476,6 +476,7 @@ class Simulation:
     def finger2_resultant_force(self):
         collision_finger2_list = self.check_collision_finger2()
         collision_finger_resultant = {}
+        replace=0
         for collision in collision_finger2_list:
             geom1=collision['geom1']
             geom2=collision['geom2']
@@ -493,7 +494,7 @@ class Simulation:
                     'newtime': time_key,
                     'number': 1
                 }
-            else:
+            else: 
                 collision_finger_resultant[(time_key, geom_pair)]['force'] += force
                 collision_finger_resultant[(time_key, geom_pair)]['position_sum'] += pos
                 collision_finger_resultant[(time_key, geom_pair)]['number'] += 1
@@ -507,10 +508,25 @@ class Simulation:
                 'force': force,
                 'time': time
             })
+             
+            force_x, force_y, force_z = force
+            resultantforce=math.sqrt(force_x**2 + force_y**2 + force_z**2)
+                  #replace force to 0-1,in the userstudy threshold:10
+            if resultantforce >= 10:
+                replace=1,
+            else:
+                normalized_value = resultantforce / 10
+                replace= np.sqrt(normalized_value)
             filename3 = 'collision_finger2_resultant.txt'
+            self.replace_r=replace
             with open(filename3, 'a', newline='') as file:
-                 file.write(f"Collision object:{geom1} with {geom2} at {avg_position}, Force: {force[:3]}, time:{time}\n")
-        return collision_finger2_resultant_result
+                 file.write(f"Collision object:{geom1} with {geom2} at {avg_position}, Force: {force}{self.replace_r}, time:{time}\n")
+            
+            return collision_finger2_resultant_result, self.replace_r
+    
+    def finger_collison(self):
+        fingertotalrepalce=(self.replace_l+self.replace_r) / 2
+        return fingertotalrepalce
     
 
 #collision force for aim
@@ -518,7 +534,7 @@ class Simulation:
         collision_aim_list=[]
             
         filename2 = 'collision_aim.txt'  
-        target_pairs2={('target:geom', 'aim:geom')}
+        target_pairs2={('target:geom', 'aim:geom'),('target:geom', 'aim_1:geom'),('target:geom', 'aim_2:geom'),('target:geom', 'aim_3:geom'),('target:geom', 'aim_4:geom')}
         #target_geom_ids = [self.model.geom_name2id(name) for name in target_geoms]
         tt=range(self.vt_scene.data.ncon)
         for i in range(self.vt_scene.data.ncon):
@@ -547,6 +563,8 @@ class Simulation:
         collision_aim_list = self.check_collision_aim()
         collision_aim_resultant={}
         filename4 = 'collision_aim_resultant.txt'
+        replace=0
+            
         for collision in collision_aim_list:
             geom1=collision['geom1']
             geom2=collision['geom2']
@@ -555,7 +573,6 @@ class Simulation:
             time=collision['time']
             time_key=round(collision['time'],4)
             geom_pair=tuple(sorted((geom1, geom2)))
-            
                 
             if (time_key,geom_pair) not in collision_aim_resultant:
                 collision_aim_resultant[(time_key, geom_pair)] = {
@@ -565,7 +582,7 @@ class Simulation:
                         'force': force,
                         'newtime': time_key,
                         'number': 1
-                 }
+                }
             else:
                 collision_aim_resultant[(time_key,geom_pair)]['force'] += force[:3]
                 collision_aim_resultant[(time_key,geom_pair)]['position_sum'] += pos
@@ -581,10 +598,21 @@ class Simulation:
                 'force': force,
                 'time': time
             })
-            with open(filename4, 'a', newline='') as file:
-                file.write(f"Collision object:{geom1} with {geom2} at {avg_position}, Force: {force[:3]}, time:{time}\n")
-
-        return collision_aim_resultant_result
+            force_x, force_y, force_z = force
+            resultantforce=math.sqrt(force_x**2 + force_y**2 + force_z**2)
+            replaceaim=0
+            #replace force to 0-1,in the userstudy threshold:10
+            if  self.replace_l != 0 or self.replace_r != 0:
+                if resultantforce >= 10:
+                    replace=1,
+                else:
+                    normalized_value = resultantforce / 10
+                    replace= np.sqrt(normalized_value)
+                replaceaim=replace
+                with open(filename4, 'a', newline='') as file:
+                    file.write(f"Collision object:{geom1} with {geom2} at {avg_position}, Force: {force}{replaceaim}, time:{time}\n")
+                            
+                return collision_aim_resultant_result, replaceaim
         
 
       
@@ -594,20 +622,21 @@ class Simulation:
         print('ok1')
         steps = 0
         start = time.time()
-        collision_time_interval=0.01
+        collision_time_interval=0.01   #interval for collision data collection 0.01s
         last_check_time=time.time()
         while self.status in SimFlag.RUNNING:
             while steps * self.dt > time.time() - start:
                 pass
             steps += 1
             self.update_force_feedback()
-#check collision
+#check collision and output
             current_time =time.time()
             if current_time - last_check_time >= collision_time_interval:
                 self.check_collision_finger1()
                 self.check_collision_finger2()
                 self.finger1_resultant_force()
                 self.finger2_resultant_force()
+                self.finger_collison()
                 self.check_collision_aim()
                 self. aim_resultant_force()
                 last_check_time = current_time
