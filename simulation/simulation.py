@@ -7,11 +7,12 @@ from enum import Flag, auto
 from alr_sim.core import Scene, RobotBase
 from alr_sim.controllers.Controller import ControllerBase
 from alr_sim.sims.SimFactory import SimRepository
-from SimPublisher.simpub.sim.sf_publisher import SFPublisher
+# from SimPublisher.simpub.sim.sf_publisher import SFPublisher
 # import server.unity_publisher
 import server, controllers, utils, tasks
 import mujoco
-
+import math
+from .collision_finger import Collision_finger
 
 
 
@@ -56,8 +57,13 @@ class Simulation:
         self.downsample_steps = downsample_steps
         self.dt = dt
 
-        self.replace_l=0
-        self.replace_r=0        
+        self.replace_rb0_l=0
+        self.replace_rb0_r=0
+        self.replace_rb1_l=0
+        self.replace_rb1_r=0
+
+        
+        
 
         # virtual twin
         #task manage
@@ -77,8 +83,8 @@ class Simulation:
 
         # self.setup_streamer()
         # self.streamer.start()
-        self.setup_publisher()
-        self.publisher.start()
+        # self.setup_publisher()
+        # self.publisher.start()
 
         self.setup_recorder()
 
@@ -87,6 +93,12 @@ class Simulation:
 
         self.current_time = 0
         self.status: SimFlag = SimFlag.RUNNING
+#rb1
+        self.rb1_finger_collision = Collision_finger(
+            self.vt_scene,
+            target_pairs1={('target:geom', 'finger1_rb1_tip_collision')},
+            target_pairs2={('target:geom', 'finger2_rb1_tip_collision')}
+        )
 
         self.force_interval = 0.02
         self.force_last_timestep = -self.force_interval
@@ -351,7 +363,7 @@ class Simulation:
                     except:
                         pass
 
-#collision force update
+#collision force ro0 update
 # target_geom1_target = 'target:geom'
 # target_geom2_body1 = 'finger1_rb0_tip_collision'
 # target_geom2_body2 = 'finger2_rb0_tip_collision'
@@ -435,11 +447,11 @@ class Simulation:
            
             filename3 = 'collision_finger1_resultant.txt'
             
-            self.replace_l=replace
+            self.replace_rb0_l=replace
             with open(filename3, 'a', newline='') as file:
                  file.write(f"Collision object:{geom1} with {geom2} at {avg_position}, Force: {force}{replace}, time:{time}\n")
             
-            return collision_finger1_resultant_result, self.replace_l
+            return collision_finger1_resultant_result, self.replace_rb0_l
     
 #collision force for right finger
     def check_collision_finger2(self):
@@ -516,15 +528,15 @@ class Simulation:
                 normalized_value = resultantforce / 10
                 replace= np.sqrt(normalized_value)
             filename3 = 'collision_finger2_resultant.txt'
-            self.replace_r=replace
+            self.replace_rb0_r=replace
             with open(filename3, 'a', newline='') as file:
-                 file.write(f"Collision object:{geom1} with {geom2} at {avg_position}, Force: {force}{self.replace_r}, time:{time}\n")
+                 file.write(f"Collision object:{geom1} with {geom2} at {avg_position}, Force: {force}{self.replace_rb0_r}, time:{time}\n")
             
-            return collision_finger2_resultant_result, self.replace_r
+            return collision_finger2_resultant_result, self.replace_rb0_r
     
-    def finger_collison(self):
-        fingertotalrepalce=(self.replace_l+self.replace_r) / 2
-        return fingertotalrepalce
+    def rb0_finger_collison(self):
+        rb0fingertotalrepalce=(self.replace_rb0_l+self.replace_rb0_r) / 2
+        return rb0fingertotalrepalce
     
 
 #collision force for aim
@@ -600,7 +612,7 @@ class Simulation:
             resultantforce=math.sqrt(force_x**2 + force_y**2 + force_z**2)
             replaceaim=0
             #replace force to 0-1,in the userstudy threshold:10
-            if  self.replace_l != 0 or self.replace_r != 0:
+            if  self.replace_rb0_l != 0 or self.replace_rb0_r != 0 or self.replace_rb1_l != 0 or self.replace_rb1_r != 0:
                 if resultantforce >= 10:
                     replace=1,
                 else:
@@ -634,7 +646,16 @@ class Simulation:
                 self.check_collision_finger2()
                 self.finger1_resultant_force()
                 self.finger2_resultant_force()
-                self.finger_collison()
+                self.rb0_finger_collison()
+                
+                #collision rb1
+                replace_rb1_l, replace_rb1_r = self.rb1_finger_collision.process_collisions()
+                rb1_finger_collision = (replace_rb1_l + replace_rb1_r) / 2
+                if rb1_finger_collision != 0:
+                    print(f"Left Finger Value: {replace_rb1_l}")
+                    print(f"Right Finger Value: {replace_rb1_r}")
+                    print(f"RB1 Finger Collision Average Replace Value: {rb1_finger_collision}")
+             
                 self.check_collision_aim()
                 self. aim_resultant_force()
                 last_check_time = current_time
