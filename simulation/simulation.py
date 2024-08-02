@@ -13,7 +13,7 @@ import server, controllers, utils, tasks
 import mujoco
 import math
 from .collision_finger import Collision_finger
-
+from simpub.xr_device.meta_quest3 import MetaQuest3
 
 
 class SimFlag(Flag):
@@ -220,22 +220,38 @@ class Simulation:
                 )
 
             else:
-                if interaction_method == "gamepad":
-                    controller_cls = controllers.GamePadTCPController
-                elif interaction_method == "virtual_robot":
-                    controller_cls = controllers.VirtualRobotTCPController
-                elif interaction_method == "hand_tracking":
-                    controller_cls = controllers.HandTrackerTCPController
-                elif interaction_method == "keyboard":
-                    controller_cls = controllers.KeyboardTCPController
-                elif interaction_method == "motion_controller":
-                    controller_cls = controllers.ViveProMotionControllerTCPController
-                
-                vt_controller = controller_cls(
-                    self.vt_scene,
-                    vt_robot,
-                    robot_config,
-                )
+                if interaction_method == "Meta_Controller":
+                    controller_cls = controllers.Metaquest3Controller
+                    # meta_quest3 = MetaQuest3(publisher)
+                    meta_quest3 = MetaQuest3(publisher, "192.168.0.102")
+                    # meta_quest3 = MetaQuest3(publisher, "192.168.0.143")
+                    vt_controller = controller_cls(
+                        self.vt_scene,
+                        vt_robot,
+                        robot_config,
+                        meta_quest3
+                    )
+
+
+                else: 
+
+                    if interaction_method == "gamepad":
+                        controller_cls = controllers.GamePadTCPController
+                    elif interaction_method == "virtual_robot":
+                        controller_cls = controllers.VirtualRobotTCPController
+                    elif interaction_method == "hand_tracking":
+                        controller_cls = controllers.HandTrackerTCPController
+                    elif interaction_method == "keyboard":
+                        controller_cls = controllers.KeyboardTCPController
+                    elif interaction_method == "motion_controller":
+                        controller_cls = controllers.ViveProMotionControllerTCPController
+                    
+                    
+                    vt_controller = controller_cls(
+                        self.vt_scene,
+                        vt_robot,
+                        robot_config,
+                    )
 
             self.controller_list.append(vt_controller)
             self.robot_list.append(vt_robot)
