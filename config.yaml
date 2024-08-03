@@ -4,17 +4,18 @@ VirtualRobotConfig: {
    #interaction_method: "real_robot",
     # interaction_method: "virtual_robot",
     # interaction_method: "hand_tracking",
-    # interaction_method: "gamepad",
     # interaction_method: "motion_controller",
-     interaction_method: "keyboard",
+      # interaction_method: "keyboard",
+    interaction_method: "Meta_Controller_r0",
+
   },
   panda2:
   {
     interaction_method: "real_robot",
     # interaction_method: "virtual_robot",
     # interaction_method: "hand_tracking",
-    # interaction_method: "gamepad",
     # interaction_method: "motion_controller",
+    # interaction_method: "Meta_Controller_r1",
   },
 }
 
@@ -45,7 +46,7 @@ RealRobotConfig: {
 
 HDARConfig: {
   # host: "192.168.178.102",
-  host: "192.168.0.143",
+  host: "192.168.0.134",
   # host: 192.168.122.1,
   # host: "192.168.0.215",
   # host: "192.168.0.215", # virtual robot test
@@ -76,7 +77,7 @@ SimulatorConfig: {
   # task_type: "box_stacking",
   # task_type: "user_study",
    task_type: "Pick_and_Place",
-  # task_type: "Box_Push",
+  # task_type: "Push_Box",
   # task_type: "Assemble_Box",
   record_mode: True,
   time_limit: 10000,
