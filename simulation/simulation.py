@@ -7,13 +7,13 @@ from enum import Flag, auto
 from alr_sim.core import Scene, RobotBase
 from alr_sim.controllers.Controller import ControllerBase
 from alr_sim.sims.SimFactory import SimRepository
-# from SimPublisher.simpub.sim.sf_publisher import SFPublisher
-# import server.unity_publisher
+from simpub.sim.sf_publisher import SFPublisher
 import server, controllers, utils, tasks
 import mujoco
 import math
 from .collision_finger import Collision_finger
 from simpub.xr_device.meta_quest3 import MetaQuest3
+
 
 
 class SimFlag(Flag):
@@ -61,10 +61,8 @@ class Simulation:
         self.replace_rb0_r=0
         self.replace_rb1_l=0
         self.replace_rb1_r=0
-
+      
         
-        
-
         # virtual twin
         #task manage
         self.task_manager = tasks.get_manager(
@@ -75,16 +73,20 @@ class Simulation:
         self.vt_scene: Scene = self.task_manager.get_scene()
         self.vt_object_list = self.task_manager.get_object_list()
         self.vt_robot_dict = self.task_manager.get_robot_dict()
+        for k, v in self.vt_robot_dict.items():
+            print(k, v)
+        
+        self.start_scenes()  
 
         self.setup_controllers()
-        self.start_scenes()
-        self.start_controllers()
+        
         self.setup_callbacks()
-
+        self.setup_publisher()
+        self.publisher.start()
+        self.start_controllers()  
         # self.setup_streamer()
         # self.streamer.start()
-        # self.setup_publisher()
-        # self.publisher.start()
+        
 
         self.setup_recorder()
 
@@ -175,6 +177,8 @@ class Simulation:
             no_tracked_objects=[]
         )
 
+        return self.publisher
+
     # def setup_streamer(self):
     #     hdar_config = utils.get_hdar_config()    #host address
     #     self.streamer = SFPublisher(
@@ -194,7 +198,7 @@ class Simulation:
         self.controller_list: List[ControllerBase] = list()
         self.robot_list: List[RobotBase] = list()
         self.real_robot_list: List[poly_controllers.Panda] = list()
-        self.scene_list: List[Scene] = [self.vt_scene]
+        # self.scene_list: List[Scene] = [self.vt_scene]
 
         for robot_name, robot_config in self.task_manager.robots_config.items():
             # for vt_robot_handler in self.streamer.robot_handlers:
@@ -218,26 +222,17 @@ class Simulation:
                     self.vt_scene,
                     robot_config,
                 )
+                self.robot_list.append(vt_robot)
 
             else:
-                if interaction_method == "Meta_Controller":
-                    controller_cls = controllers.Metaquest3Controller
-                    # meta_quest3 = MetaQuest3(publisher)
-                    meta_quest3 = MetaQuest3(publisher, "192.168.0.102")
-                    # meta_quest3 = MetaQuest3(publisher, "192.168.0.143")
-                    vt_controller = controller_cls(
-                        self.vt_scene,
-                        vt_robot,
-                        robot_config,
-                        meta_quest3
-                    )
-
+                if interaction_method == "Meta_Controller_r0":
+                    controller_cls = controllers.MetaQuest3Controller_right
+                    self.robot_list.append(vt_robot)
+                    pass
 
                 else: 
 
-                    if interaction_method == "gamepad":
-                        controller_cls = controllers.GamePadTCPController
-                    elif interaction_method == "virtual_robot":
+                    if interaction_method == "virtual_robot":
                         controller_cls = controllers.VirtualRobotTCPController
                     elif interaction_method == "hand_tracking":
                         controller_cls = controllers.HandTrackerTCPController
@@ -253,20 +248,42 @@ class Simulation:
                         robot_config,
                     )
 
-            self.controller_list.append(vt_controller)
-            self.robot_list.append(vt_robot)
+                    self.controller_list.append(vt_controller)
+                    print(f"self.controller_list:{self.controller_list}")
+                    self.robot_list.append(vt_robot)
+                    print(f"self.robot_list:{self.robot_list}")
+                    for robot, controller in zip(self.robot_list, self.controller_list):
+                        print(f"i am robot:{robot.time_stamp}")
+                        print(f"robot type: {type(robot)}")        
 
     def start_scenes(self):
+        self.scene_list: List[Scene] = [self.vt_scene]
         for scene in self.scene_list:
             scene.start()
 
     def start_controllers(self):
-        for robot, controller in zip(self.robot_list, self.controller_list):
-            if isinstance(controller, controllers.VTController):
-                robot.beam_to_joint_pos(
-                    controller.real_robot.robot.get_joint_positions().numpy()
+        if self.interaction_method == "Meta_Controller_r0":
+            meta_quest3 = MetaQuest3(
+                        self.publisher,                       
+                        "192.168.0.102")    
+            robot_controller = controllers.MetaQuest3Controller_right(meta_quest3)
+            for robot in self.robot_list:
+                print(f"i am robot:{robot}")
+
+                print(f"robot type: {type(robot)}")
+                robot_controller.executeController(robot, maxDuration=1000, block=False)
+        else:
+            for robot, controller in zip(self.robot_list, self.controller_list):
+                if isinstance(controller, controllers.VTController):
+                    robot.beam_to_joint_pos(
+                        controller.real_robot.robot.get_joint_positions().numpy()
                 )
-            controller.executeController(robot, maxDuration=1000, block=False)
+                print(f"i am robot:{robot.time_stamp}")
+                print(f"robot type: {type(robot)}")
+
+                controller.executeController(robot, maxDuration=1000, block=False)
+            
+   
     
     def change2task(self, task_type):
         def f():
@@ -380,10 +397,6 @@ class Simulation:
                         pass
 
 #collision force ro0 update
-# target_geom1_target = 'target:geom'
-# target_geom2_body1 = 'finger1_rb0_tip_collision'
-# target_geom2_body2 = 'finger2_rb0_tip_collision'
-# target_geom2_body3 = 'aim:geom'
 
 #collision force for left finger
     def check_collision_finger1(self):
@@ -551,7 +564,7 @@ class Simulation:
             return collision_finger2_resultant_result, self.replace_rb0_r
     
     def rb0_finger_collison(self):
-        rb0fingertotalrepalce=(self.replace_rb0_l+self.replace_rb0_r) / 2
+        rb0fingertotalrepalce=(np.array(self.replace_rb0_l)+np.array(self.replace_rb0_r)) / 2
         return rb0fingertotalrepalce
     
 
@@ -645,7 +658,7 @@ class Simulation:
     def run(self):
         self.terminate_policies()
         self.reset_initial_pose()
-        print('ok1')
+        print('prepaired')
         steps = 0
         start = time.time()
         collision_time_interval=0.01   #interval for collision data collection 0.01s
@@ -655,7 +668,7 @@ class Simulation:
                 pass
             steps += 1
             self.update_force_feedback()
-#check collision and output
+           #check collision and output rb0
             current_time =time.time()
             if current_time - last_check_time >= collision_time_interval:
                 self.check_collision_finger1()
@@ -666,7 +679,7 @@ class Simulation:
                 
                 #collision rb1
                 replace_rb1_l, replace_rb1_r = self.rb1_finger_collision.get_collisions()
-                rb1_finger_collision = (replace_rb1_l + replace_rb1_r) / 2
+                rb1_finger_collision = (np.array(self.replace_rb0_l) + np.array(self.replace_rb0_r)) / 2
                 if rb1_finger_collision != 0:
                     print(f"Left Finger Value: {replace_rb1_l}")
                     print(f"Right Finger Value: {replace_rb1_r}")
@@ -675,11 +688,10 @@ class Simulation:
                 self.check_collision_aim()
                 self. aim_resultant_force()
                 last_check_time = current_time
-
-            
+                
+  
             for scene in self.scene_list:
                 scene.next_step()
-            
-                
+                         
         print("Goodbye")
                 
