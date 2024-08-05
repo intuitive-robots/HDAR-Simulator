@@ -223,6 +223,7 @@ class Simulation:
                     self.vt_scene,
                     robot_config,
                 )
+                self.controller_list.append(vt_controller)
                 self.robot_list.append(vt_robot)
 
             else:
