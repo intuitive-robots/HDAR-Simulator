@@ -1,20 +1,27 @@
 VirtualRobotConfig: {
   panda1:
   {
-   #interaction_method: "real_robot",
+  #  interaction_method: "real_robot",
     # interaction_method: "virtual_robot",
     # interaction_method: "hand_tracking",
-    # interaction_method: "gamepad",
     # interaction_method: "motion_controller",
-     interaction_method: "keyboard",
+    # interaction_method: "keyboard",
+    # interaction_method: "Meta_Controller_r0" ,
+    interaction_method:{
+      'type':"Meta_Controller_r0",
+      'device':"meta_alr1" 
+    } ,
+        
   },
   panda2:
   {
-    interaction_method: "real_robot",
-    # interaction_method: "virtual_robot",
-    # interaction_method: "hand_tracking",
-    # interaction_method: "gamepad",
-    # interaction_method: "motion_controller",
+    # interaction_method1: "real_robot",
+    # interaction_method: "Meta_Controller_l0",
+    # interaction_method: "keyboard",
+    interaction_method:{
+      'type':"Meta_Controller_l0",
+      'device':"meta1_alr1" 
+    } ,
   },
 }
 
@@ -45,7 +52,7 @@ RealRobotConfig: {
 
 HDARConfig: {
   # host: "192.168.178.102",
-  host: "192.168.0.143",
+  host: "192.168.0.134",
   # host: 192.168.122.1,
   # host: "192.168.0.215",
   # host: "192.168.0.215", # virtual robot test
@@ -64,7 +71,7 @@ QRConfig: {
 
 SimulatorConfig: {
   # task_type: "grasp_object",
-  # task_type: "bimanual_test",
+   task_type: "bimanual_test",
   # task_type: "box_stacking2",
   # task_type: "object_passing",
   # task_type: "box_passing",
@@ -75,9 +82,10 @@ SimulatorConfig: {
   # task_type: "practical_manipulation",
   # task_type: "box_stacking",
   # task_type: "user_study",
-   task_type: "Pick_and_Place",
-  # task_type: "Box_Push",
+    # task_type: "Pick_and_Place",
+  # task_type: "Push_Box",
   # task_type: "Assemble_Box",
+  # task_type: "Horizontal_Assemble",
   record_mode: True,
   time_limit: 10000,
   dt: 0.002,

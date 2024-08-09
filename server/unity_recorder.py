@@ -7,7 +7,7 @@ from alr_sim.core.sim_object import SimObject
 from alr_sim.core.logger import ObjectLogger
 from alr_sim.utils.sim_path import sim_framework_path
 
-from .unity_streamer import UnityStreamer
+# from .unity_streamer import UnityStreamer
 
 import multiprocessing as mp
 
@@ -20,7 +20,7 @@ class UnityRecorder:
         scene: Scene,
         obj_list: List[SimObject],
         task_type,
-        streamer: UnityStreamer,
+        # streamer: UnityStreamer,
         manager,
         save_root_path="./ARHumanDemoData/",
         record_mode=False,
@@ -50,6 +50,9 @@ class UnityRecorder:
             self.save_root_path,
             "{}_{}".format(task_type, datetime.now().strftime("%Y_%m_%d_%H_%M_%S")),
         )
+        
+        self.ab_path = os.path.abspath(self.save_path)
+        print(f"Save record absolute path initialized: {self.ab_path}")
         # flags
         self.on_logging: bool = False
         self.manager = manager
@@ -102,3 +105,26 @@ class UnityRecorder:
         with open(os.path.join(self.save_path, file_name), "wb") as f:
             pickle.dump(state_dict, f)
         print(f"The file has been saved to {file_name}")
+
+
+class UnitynewRecorder:
+    def __init__(
+        self,
+        scene: Scene,
+        obj_list: List[SimObject],
+        task_type,
+        # streamer: UnityStreamer,
+        manager,
+        save_root_path="./ARHumanDemoData/",
+        record_mode=False,
+        downsample_steps=1,
+    ) -> None:
+        self.save_root_path = save_root_path
+        self.record_mode = record_mode
+        self.scene = scene
+        self.robots: RobotBase = scene.robots
+        self.obj_list = obj_list
+        self.task_type = task_type
+        self.downsample_steps = downsample_steps
+        
+        

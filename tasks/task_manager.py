@@ -99,6 +99,7 @@ class TaskManager:
         robot.init_end_eff_pos = config["init_end_eff_pos"]
         robot.init_end_eff_quat = config["init_end_eff_quat"]
         robot.interaction_method = config["interaction_method"]
+       
         return robot
 
     def create_robots(self):

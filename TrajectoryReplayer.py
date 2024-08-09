@@ -12,8 +12,9 @@ class TrajectoryReplayer:
         self.data = data
         # virtual twin
         self.vt_sim_factory = SimRepository.get_factory("mj_beta")
-        self.scene_manager = tasks.get_manager(task_type)
-        self.scene_manager.create_task(self.vt_sim_factory)
+        self.scene_manager = tasks.get_manager(task_type,self.vt_sim_factory,dt=0.02)
+        # self.scene_manager.create_task(self.vt_sim_factory)
+        self.scene_manager.create_task()
 
         self.vt_scene: Scene = self.scene_manager.get_scene()
         self.vt_object_dict = self.scene_manager.get_object_dict()
@@ -29,7 +30,14 @@ class TrajectoryReplayer:
             )
             self.vt_controller_dict[robot_name] = vt_controller
 
-        # just for hri paper
+        # # just for hri paper
+        # self.streamer = server.UnityStreamer(
+        #     self.vt_scene,
+        #     [],
+        #     [],
+        # )
+        # self.interaction_object_list = self.streamer.interaction_object_list
+        # just for forcefeedback study
         self.streamer = server.UnityStreamer(
             self.vt_scene,
             [],
@@ -81,10 +89,12 @@ if __name__ == "__main__":
         # data_path="/home/xinkai/Desktop/LfD_Use_Study/004/AR_RR/cube_stacking_2023_08_07_14_29_16/test001.pkl",
         # data_path="/home/xinkai/Desktop/LfD_Use_Study/004/Handtracking/practical_manipulation_2023_08_07_16_13_02/practical_manipulation_000.pkl",
         # data_path="/home/xinkai/SimulationFramework/ARHumanDemoData/cup_stacking_2023_08_11_11_18_53/cup_stacking_000.pkl",
-        data_path="/home/xinkai/SimulationFramework/ARHumanDemoData/box_stacking_2023_08_28_13_51_45/box_stacking_000.pkl",
+        # data_path="/home/xinkai/SimulationFramework/ARHumanDemoData/box_stacking_2023_08_28_13_51_45/box_stacking_000.pkl",
+        data_path="/home/xueyinli/project/HDAR-Simulator/ARHumanDemoData/Assemble_Box_2024_08_07_12_19_37/Assemble_Box_000.pkl",
         # task_type="warm_up",
-        task_type="box_stacking",
+        # task_type="box_stacking",
         # task_type="cup_stacking",
         # task_type="practical_manipulation",
+        task_type="Assemble_Box",
     )
     replayer.run()

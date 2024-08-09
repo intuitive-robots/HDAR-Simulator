@@ -30,8 +30,8 @@ class Collision_finger:
                     'time': time,
                     'number': i
                 })
-                with open(filename, 'a', newline='') as file:
-                    file.write(f"Collision object:{geom1_name} with {geom2_name} at {pos}, Force: {force[:3]}, time:{time}, number:{i}\n")
+                # with open(filename, 'a', newline='') as file:
+                #     file.write(f"Collision object:{geom1_name} with {geom2_name} at {pos}, Force: {force[:3]}, time:{time}, number:{i}\n")
         return collision_list
 
     def calculate_resultant_force(self, collision_list, filename, replace_attr):
@@ -57,17 +57,32 @@ class Collision_finger:
                 collision_resultant[(time_key, geom_pair)]['position_sum'] += pos
                 collision_resultant[(time_key, geom_pair)]['number'] += 1
 
-        with open(filename, 'a', newline='') as file:
-            for (time_key, geom_pair), data in collision_resultant.items():
-                avg_position = data['position_sum'] / data['number']
-                force = data['force']
-                force_x, force_y, force_z = force
-                resultant_force = math.sqrt(force_x**2 + force_y**2 + force_z**2)
-                replace = min(1, resultant_force / 10)
-                file.write(f"Collision object:{data['geom1']} with {data['geom2']} at {avg_position}, Force: {force}, Replace Value: {replace}, time:{time_key}\n")
+        # with open(filename, 'a', newline='') as file:
+        #     for (time_key, geom_pair), data in collision_resultant.items():
+        #         avg_position = data['position_sum'] / data['number']
+        #         force = data['force']
+        #         force_x, force_y, force_z = force
+        #         resultant_force = math.sqrt(force_x**2 + force_y**2 + force_z**2)
+        #         replace = min(1, resultant_force / 10)
+        #         # file.write(f"Collision object:{data['geom1']} with {data['geom2']} at {avg_position}, Force: {force}, Replace Value: {replace}, time:{time_key}\n")
                 
-                # Update replace value
-                setattr(self, replace_attr, replace)
+        #         # Update replace value
+        #         setattr(self, replace_attr, replace)
+        if collision_resultant:
+            with open(filename, 'a', newline='') as file:
+                for (time_key, geom_pair), data in collision_resultant.items():
+                    avg_position = data['position_sum'] / data['number']
+                    force = data['force']
+                    force_x, force_y, force_z = force
+                    resultant_force = math.sqrt(force_x**2 + force_y**2 + force_z**2)
+                    replace = min(1, resultant_force / 10)
+                    # file.write(f"Collision object:{data['geom1']} with {data['geom2']} at {avg_position}, Force: {force}, Replace Value: {replace}, time:{time_key}\n")
+                    
+                    # Update replace value
+                    setattr(self, replace_attr, replace)
+        else:
+            # If no collision, set replace attribute to 0
+            setattr(self, replace_attr, 0)
 
     def get_collisions(self):
         # left

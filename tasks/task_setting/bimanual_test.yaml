@@ -10,7 +10,7 @@ robots:
       init_end_eff_quat: [0.0, 1.0, 0.0, 0.0],
     },
     panda2: {
-      base_position: [0.0, 0.70, 0.0],
+      base_position: [0.0, -0.70, 0.0],
       base_rotation: [0.0, 0.0, 0.0],
       init_end_eff_pos: [0.525, 0.0, 0.3],
       init_end_eff_quat: [0.0, 1.0, 0.0, 0.0],
@@ -18,47 +18,114 @@ robots:
   }
 
 
-objects:
+# objects:
+#   {
+#   box: {
+#       type: Box,
+#       init_pos: [0.6, 0.14, 0.04],
+#       init_quat: [0, 1, 0, 0],
+#       size: [0.05, 0.05, 0.05],
+#       rgba: [0, 1, 0, 1],
+#       mass: 1.,
+#       static: False,
+#       source: primitive_object
+#     },
+#   box2: {
+#       type: Box,
+#       init_pos: [0.6, 0.34, 0.04],
+#       init_quat: [0, 1, 0, 0],
+#       size: [0.05, 0.05, 0.05],
+#       rgba: [1, .4, 0, 1],
+#       mass: 1.,
+#       static: False,
+#       source: primitive_object
+#     },
+#   box3: {
+#       type: Box,
+#       init_pos: [0.6, 0.54, 0.04],
+#       init_quat: [0, 1, 0, 0],
+#       size: [0.05, 0.05, 0.05],
+#       rgba: [0, 0, 1, 1],
+#       mass: 1.,
+#       static: False,
+#       source: primitive_object
+#     },
+#   box4: {
+#       type: Box,
+#       init_pos: [0.4, 0.34, 0.12],
+#       init_quat: [0, 1, 0, 0],
+#       size: [0.06, 0.06, 0.17],
+#       rgba: [0, 1, 1, 0.5],
+#       mass: 1.,
+#       static: True,
+#       visual_only: True,
+#       source: primitive_object
+#     },
+#   }
+objects: 
   {
-  box: {
+    target: {
       type: Box,
-      init_pos: [0.6, 0.14, 0.04],
-      init_quat: [0, 1, 0, 0],
-      size: [0.05, 0.05, 0.05],
-      rgba: [0, 1, 0, 1],
-      mass: 1.,
-      static: False,
-      source: primitive_object
-    },
-  box2: {
+      source: primitive_object,
+      init_pos: [0.35, -0.25, 0.0],
+      init_quat: [0.0, 1.0, 0.0, 0.0],
+      rgba: [1.0, 0.0, 0.0, 1.0],
+      mass: 0.02,
+      size: [0.02, 0.02, 0.04],
+    }, 
+    target1: {
       type: Box,
-      init_pos: [0.6, 0.34, 0.04],
-      init_quat: [0, 1, 0, 0],
-      size: [0.05, 0.05, 0.05],
-      rgba: [1, .4, 0, 1],
-      mass: 1.,
-      static: False,
-      source: primitive_object
-    },
-  box3: {
-      type: Box,
-      init_pos: [0.6, 0.54, 0.04],
-      init_quat: [0, 1, 0, 0],
-      size: [0.05, 0.05, 0.05],
-      rgba: [0, 0, 1, 1],
-      mass: 1.,
-      static: False,
-      source: primitive_object
-    },
-  box4: {
-      type: Box,
-      init_pos: [0.4, 0.34, 0.12],
-      init_quat: [0, 1, 0, 0],
-      size: [0.06, 0.06, 0.17],
-      rgba: [0, 1, 1, 0.5],
-      mass: 1.,
-      static: True,
-      visual_only: True,
-      source: primitive_object
-    },
+      source: primitive_object,
+      init_pos: [0.35, -0.10, 0.0],
+      init_quat: [0.0, 1.0, 0.0, 0.0],
+      rgba: [1.0, 0.0, 0.0, 1.0],
+      mass: 0.02,
+      size: [0.02, 0.02, 0.04],
+    }, 
+    aim1: 
+        {
+          type: Box,
+          source: primitive_object,
+          init_pos: [0.4, 0.5, 0.04],
+          init_quat: [0.0, 0.0, 0.0, 1.0],
+          rgba: [0.5, 0.0, 0.5, 0.6],
+          size: [0.05, 0.025, 0.06],
+          mass: 0.05,
+          # visual_only: True,
+          static: True,
+        },
+    aim2: {
+          type: Box,
+          source: primitive_object,
+          init_pos: [0.375, 0.575, 0.04],
+          init_quat: [0.0, 1.0, 0.0, 0.0],
+          rgba: [0.5, 0.0, 0.5, 0.6],
+          size: [0.025, 0.05, 0.06],
+          mass: 0.05,
+          # visual_only: True,
+          static: True,
+        },
+    aim3:{
+          type: Box,
+          source: primitive_object,
+          init_pos: [0.475, 0.525 , 0.04],
+          init_quat: [0.0, 1.0, 0.0, 0.0],
+          rgba: [0.5, 0.0, 0.5, 0.6],
+          size: [0.025, 0.05, 0.06],
+          mass: 0.05,
+          # visual_only: True,
+          static: True,
+        },    
+    aim4:{
+          type: Box,
+          source: primitive_object,
+          init_pos: [0.45, 0.6, 0.04],
+          init_quat: [0.0, 1.0, 0.0, 0.0],
+          rgba: [0.5, 0.0, 0.5, 0.6],
+          size: [0.05, 0.025, 0.06],
+          mass: 0.05,
+          # visual_only: True,
+          static: True,
+        },
+    
   }

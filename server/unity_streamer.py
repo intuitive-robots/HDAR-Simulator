@@ -2,7 +2,7 @@ import asyncio
 import json
 import threading
 from typing import List
-from websockets import server
+# from websockets import server
 
 from alr_sim.core.Scene import Scene
 from alr_sim.core.Robots import RobotBase
