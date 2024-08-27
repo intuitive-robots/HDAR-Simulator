@@ -1,6 +1,6 @@
-import utils, simulation
+import utils, simulator
 
 
 if __name__ == "__main__":
     simulator_config = utils.get_simulator_config()
-    simulation.Simulation(**simulator_config).run()
+    simulator.Simulation(**simulator_config).run()
