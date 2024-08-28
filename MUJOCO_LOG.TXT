@@ -1,0 +1,84 @@
+Wed Aug 28 14:45:11 2024
+WARNING: Nan, Inf or huge value in QACC at DOF 12. The simulation is unstable. Time = 55.6740.
+
+Wed Aug 28 14:46:02 2024
+WARNING: Nan, Inf or huge value in QACC at DOF 4. The simulation is unstable. Time = 17.4720.
+
+Wed Aug 28 14:46:34 2024
+WARNING: Nan, Inf or huge value in QACC at DOF 0. The simulation is unstable. Time = 5.9120.
+
+Wed Aug 28 15:48:58 2024
+WARNING: mju_openResource: could not open resource '/home/xinkai/project/SimulationFramework/models/mj/robot/panda_tmp_rb0_46ad98c4-6544-11ef-8781-047c1607dcf4.xml' with default provider at slot 1
+
+Wed Aug 28 15:49:24 2024
+WARNING: mju_openResource: could not open resource '/home/xinkai/project/SimulationFramework/models/mj/robot/panda_tmp_rb0_562ceb60-6544-11ef-9692-047c1607dcf4.xml' with default provider at slot 1
+
+Wed Aug 28 15:49:49 2024
+WARNING: mju_openResource: could not open resource '/home/xinkai/project/SimulationFramework/models/mj/robot/panda_tmp_rb0_64c0043c-6544-11ef-8d80-047c1607dcf4.xml' with default provider at slot 1
+
+Wed Aug 28 15:50:01 2024
+WARNING: mju_openResource: could not open resource '/home/xinkai/project/SimulationFramework/models/mj/robot/panda_tmp_rb0_6bf82e8c-6544-11ef-ac87-047c1607dcf4.xml' with default provider at slot 1
+
+Wed Aug 28 15:51:59 2024
+WARNING: mju_openResource: could not open resource '/home/xinkai/project/SimulationFramework/models/mj/robot/panda_tmp_rb0_b1fbc40c-6544-11ef-a396-047c1607dcf4.xml' with default provider at slot 1
+
+Wed Aug 28 15:58:05 2024
+WARNING: mju_openResource: could not open resource '/home/xinkai/project/SimulationFramework/models/mj/robot/panda_tmp_rb0_8cb075ac-6545-11ef-a3d4-047c1607dcf4.xml' with default provider at slot 1
+
+Wed Aug 28 15:59:30 2024
+WARNING: mju_openResource: could not open resource '/home/xinkai/project/SimulationFramework/models/mj/robot/panda_tmp_rb0_bf08d170-6545-11ef-9037-047c1607dcf4.xml' with default provider at slot 1
+
+Wed Aug 28 16:00:20 2024
+WARNING: mju_openResource: could not open resource '/home/xinkai/project/SimulationFramework/models/mj/robot/panda_tmp_rb0_dca95cd6-6545-11ef-84ed-047c1607dcf4.xml' with default provider at slot 1
+
+Wed Aug 28 16:01:34 2024
+WARNING: mju_openResource: could not open resource '/home/xinkai/project/SimulationFramework/models/mj/robot/panda_tmp_rb0_08d0189a-6546-11ef-8163-047c1607dcf4.xml' with default provider at slot 1
+
+Wed Aug 28 16:02:47 2024
+WARNING: mju_openResource: could not open resource '/home/xinkai/project/SimulationFramework/models/mj/robot/panda_tmp_rb0_346652bc-6546-11ef-8cd4-047c1607dcf4.xml' with default provider at slot 1
+
+Wed Aug 28 16:06:54 2024
+WARNING: mju_openResource: could not open resource '/home/xinkai/project/SimulationFramework/models/mj/robot/panda_tmp_rb0_c7c52736-6546-11ef-a141-047c1607dcf4.xml' with default provider at slot 1
+
+Wed Aug 28 16:08:38 2024
+WARNING: mju_openResource: could not open resource '/home/xinkai/project/SimulationFramework/models/mj/robot/panda_tmp_rb0_0570cdd8-6547-11ef-b6ca-047c1607dcf4.xml' with default provider at slot 1
+
+Wed Aug 28 16:16:11 2024
+WARNING: mju_openResource: could not open resource '/home/xinkai/project/SimulationFramework/models/mj/robot/panda_tmp_rb0_13fa79a2-6548-11ef-94a8-047c1607dcf4.xml' with default provider at slot 1
+
+Wed Aug 28 16:56:15 2024
+WARNING: mju_openResource: could not open resource '/home/xinkai/project/SimulationFramework/models/mj/robot/panda_tmp_rb0_acee68a8-654d-11ef-851c-047c1607dcf4.xml' with default provider at slot 1
+
+Wed Aug 28 16:56:35 2024
+WARNING: mju_openResource: could not open resource '/home/xinkai/project/SimulationFramework/models/mj/robot/panda_tmp_rb0_b8653072-654d-11ef-a74c-047c1607dcf4.xml' with default provider at slot 1
+
+Wed Aug 28 16:57:12 2024
+WARNING: mju_openResource: could not open resource '/home/xinkai/project/SimulationFramework/models/mj/robot/panda_tmp_rb0_cea56078-654d-11ef-b5cb-047c1607dcf4.xml' with default provider at slot 1
+
+Wed Aug 28 16:57:22 2024
+WARNING: mju_openResource: could not open resource '/home/xinkai/project/SimulationFramework/models/mj/robot/panda_tmp_rb0_d48dc57a-654d-11ef-bee6-047c1607dcf4.xml' with default provider at slot 1
+
+Wed Aug 28 16:57:39 2024
+WARNING: mju_openResource: could not open resource '/home/xinkai/project/SimulationFramework/models/mj/robot/panda_tmp_rb0_dee50448-654d-11ef-a692-047c1607dcf4.xml' with default provider at slot 1
+
+Wed Aug 28 17:02:52 2024
+WARNING: mju_openResource: could not open resource '/home/xinkai/project/SimulationFramework/models/mj/robot/panda_tmp_rb0_9902835a-654e-11ef-9790-047c1607dcf4.xml' with default provider at slot 1
+
+Wed Aug 28 17:04:15 2024
+WARNING: mju_openResource: could not open resource '/home/xinkai/project/SimulationFramework/models/mj/robot/panda_tmp_rb0_ca84fc78-654e-11ef-8c6d-047c1607dcf4.xml' with default provider at slot 1
+
+Wed Aug 28 17:06:14 2024
+WARNING: mju_openResource: could not open resource '/home/xinkai/project/SimulationFramework/models/mj/robot/panda_tmp_rb0_11785378-654f-11ef-bfb8-047c1607dcf4.xml' with default provider at slot 1
+
+Wed Aug 28 17:06:59 2024
+WARNING: mju_openResource: could not open resource '/home/xinkai/project/SimulationFramework/models/mj/robot/panda_tmp_rb0_2c5309c2-654f-11ef-89e2-047c1607dcf4.xml' with default provider at slot 1
+
+Wed Aug 28 17:07:37 2024
+WARNING: mju_openResource: could not open resource '/home/xinkai/project/SimulationFramework/models/mj/robot/panda_tmp_rb0_4354f1c6-654f-11ef-8eca-047c1607dcf4.xml' with default provider at slot 1
+
+Wed Aug 28 17:09:39 2024
+WARNING: mju_openResource: could not open resource '/home/xinkai/project/SimulationFramework/models/mj/robot/panda_tmp_rb0_8bf6c094-654f-11ef-b24e-047c1607dcf4.xml' with default provider at slot 1
+
+Wed Aug 28 17:10:20 2024
+WARNING: mju_openResource: could not open resource '/home/xinkai/project/SimulationFramework/models/mj/robot/panda_tmp_rb0_a47903e8-654f-11ef-9c11-047c1607dcf4.xml' with default provider at slot 1
+

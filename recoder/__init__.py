@@ -1,1 +1,0 @@
-from fancy_gym_recorder import FancyGymRecorder
