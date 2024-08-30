@@ -31,7 +31,7 @@ class SFRecorder(Recorder):
             "simulation_dt": mj_scene.dt,
         }
 
-    def record(self):
+    def _record(self):
         current_frame = {}
         for name, robot in self.robot_dict.items():
             current_frame[name] = {
@@ -57,6 +57,13 @@ class SFRecorder(Recorder):
             }
         self.data.append(current_frame)
 
+    def _start_record(self):
+        self.data = []
+
     def _save_record(self, file_name):
+        # in case of data overwriting
+        header = self.header
+        data = self.data
         with open(os.path.join(self.save_path, file_name), "wb") as f:
-            pickle.dump({"header": self.header, "data": self.data}, f)
+            pickle.dump({"header": header, "data": data}, f)
+        super()._save_record(file_name)
