@@ -5,7 +5,6 @@ from datetime import datetime
 from simpub.core.log import logger
 import multiprocessing as mp
 
-
 class Recorder(abc.ABC):
 
     def __init__(
@@ -28,7 +27,6 @@ class Recorder(abc.ABC):
         self.record_steps = record_steps
         # recording flag
         self.on_recording = False
-        self.saving_record = False
         # counter for the demonstration and frames
         self.demo_counter = 0
         self.skip_counter = 0
@@ -49,10 +47,7 @@ class Recorder(abc.ABC):
     def save_record(self):
         if not self.record_mode:
             return
-        elif self.saving_record:
-            return
         self.stop_record()
-        self.saving_record = True
         file_name = "{}_{:03d}.pkl".format(self.task_name, self.demo_counter)
         mp.Process(
             target=self._save_record, kwargs={"file_name": file_name}
@@ -67,7 +62,6 @@ class Recorder(abc.ABC):
     @abc.abstractmethod
     def _save_record(self, file_name: str):
         logger.info(f"Finishing saving record to {file_name}")
-        self.saving_record = False
 
     @abc.abstractmethod
     def _record(self):

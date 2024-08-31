@@ -65,7 +65,7 @@ class MetaQuest3Controller(CartPosQuatImpedenceController):
         return super().getControl(robot)
 
 
-class BoxPushingSimulator(SFSimulator):
+class BoxPickandPlaceSimulator(SFSimulator):
 
     def __init__(self):
         self.box_space = SamplingSpace(
@@ -74,20 +74,20 @@ class BoxPushingSimulator(SFSimulator):
             seed=np.random.randint(0, 1000),
         )
         super().__init__(
-            'BoxPushing',
+            'BoxPickandPlace',
             host_address="192.168.0.134",
         )
 
     def create_robots(self) -> Dict[str, MjRobot]:
         self.push_robot = self.sim_factory.create_robot(
             self.mj_scene,
-            xml_path=sim_framework_path("./models/mj/robot/panda_rod.xml"),
+            xml_path=sim_framework_path("./models/mj/robot/panda.xml"),
         )
-        return {"push_robot": self.push_robot}
+        return {"pick_robot": self.push_robot}
 
     def create_objects(self) -> Dict[str, MujocoObject]:
         self.pushed_box = CustomMujocoObject(
-            object_name="pushed_box",
+            object_name="picked_box",
             object_dir_path=os.path.dirname(os.path.abspath(__file__)),
             pos=[0.4, 0, 0.3],
             quat=[0, 0, 0, 1],
@@ -99,20 +99,18 @@ class BoxPushingSimulator(SFSimulator):
             quat=[0, 0, 0, 1],
         )
         return {
-            "pushed_box": self.pushed_box,
+            "pick_box": self.pushed_box,
             "target_box": self.target_box,
         }
 
     def create_controller(self) -> Dict[str, ControllerBase]:
         self.device = MetaQuest3("ALRMetaQuest3")
-        self.device.register_button_trigger_event("X", self.recorder.save_record)
-        self.device.register_button_trigger_event("X", self.reset)
         self.controller = MetaQuest3Controller(
             self.device,
             fix_rotation=True,
             with_hand=False,
         )
-        return {"push_robot": self.controller}
+        return {"pick_robot": self.controller}
 
     def after_step(self):
         input_data = self.device.get_input_data()
@@ -122,6 +120,10 @@ class BoxPushingSimulator(SFSimulator):
             self.recorder.start_record()
         else:
             self.recorder.stop_record()
+        if input_data["X"] is True:
+            self.recorder.save_record()
+            self.reset()
+                   
 
     def reset(self):
         # return
@@ -131,7 +133,7 @@ class BoxPushingSimulator(SFSimulator):
         self.mj_scene.set_obj_pos_and_quat(
             new_pos=pushed_box_pos,
             new_quat=pushed_box_quat,
-            obj_name="pushed_box",
+            obj_name="picked_box",
         )
         while True:
             target_box_pos = self.box_space.sample()
@@ -163,5 +165,5 @@ class BoxPushingSimulator(SFSimulator):
 
 
 if __name__ == '__main__':
-    simulator = BoxPushingSimulator()
+    simulator = BoxPickandPlaceSimulator()
     simulator.run()
