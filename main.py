@@ -7,8 +7,13 @@
 
 from simulator.sim.SimulationFramework import BoxPushingSimulator
 from simulator.sim.SimulationFramework import BoxPickandPlaceSimulator
+from simulator.sim.SimulationFramework import BimanualSameObjectSimulator
+from simulator.sim.SimulationFramework import BoxAssembleSimulator
 
 if __name__ == '__main__':
     # simulator = BoxPushingSimulator()
-    simulator = BoxPickandPlaceSimulator()
+    # simulator = BoxPickandPlaceSimulator()
+    # simulator = BoxAssembleSimulator()
+    simulator = BimanualSameObjectSimulator()
+    
     simulator.run()

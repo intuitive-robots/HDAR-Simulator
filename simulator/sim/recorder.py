@@ -3,7 +3,7 @@ import os
 from datetime import datetime
 
 from simpub.core.log import logger
-import multiprocessing as mp
+import threading
 
 class Recorder(abc.ABC):
 
@@ -27,6 +27,7 @@ class Recorder(abc.ABC):
         self.record_steps = record_steps
         # recording flag
         self.on_recording = False
+        self.saving_thread = None
         # counter for the demonstration and frames
         self.demo_counter = 0
         self.skip_counter = 0
@@ -47,9 +48,11 @@ class Recorder(abc.ABC):
     def save_record(self):
         if not self.record_mode:
             return
+        if self.saving_thread is not None:
+            return
         self.stop_record()
         file_name = "{}_{:03d}.pkl".format(self.task_name, self.demo_counter)
-        mp.Process(
+        self.saving_thread = threading.Thread(
             target=self._save_record, kwargs={"file_name": file_name}
         ).start()
         logger.info(f"Saving record to {file_name}")
@@ -62,6 +65,7 @@ class Recorder(abc.ABC):
     @abc.abstractmethod
     def _save_record(self, file_name: str):
         logger.info(f"Finishing saving record to {file_name}")
+        self.saving_thread = None
 
     @abc.abstractmethod
     def _record(self):

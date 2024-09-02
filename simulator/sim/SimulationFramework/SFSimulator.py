@@ -1,5 +1,5 @@
 import abc
-from typing import Dict
+from typing import List, Dict, Callable
 from alr_sim.sims.mj_beta import MjRobot
 from alr_sim.sims.mj_beta import MjScene
 from alr_sim.controllers import ControllerBase
@@ -27,13 +27,8 @@ class SFSimulator(abc.ABC):
         self.sim_factory = SimRepository.get_factory("mj_beta")
         self.mj_scene = self.create_scene()
         self.robot_dict = self.create_robots()
+        self.callback_task_list: List[Callable] = []
         self.mj_scene.start()
-        self.publisher = SFPublisher(self.mj_scene, host_address)
-        self.controller_dict = self.create_controller()
-        for name, robot in self.robot_dict.items():
-            self.controller_dict[name].executeController(
-                robot, maxDuration=1000, block=False
-            )
         self.record_mode = record_mode
         self.recorder = SFRecorder(
             task_name,
@@ -42,6 +37,12 @@ class SFSimulator(abc.ABC):
             self.mj_scene,
             record_mode=self.record_mode
         )
+        self.publisher = SFPublisher(self.mj_scene, host_address)
+        self.controller_dict = self.create_controller()
+        for name, robot in self.robot_dict.items():
+            self.controller_dict[name].executeController(
+                robot, maxDuration=1000, block=False
+            )
         self.reset()
 
     def create_scene(self) -> MjScene:
@@ -79,4 +80,7 @@ class SFSimulator(abc.ABC):
             self.mj_scene.next_step()
             if self.record_mode:
                 self.recorder.record()
+            for func in self.callback_task_list:
+                func()
+            self.callback_task_list.clear()
             self.after_step()
