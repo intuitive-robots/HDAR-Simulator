@@ -1,2 +1,0 @@
-from .BoxPushing.BoxPushingSimulator import BoxPushingSimulator
-from .BoxPickandPlace.BoxPickandPlaceSimulator import BoxPickandPlaceSimulator

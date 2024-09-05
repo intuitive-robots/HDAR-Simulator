@@ -12,10 +12,17 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "-t", choices=['BoxPushingSimulator'], default='BoxPushingSimulator'
+        "-t", choices=['BoxPushing'], default='BoxPushing'
     )
     # parser.add_argument("-i",)
     args = parser.parse_args()
 
     simulator = sf_task_factory(args.t)
-    simulator.run()
+    simulator.recorder.start_record()
+    for _ in range(1000):
+        simulator.before_step()
+        simulator.mj_scene.next_step()
+        if simulator.record_mode:
+            simulator.recorder.record()
+        simulator.after_step()
+    simulator.recorder.save_record()

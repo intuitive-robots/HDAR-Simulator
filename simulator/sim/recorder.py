@@ -5,6 +5,7 @@ from datetime import datetime
 from simpub.core.log import logger
 import multiprocessing as mp
 
+
 class Recorder(abc.ABC):
 
     def __init__(
@@ -12,7 +13,7 @@ class Recorder(abc.ABC):
         task_name: str,
         save_root_path: str,
         record_mode: bool,
-        record_steps=1,
+        record_step: int,
     ) -> None:
         super().__init__()
         # name the demonstration by date and time
@@ -24,7 +25,7 @@ class Recorder(abc.ABC):
         if not os.path.exists(self.save_path):
             os.makedirs(self.save_path)
         self.record_mode = record_mode
-        self.record_steps = record_steps
+        self.record_step = record_step
         # recording flag
         self.on_recording = False
         # counter for the demonstration and frames
@@ -35,6 +36,7 @@ class Recorder(abc.ABC):
         if not self.record_mode or self.on_recording:
             return
         logger.info("Start recording")
+        self._start_record()
         self.skip_counter = 0
         self.on_recording = True
 
@@ -70,8 +72,8 @@ class Recorder(abc.ABC):
     def record(self):
         if not self.record_mode or not self.on_recording:
             return
-        if self.skip_counter % self.record_steps == 0:
+        self.skip_counter += 1
+        if self.skip_counter % self.record_step == 0:
             self._record()
             self.skip_counter = 0
             return
-        self.skip_counter += 1

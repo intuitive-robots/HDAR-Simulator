@@ -29,11 +29,6 @@ class SFSimulator(abc.ABC):
         self.robot_dict = self.create_robots()
         self.mj_scene.start()
         self.publisher = SFPublisher(self.mj_scene, host_address)
-        self.controller_dict = self.create_controller()
-        for name, robot in self.robot_dict.items():
-            self.controller_dict[name].executeController(
-                robot, maxDuration=1000, block=False
-            )
         self.record_mode = record_mode
         self.recorder = SFRecorder(
             task_name,
@@ -42,13 +37,27 @@ class SFSimulator(abc.ABC):
             self.mj_scene,
             record_mode=self.record_mode
         )
-        self.reset()
+        self.assign_controller(self.create_controller())
 
     def create_scene(self) -> MjScene:
         self.object_dict = self.create_objects()
         return self.sim_factory.create_scene(
             object_list=self.object_dict.values(),
         )
+
+    def reset_objects(self, obj_state: Dict):
+        for obj_name, obj_state in obj_state.items():
+            self.mj_scene.set_obj_pos_and_quat(
+                obj_name=obj_name,
+                new_pos=obj_state["pos"],
+                new_quat=obj_state["quat"],
+            )
+
+    def reset_robots(self, robot_state: Dict):
+        for robot_name, robot_state in robot_state.items():
+            self.robot_dict[robot_name].beam_to_joint_pos(
+                robot_state["joint_pos"]
+            )
 
     @abc.abstractmethod
     def create_robots(self) -> Dict[str, MjRobot]:
@@ -66,6 +75,13 @@ class SFSimulator(abc.ABC):
     def reset(self):
         raise NotImplementedError
 
+    def assign_controller(self, controller_dict: Dict[str, ControllerBase]):
+        self.controller_dict = controller_dict
+        for name, robot in self.robot_dict.items():
+            self.controller_dict[name].executeController(
+                robot, maxDuration=1000, block=False
+            )
+
     def before_step(self):
         pass
 
@@ -74,6 +90,7 @@ class SFSimulator(abc.ABC):
 
     def run(self):
         # count = 0
+        self.reset()
         while True:
             self.before_step()
             self.mj_scene.next_step()

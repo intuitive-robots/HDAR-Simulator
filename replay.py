@@ -7,6 +7,7 @@
 
 import argparse
 from simulator.sim.sf.task import sf_task_factory
+from simulator.sim.sf.SFReplayer import SFReplayer
 
 if __name__ == '__main__':
 
@@ -17,5 +18,6 @@ if __name__ == '__main__':
     # parser.add_argument("-i",)
     args = parser.parse_args()
 
-    simulator = sf_task_factory(args.t)
-    simulator.run()
+    replayer = SFReplayer()
+    replayer.load_data("/home/xinkai/project/HDAR-Simulator/SFDemoData/BoxPushing_2024_09_05_12_49_34/BoxPushing_000.pkl")
+    replayer.replay_data()

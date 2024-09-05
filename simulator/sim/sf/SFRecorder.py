@@ -18,16 +18,16 @@ class SFRecorder(Recorder):
         mj_scene: MjScene,
         save_root_path="./SFDemoData/",
         record_mode=False,
-        record_steps=50,
+        record_step=10,
     ) -> None:
-        super().__init__(task_name, save_root_path, record_mode, record_steps)
+        super().__init__(task_name, save_root_path, record_mode, record_step)
         self.objects_dict = objects_dict
         self.robot_dict = robot_dict
         self.mj_scene = mj_scene
         self.data = []
         self.header = {
             "task": task_name,
-            "record_steps": record_steps,
+            "record_step": record_step,
             "simulation_dt": mj_scene.dt,
         }
 
@@ -59,11 +59,30 @@ class SFRecorder(Recorder):
 
     def _start_record(self):
         self.data = []
+        self.init_objects_state = {}
+        for obj_name, obj in self.objects_dict.items():
+            self.init_objects_state[obj_name] = {
+                "pos": self.mj_scene.get_obj_pos(obj_name=obj.name),
+                "quat": self.mj_scene.get_obj_quat(obj_name=obj.name),
+            }
+        self.init_robots_state = {}
+        for robot_name, robot in self.robot_dict.items():
+            self.init_robots_state[robot_name] = {
+                "joint_pos": robot.current_j_pos,
+            }
 
     def _save_record(self, file_name):
         # in case of data overwriting
         header = self.header
+        init_object_state = self.init_objects_state
+        init_robots_state = self.init_robots_state
         data = self.data
         with open(os.path.join(self.save_path, file_name), "wb") as f:
-            pickle.dump({"header": header, "data": data}, f)
+            pickle.dump(
+                {
+                    "header": header,
+                    "init_objects_state": init_object_state,
+                    "init_robots_state": init_robots_state,
+                    "data": data,
+                }, f)
         super()._save_record(file_name)

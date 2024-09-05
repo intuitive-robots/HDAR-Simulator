@@ -5,7 +5,7 @@ import numpy as np
 import os
 from gym.spaces import Box as SamplingSpace
 
-from ..SFSimulator import SFSimulator
+from ...SFSimulator import SFSimulator
 from alr_sim.utils.sim_path import sim_framework_path
 from simpub.xr_device.meta_quest3 import MetaQuest3
 from alr_sim.controllers.IKControllers import CartPosQuatImpedenceController
@@ -67,7 +67,7 @@ class MetaQuest3Controller(CartPosQuatImpedenceController):
 
 class BoxPushingSimulator(SFSimulator):
 
-    def __init__(self):
+    def __init__(self, record_mode=True):
         self.box_space = SamplingSpace(
             low=np.array([0.3, -0.3, 0]),
             high=np.array([0.6, 0.3, 0]),
@@ -75,7 +75,9 @@ class BoxPushingSimulator(SFSimulator):
         )
         super().__init__(
             'BoxPushing',
-            host_address="192.168.0.134",
+            # host_address="192.168.0.134",
+            host_address="192.168.0.117",
+            record_mode=True,
         )
 
     def create_robots(self) -> Dict[str, MjRobot]:
@@ -105,7 +107,9 @@ class BoxPushingSimulator(SFSimulator):
 
     def create_controller(self) -> Dict[str, ControllerBase]:
         self.device = MetaQuest3("ALRMetaQuest3")
-        self.device.register_button_trigger_event("X", self.recorder.save_record)
+        self.device.register_button_trigger_event(
+            "X", self.recorder.save_record
+        )
         self.device.register_button_trigger_event("X", self.reset)
         self.controller = MetaQuest3Controller(
             self.device,

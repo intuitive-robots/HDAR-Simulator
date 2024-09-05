@@ -7,9 +7,9 @@ class FancyGymRecorder(Recorder):
         task_name: str,
         save_root_path="./ARHumanDemoData/",
         record_mode=False,
-        record_steps=1,
+        record_step=1,
     ) -> None:
-        super().__init__(task_name, save_root_path, record_mode, record_steps)
+        super().__init__(task_name, save_root_path, record_mode, record_step)
 
     def _save_record(self, file_name):
         pass

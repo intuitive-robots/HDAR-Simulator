@@ -5,7 +5,7 @@ import numpy as np
 import os
 from gym.spaces import Box as SamplingSpace
 
-from ..SFSimulator import SFSimulator
+from ...SFSimulator import SFSimulator
 from alr_sim.utils.sim_path import sim_framework_path
 from simpub.xr_device.meta_quest3 import MetaQuest3
 from alr_sim.controllers.IKControllers import CartPosQuatImpedenceController
@@ -67,7 +67,7 @@ class MetaQuest3Controller(CartPosQuatImpedenceController):
 
 class BoxPickandPlaceSimulator(SFSimulator):
 
-    def __init__(self):
+    def __init__(self, record_mode=True):
         self.box_space = SamplingSpace(
             low=np.array([0.3, -0.3, 0]),
             high=np.array([0.6, 0.3, 0]),
@@ -76,6 +76,7 @@ class BoxPickandPlaceSimulator(SFSimulator):
         super().__init__(
             'BoxPickandPlace',
             host_address="192.168.0.134",
+            record_mode=record_mode,
         )
 
     def create_robots(self) -> Dict[str, MjRobot]:
@@ -123,7 +124,6 @@ class BoxPickandPlaceSimulator(SFSimulator):
         if input_data["X"] is True:
             self.recorder.save_record()
             self.reset()
-                   
 
     def reset(self):
         # return
