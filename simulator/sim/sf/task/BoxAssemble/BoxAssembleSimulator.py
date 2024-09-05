@@ -5,7 +5,7 @@ import numpy as np
 import os
 from gym.spaces import Box as SamplingSpace
 
-from ...SFSimulator import SFSimulator
+from ..SFSimulator import SFSimulator
 from alr_sim.utils.sim_path import sim_framework_path
 from simpub.xr_device.meta_quest3 import MetaQuest3
 from alr_sim.controllers.IKControllers import CartPosQuatImpedenceController
@@ -13,7 +13,6 @@ from alr_sim.sims.mj_beta import MjRobot
 from alr_sim.sims.mj_beta.mj_utils.mj_scene_object import MujocoObject
 from alr_sim.sims.mj_beta.mj_utils.mj_scene_object import CustomMujocoObject
 from ..Collision_finger import Collision_finger , Collision_aim
-import time
 
 class MetaQuest3Controller(CartPosQuatImpedenceController):
 
@@ -68,18 +67,17 @@ class MetaQuest3Controller(CartPosQuatImpedenceController):
         return super().getControl(robot)
 
 
-class BoxPickandPlaceSimulator(SFSimulator):
+class BoxAssembleSimulator(SFSimulator):
 
-    def __init__(self, record_mode=True):
+    def __init__(self):
         self.box_space = SamplingSpace(
             low=np.array([0.3, -0.3, 0]),
             high=np.array([0.6, 0.3, 0]),
             seed=np.random.randint(0, 1000),
         )
         super().__init__(
-            'BoxPickandPlace',
+            'BoxAssemble',
             host_address="192.168.0.134",
-            record_mode=record_mode,
         )
         self.vibration_triggered = False
 
@@ -139,7 +137,7 @@ class BoxPickandPlaceSimulator(SFSimulator):
         replace_rb0_l, replace_rb0_r = self.rb0_finger_collision.get_collisions()
         self.collision_aim = Collision_aim(
         self.mj_scene,
-        target_pairs={('picked_box', 'target_box')},
+        target_pairs={('picked_box', 'target_box0'),('picked_box','target_box1'),('picked_box', 'target_box2'),('picked_box', 'target_box3')},
         )
         replace_aim=self.collision_aim.aim_resultant_force(replace_rb0_l, replace_rb0_r, replace_rb1_l=0, replace_rb1_r=0)
         hand = input_data["right"]
@@ -147,20 +145,22 @@ class BoxPickandPlaceSimulator(SFSimulator):
             if hand["index_trigger"] :
                 if not self.vibration_triggered:
                     self.device.start_vibrate()
-                    time.sleep(0.001)
-                    self.device.stop_vibrate()
+                    
                     print("vibrate because contact with gripping")
                     self.vibration_triggered = True
+                    self.device.stop_vibrate()
                 else: 
-                    print("not vibrate because contact with gripping")
+                    # print("not vibrate because contact with gripping")
                     if replace_aim != 0 :
                         print("collision with enviornment(aim object)")
                         self.device.start_vibrate()
 
             else :
+                self.device.start_vibrate()
                 print("vibrate because contact without gripping")
                 self.vibration_triggered = False
-                # self.device.start_vibrate()
+                self.device.stop_vibrate()
+                # self.device.publish_vibrate()
         
     def put_reset_main_thread(self):
         self.callback_task_list.append(self.reset)               
@@ -205,5 +205,5 @@ class BoxPickandPlaceSimulator(SFSimulator):
 
 
 if __name__ == '__main__':
-    simulator = BoxPickandPlaceSimulator()
+    simulator = BoxAssembleSimulator()
     simulator.run()

@@ -84,6 +84,7 @@ class BoxPushingSimulator(SFSimulator):
         self.push_robot = self.sim_factory.create_robot(
             self.mj_scene,
             xml_path=sim_framework_path("./models/mj/robot/panda_rod.xml"),
+            # dt=0.005,
         )
         return {"push_robot": self.push_robot}
 
@@ -107,10 +108,8 @@ class BoxPushingSimulator(SFSimulator):
 
     def create_controller(self) -> Dict[str, ControllerBase]:
         self.device = MetaQuest3("ALRMetaQuest3")
-        self.device.register_button_trigger_event(
-            "X", self.recorder.save_record
-        )
-        self.device.register_button_trigger_event("X", self.reset)
+        self.device.register_button_trigger_event("X", self.recorder.save_record)
+        self.device.register_button_trigger_event("X", self.put_reset_main_thread)
         self.controller = MetaQuest3Controller(
             self.device,
             fix_rotation=True,
@@ -126,6 +125,9 @@ class BoxPushingSimulator(SFSimulator):
             self.recorder.start_record()
         else:
             self.recorder.stop_record()
+
+    def put_reset_main_thread(self):
+        self.callback_task_list.append(self.reset)
 
     def reset(self):
         # return
