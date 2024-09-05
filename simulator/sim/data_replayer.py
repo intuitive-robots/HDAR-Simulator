@@ -4,12 +4,16 @@ import pickle
 
 class DataReplayer(abc.ABC):
 
+    def __init__(self):
+        self.index = 0
+        self.sequence_length = 0
+
     def load_data(self, data_path: str):
         data = pickle.load(open(data_path, "rb"))
-        self.create_simulation(data)
+        self.create_simulator(data)
 
     @abc.abstractmethod
-    def create_simulation(self):
+    def create_simulator(self):
         pass
 
     def replay_data(self):
@@ -22,4 +26,7 @@ class DataReplayer(abc.ABC):
 
     @abc.abstractmethod
     def replay_step(self):
-        pass
+        self.index += 1
+
+    def isSequenceFinished(self):
+        return self.index >= self.sequence_length
