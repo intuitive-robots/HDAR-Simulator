@@ -5,7 +5,7 @@ import numpy as np
 import os
 from gym.spaces import Box as SamplingSpace
 
-from ...SFSimulator import SFSimulator
+from ..SFSimulator import SFSimulator
 from alr_sim.utils.sim_path import sim_framework_path
 from simpub.xr_device.meta_quest3 import MetaQuest3
 from alr_sim.controllers.IKControllers import CartPosQuatImpedenceController
@@ -13,6 +13,7 @@ from alr_sim.sims.mj_beta import MjRobot
 from alr_sim.sims.mj_beta.mj_utils.mj_scene_object import MujocoObject
 from alr_sim.sims.mj_beta.mj_utils.mj_scene_object import CustomMujocoObject
 from ..Collision_finger import Collision_finger , Collision_aim
+import time
 
 class MetaQuest3Controller(CartPosQuatImpedenceController):
 
@@ -20,21 +21,22 @@ class MetaQuest3Controller(CartPosQuatImpedenceController):
         self,
         device,
         fix_rotation=False,
-        with_hand=True
+        with_hand=True,
+        hand_side="right"
     ):
         super().__init__()
         self.device: MetaQuest3 = device
         self.fix_rotation = fix_rotation
         self.with_hand = with_hand
+        self.hand_side = hand_side
         self.on_control = False
         self.start_pos_offset = None
-       
 
     def getControl(self, robot: MjRobot):
         input_data = self.device.get_input_data()
         if input_data is None:
             return super().getControl(robot)
-        hand = input_data["right"]
+        hand = input_data[self.hand_side]
         if hand["hand_trigger"] is False:
             self.on_control = False
             return super().getControl(robot)
@@ -67,57 +69,62 @@ class MetaQuest3Controller(CartPosQuatImpedenceController):
         return super().getControl(robot)
 
 
-class BoxPickandPlaceSimulator(SFSimulator):
+class OpenDoorSimulator(SFSimulator):
 
-    def __init__(self, record_mode=True):
+    def __init__(self):
         self.box_space = SamplingSpace(
             low=np.array([0.3, -0.3, 0]),
             high=np.array([0.6, 0.3, 0]),
             seed=np.random.randint(0, 1000),
         )
         super().__init__(
-            'BoxPickandPlace',
+            'OpenDoor',
             host_address="192.168.0.134",
-            record_mode=record_mode,
         )
         self.vibration_triggered = False
+        self.on_vibration = False
 
     def create_robots(self) -> Dict[str, MjRobot]:
-        self.pick_robot = self.sim_factory.create_robot(
+        
+        self.pick_robot1 = self.sim_factory.create_robot(
             self.mj_scene,
             xml_path=sim_framework_path("./models/mj/robot/panda.xml"),
-        )
-        return {"pick_robot": self.pick_robot}
+              )
+        
+        return {"pick_robot1": self.pick_robot1}
+        
 
     def create_objects(self) -> Dict[str, MujocoObject]:
-        self.picked_box = CustomMujocoObject(
+        self.picked_Box = CustomMujocoObject(
             object_name="picked_box",
             object_dir_path=os.path.dirname(os.path.abspath(__file__)),
             pos=[0.4, 0, 0.3],
             quat=[0, 0, 0, 1],
         )
-        self.target_box = CustomMujocoObject(
+        self.target_Box = CustomMujocoObject(
             object_name="target_box",
             object_dir_path=os.path.dirname(os.path.abspath(__file__)),
-            pos=[0.4, 0.3, 0.0],
+            pos=[0.4, 0.3, 0.3],
             quat=[0, 0, 0, 1],
         )
+        
         return {
-            "pick_box": self.picked_box,
-            "target_box": self.target_box,
+            "picked_box": self.picked_Box,
+            "target_box": self.target_Box,
+            
         }
 
     def create_controller(self) -> Dict[str, ControllerBase]:
         self.device = MetaQuest3("ALRMetaQuest2")
         self.device.register_button_trigger_event("X", self.recorder.save_record)
         self.device.register_button_trigger_event("X", self.put_reset_main_thread)
-        self.controller = MetaQuest3Controller(
-            self.device,
-            fix_rotation=False,
-            with_hand=True,
-        )
+        self.controller1 = MetaQuest3Controller(self.device, fix_rotation=False, with_hand=True, hand_side="right")
         
-        return {"pick_robot": self.controller}
+
+        return {
+            "pick_robot1": self.controller1,
+        }
+            
 
     def after_step(self):
         input_data = self.device.get_input_data()
@@ -132,36 +139,65 @@ class BoxPickandPlaceSimulator(SFSimulator):
         replace_rb0_r=0
         self.rb0_finger_collision = Collision_finger(
         self.mj_scene,
-        target_pairs1={('picked_box', 'finger1_rb0_tip_collision')},
-        target_pairs2={('picked_box', 'finger2_rb0_tip_collision')}
+        target_pairs1={('picked_handle', 'finger1_rb0_tip_collision')},
+        target_pairs2={('picked_handle', 'finger2_rb0_tip_collision')}
         )
         replace_rb0_l, replace_rb0_r = self.rb0_finger_collision.get_collisions()
-        self.collision_aim = Collision_aim(
-        self.mj_scene,
-        target_pairs={('picked_box', 'target_box')},
-        )
-        replace_aim=self.collision_aim.aim_resultant_force()
-        hand_right = input_data["right"]
-        handright = "right"
-        if (replace_rb0_l != 0 or replace_rb0_r != 0) and hand_right["index_trigger"]:
+        # self.collision_aim = Collision_aim(
+        # self.mj_scene,
+        # target_pairs={},
+        # )
+        # replace_aim=self.collision_aim.aim_resultant_force()
+        hand = input_data["right"]
+        if replace_rb0_l != 0 or replace_rb0_r !=0:
+            if hand["index_trigger"] :
                 if not self.vibration_triggered:
-                    self.device.start_vibration(hand=handright, duration=0.2)
+                    self.device.start_vibrate()
+                    time.sleep(0.01)
+                    print("vibrate because contact with gripping")
                     self.vibration_triggered = True
-                elif replace_aim != 0:
-                    self.device.start_vibration(hand=handright)
+                    self.on_vibration = True
+                    # self.device.stop_vibrate_now()
+                else: 
+                    print("not vibrate because contact with gripping")
+                    if self.on_vibration:
+                        self.device.stop_vibrate_now()
+                        self.on_vibration = False
+                    # if replace_aim != 0 :
+                    #     print("collision with enviornment(aim object)")
+                    #     self.device.start_vibrate()
+                   
 
+            elif not hand["index_trigger"] and self.on_vibration == False:
+                self.device.start_vibrate()
+                # self.device.stop_vibrate_now()
+                print("vibrate because contact without gripping")
+                self.vibration_triggered = False
+                self.on_vibration = True
+                
         else:
-            self.device.stop_vibration(hand=handright)
-            self.vibration_triggered = False
-        
-        
+            if self.on_vibration:
+                self.device.stop_vibrate_now()
+                time.sleep(0.01)
+                self.on_vibration = False
+
+            elif not hand["index_trigger"]:
+                self.vibration_triggered = False
+            
+            
+
+
+                
+                
+
+       
+
     def put_reset_main_thread(self):
-        self.callback_task_list.append(self.reset)               
+        self.callback_task_list.append(self.reset)
 
     def reset(self):
-        # return
+        
         pushed_box_pos = self.box_space.sample()
-        # pushed_box_pos = np.array([np.random.uniform(-0.7,0.7), np.random.uniform(-0.5,0.5), 0])
         pushed_box_euler = np.array([np.random.uniform(-180, 180), 0, 0])
         pushed_box_quat = R.from_euler("xyz", pushed_box_euler).as_quat()
         self.mj_scene.set_obj_pos_and_quat(
@@ -169,35 +205,33 @@ class BoxPickandPlaceSimulator(SFSimulator):
             new_quat=pushed_box_quat,
             obj_name="picked_box",
         )
-        while True:
-            target_box_pos = self.box_space.sample()
-            if 0.2 < np.linalg.norm(
-                np.array(target_box_pos) - np.array(pushed_box_pos)
-            ) < 0.5 :
-                break
-        target_box_euler = np.array([np.random.uniform(-180, 180), 0, 0])
-        target_box_quat = R.from_euler("xyz", target_box_euler).as_quat()
+        
+        target_box_quat = R.from_euler("xyz", pushed_box_euler).as_quat()
+        target_box_pos= pushed_box_pos+np.array([0,0,0.06])
         self.mj_scene.set_obj_pos_and_quat(
             new_pos=target_box_pos,
             new_quat=target_box_quat,
             obj_name="target_box",
         )
-        self.pick_robot.gotoCartPositionAndQuat(
-            desiredPos=[pushed_box_pos[0], pushed_box_pos[1], 0.3],
+        self.pick_robot1.gotoCartPositionAndQuat(
+            desiredPos=[self.picked_Box.pos[0], self.picked_Box.pos[1], 0.3],
             desiredQuat=[0, 1, 0, 0],
             duration=2.0,
         )
-        self.pick_robot.gotoCartPositionAndQuat(
-            desiredPos=[pushed_box_pos[0], pushed_box_pos[1], 0.15],
+        self.pick_robot1.gotoCartPositionAndQuat(
+            desiredPos=[self.picked_Box.pos[0], self.picked_Box.pos[1], 0.13],
             desiredQuat=[0, 1, 0, 0],
             duration=2.0,
         )
-        self.pick_robot.activeController = self.controller
-        self.controller.setSetPoint(
-            np.hstack((self.pick_robot.current_c_pos_global, [0, 1, 0, 0]))
+      
+        self.pick_robot1.activeController = self.controller1
+        
+        self.controller1.setSetPoint(
+            np.hstack((self.pick_robot1.current_c_pos_global, [0, 1, 0, 0]))
         )
+        
 
 
 if __name__ == '__main__':
-    simulator = BoxPickandPlaceSimulator()
+    simulator = OpenDoorSimulator()
     simulator.run()

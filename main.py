@@ -12,7 +12,22 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "-t", choices=['BoxPushingSimulator'], default='BoxPushingSimulator'
+# #Test Task:
+        # "-t", choices=['BoxPushingSimulator'], default='BoxPushingSimulator'
+
+# #Single-Arm Task:
+        # "-t", choices=['OpenDrawerSimulator'], default='OpenDrawerSimulator'
+        # "-t", choices=['OpenDoorSimulator'], default='OpenDoorSimulator'
+        # "-t", choices=['BoxPushSimulator'], default='BoxPushSimulator'
+        # "-t", choices=['BoxAssembleSimulator'], default='BoxAssembleSimulator'
+        # "-t", choices=['BoxPickandPlaceSimulator'], default='BoxPickandPlaceSimulator'
+        
+# #Dual-Arm Task:    
+        "-t", choices=['BimanualAssembleSimulator'], default='BimanualAssembleSimulator'
+        # "-t", choices=['BimanualPushingSimulator'], default='BimanualPushingSimulator'
+        # "-t", choices=['BimanualHoldingSimulator'], default='BimanualHoldingSimulator'
+        # "-t", choices=['BimanualPutIteminDrawSimulator'], default='BimanualPutIteminDrawSimulator'
+    
     )
     # parser.add_argument("-i",)
     args = parser.parse_args()

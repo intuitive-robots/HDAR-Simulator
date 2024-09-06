@@ -12,7 +12,8 @@ from alr_sim.controllers.IKControllers import CartPosQuatImpedenceController
 from alr_sim.sims.mj_beta import MjRobot
 from alr_sim.sims.mj_beta.mj_utils.mj_scene_object import MujocoObject
 from alr_sim.sims.mj_beta.mj_utils.mj_scene_object import CustomMujocoObject
-
+from ..Collision_finger import Collision_finger , Collision_aim
+import time
 
 class MetaQuest3Controller(CartPosQuatImpedenceController):
 
@@ -28,6 +29,7 @@ class MetaQuest3Controller(CartPosQuatImpedenceController):
         self.with_hand = with_hand
         self.on_control = False
         self.start_pos_offset = None
+       
 
     def getControl(self, robot: MjRobot):
         input_data = self.device.get_input_data()
@@ -45,27 +47,28 @@ class MetaQuest3Controller(CartPosQuatImpedenceController):
             self.on_control = True
         # pos and quat offsets
         desired_pos = np.array(hand["pos"]) + self.start_pos_offset
-        desired_pos[2] = 0.13
         desired_pos_local = robot._localize_cart_pos(desired_pos)
-        if self.fix_rotation:
+        if self.fix_rotation==True:
             desired_quat_local = np.array([0, 1, 0, 0])
+            desired_pos[2] = 0.13
         else:
             desired_quat = hand["rot"]
-            rot = R.from_quat(desired_quat) * R.from_euler(
-                "xyz", [-180, 0, 180], True
-            )
-            desired_quat = rot.as_quat(scalar_first=True)
-            desired_pos_local = robot._localize_cart_quat(desired_quat)
-        # if self.with_hand:
-        #     if hand["index_trigger"]:
-        #         robot.close_fingers(duration=0.0)
-        #     else:
-        #         robot.open_fingers()
+        rot = R.from_quat(desired_quat) * R.from_euler(
+            "xyz", [-180, 0, 180], True
+        )
+        desired_quat = rot.as_quat(scalar_first=True)
+        desired_quat_local = robot._localize_cart_quat(desired_quat)
+
+        if self.with_hand:
+            if hand["index_trigger"]:
+                robot.close_fingers(duration=0.0)
+            else:
+                robot.open_fingers()
         self.setSetPoint(np.hstack((desired_pos_local, desired_quat_local)))
         return super().getControl(robot)
 
 
-class BoxPushingSimulator(SFSimulator):
+class BoxPushSimulator(SFSimulator):
 
     def __init__(self, record_mode=True):
         self.box_space = SamplingSpace(
@@ -74,19 +77,17 @@ class BoxPushingSimulator(SFSimulator):
             seed=np.random.randint(0, 1000),
         )
         super().__init__(
-            'BoxPushing',
+            'BoxPushingwithFeedback',
             host_address="192.168.0.134",
-            # host_address="192.168.0.117",
-            record_mode=record_mode,
         )
+        self.vibration_triggered = False
 
     def create_robots(self) -> Dict[str, MjRobot]:
-        self.push_robot = self.sim_factory.create_robot(
+        self.pick_robot = self.sim_factory.create_robot(
             self.mj_scene,
-            xml_path=sim_framework_path("./models/mj/robot/panda_rod.xml"),
-            # dt=0.005,
+            xml_path=sim_framework_path("./models/mj/robot/panda.xml"),
         )
-        return {"push_robot": self.push_robot}
+        return {"pick_robot": self.pick_robot}
 
     def create_objects(self) -> Dict[str, MujocoObject]:
         self.pushed_box = CustomMujocoObject(
@@ -112,10 +113,11 @@ class BoxPushingSimulator(SFSimulator):
         self.device.register_button_trigger_event("X", self.put_reset_main_thread)
         self.controller = MetaQuest3Controller(
             self.device,
-            fix_rotation=True,
-            with_hand=False,
+            fix_rotation=False,
+            with_hand=True,
         )
-        return {"push_robot": self.controller}
+        
+        return {"pick_robot": self.controller}
 
     def after_step(self):
         input_data = self.device.get_input_data()
@@ -125,9 +127,32 @@ class BoxPushingSimulator(SFSimulator):
             self.recorder.start_record()
         else:
             self.recorder.stop_record()
-
+        
+        replace_rb0_l=0
+        replace_rb0_r=0
+        self.rb0_finger_collision = Collision_finger(
+        self.mj_scene,
+        target_pairs1={
+            ('pushed_box_a', 'finger1_rb0_tip_collision'),
+            ('pushed_box_b', 'finger1_rb0_tip_collision'),
+                       },
+        target_pairs2={
+            ('pushed_box_a', 'finger2_rb0_tip_collision'),
+            ('pushed_box_b', 'finger2_rb0_tip_collision'),
+            }
+        )
+        replace_rb0_l, replace_rb0_r = self.rb0_finger_collision.get_collisions()
+        
+        # hand input_data["right"]
+        if (replace_rb0_l != 0 or replace_rb0_r !=0) :
+            self.device.start_vibration()
+ 
+        else:
+            self.device.stop_vibration()
+        
+        
     def put_reset_main_thread(self):
-        self.callback_task_list.append(self.reset)
+        self.callback_task_list.append(self.reset)               
 
     def reset(self):
         # return
@@ -152,22 +177,22 @@ class BoxPushingSimulator(SFSimulator):
             new_quat=target_box_quat,
             obj_name="target_box",
         )
-        self.push_robot.gotoCartPositionAndQuat(
-            desiredPos=[pushed_box_pos[0], pushed_box_pos[1], 0.3],
+        self.pick_robot.gotoCartPositionAndQuat(
+            desiredPos=[pushed_box_pos[0]-0.1, pushed_box_pos[1], 0.6],
             desiredQuat=[0, 1, 0, 0],
             duration=2.0,
         )
-        self.push_robot.gotoCartPositionAndQuat(
-            desiredPos=[pushed_box_pos[0], pushed_box_pos[1], 0.13],
+        self.pick_robot.gotoCartPositionAndQuat(
+            desiredPos=[pushed_box_pos[0]-0.1, pushed_box_pos[1], 0.4],
             desiredQuat=[0, 1, 0, 0],
             duration=2.0,
         )
-        self.push_robot.activeController = self.controller
+        self.pick_robot.activeController = self.controller
         self.controller.setSetPoint(
-            np.hstack((self.push_robot.current_c_pos_global, [0, 1, 0, 0]))
+            np.hstack((self.pick_robot.current_c_pos, [0, 1, 0, 0]))
         )
 
 
 if __name__ == '__main__':
-    simulator = BoxPushingSimulator()
+    simulator = BoxPushSimulator()
     simulator.run()

@@ -15,7 +15,7 @@ class SFSimulator(abc.ABC):
     def __init__(
         self,
         task_name: str,
-        record_mode=True,
+        record_mode=False,
         host_address="127.0.0.1",
     ):
         # TODO: why init_net cannot be started firstly?

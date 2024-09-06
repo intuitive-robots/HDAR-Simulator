@@ -5,7 +5,7 @@ import numpy as np
 import os
 from gym.spaces import Box as SamplingSpace
 
-from ..SFSimulator import SFSimulator
+from ...SFSimulator import SFSimulator
 from alr_sim.utils.sim_path import sim_framework_path
 from simpub.xr_device.meta_quest3 import MetaQuest3
 from alr_sim.controllers.IKControllers import CartPosQuatImpedenceController
@@ -69,7 +69,7 @@ class MetaQuest3Controller(CartPosQuatImpedenceController):
 
 class BoxAssembleSimulator(SFSimulator):
 
-    def __init__(self):
+    def __init__(self, record_mode=True):
         self.box_space = SamplingSpace(
             low=np.array([0.3, -0.3, 0]),
             high=np.array([0.6, 0.3, 0]),
@@ -78,6 +78,7 @@ class BoxAssembleSimulator(SFSimulator):
         super().__init__(
             'BoxAssemble',
             host_address="192.168.0.134",
+            record_mode=record_mode,
         )
         self.vibration_triggered = False
 
@@ -107,7 +108,7 @@ class BoxAssembleSimulator(SFSimulator):
         }
 
     def create_controller(self) -> Dict[str, ControllerBase]:
-        self.device = MetaQuest3("ALRMetaQuest3")
+        self.device = MetaQuest3("ALRMetaQuest2")
         self.device.register_button_trigger_event("X", self.recorder.save_record)
         self.device.register_button_trigger_event("X", self.put_reset_main_thread)
         self.controller = MetaQuest3Controller(
@@ -139,28 +140,19 @@ class BoxAssembleSimulator(SFSimulator):
         self.mj_scene,
         target_pairs={('picked_box', 'target_box0'),('picked_box','target_box1'),('picked_box', 'target_box2'),('picked_box', 'target_box3')},
         )
-        replace_aim=self.collision_aim.aim_resultant_force(replace_rb0_l, replace_rb0_r, replace_rb1_l=0, replace_rb1_r=0)
-        hand = input_data["right"]
-        if replace_rb0_l != 0 or replace_rb0_r !=0:
-            if hand["index_trigger"] :
+        replace_aim=self.collision_aim.aim_resultant_force()
+        hand_right = input_data["right"]
+        handright = "right"
+        if (replace_rb0_l != 0 or replace_rb0_r != 0) and hand_right["index_trigger"]:
                 if not self.vibration_triggered:
-                    self.device.start_vibrate()
-                    
-                    print("vibrate because contact with gripping")
+                    self.device.start_vibration(hand=handright, duration=0.2)
                     self.vibration_triggered = True
-                    self.device.stop_vibrate()
-                else: 
-                    # print("not vibrate because contact with gripping")
-                    if replace_aim != 0 :
-                        print("collision with enviornment(aim object)")
-                        self.device.start_vibrate()
+                elif replace_aim != 0:
+                    self.device.start_vibration(hand=handright)
 
-            else :
-                self.device.start_vibrate()
-                print("vibrate because contact without gripping")
-                self.vibration_triggered = False
-                self.device.stop_vibrate()
-                # self.device.publish_vibrate()
+        else:
+            self.device.stop_vibration(hand=handright)
+            self.vibration_triggered = False
         
     def put_reset_main_thread(self):
         self.callback_task_list.append(self.reset)               
@@ -189,12 +181,12 @@ class BoxAssembleSimulator(SFSimulator):
             obj_name="target_box",
         )
         self.pick_robot.gotoCartPositionAndQuat(
-            desiredPos=[pushed_box_pos[0], pushed_box_pos[1], 0.3],
+            desiredPos=[pushed_box_pos[0], pushed_box_pos[1], 0.4],
             desiredQuat=[0, 1, 0, 0],
             duration=2.0,
         )
         self.pick_robot.gotoCartPositionAndQuat(
-            desiredPos=[pushed_box_pos[0], pushed_box_pos[1], 0.13],
+            desiredPos=[pushed_box_pos[0], pushed_box_pos[1], 0.2],
             desiredQuat=[0, 1, 0, 0],
             duration=2.0,
         )

@@ -31,17 +31,21 @@ class SFReplayerJointController(JointPDController):
         demonstration: Demonstration,
         robot: MjRobot,
         robot_name: str,
-        downsample_steps: float = 50,
+        downsample_steps: float = 10,
     ):
         super().__init__()
         self.demonstration = demonstration
         self.sequence_length = len(demonstration["data"])
         robot_data = np.zeros((self.sequence_length, 7))
+        gripper_width_array = np.zeros(self.sequence_length)
         self.timer = 0
         self.index = 0
         for index, frame in enumerate(demonstration["data"]):
             robot_data[index, :] = np.array(frame[robot_name]["joint_pos"])
+            gripper_width_array[index] = frame[robot_name].get("gripper_width", 0)
+
         self.robot_data = robot_data
+        self.gripper_width = gripper_width_array
         self.downsample_steps = downsample_steps
         self.robot = robot
 
@@ -50,10 +54,15 @@ class SFReplayerJointController(JointPDController):
             self.desired_joint_pos = self.robot_data[self.index]
             # self.desired_joint_vel = self.desired_joint_vel_array[self.index]
             # self.desired_joint_acc = self.desired_joint_acc_array[self.index]
-            # if self.gripper_width_array[self.index] <= 0.075:
-            #     robot.close_fingers(duration=0)
-            # else:
-            #     robot.open_fingers()
+
+        #TODO grip in replay
+            if self.gripper_width[self.index] <= 0.035:
+                # robot.close_fingers(duration=0)
+                gripper_width = self.gripper_width[self.index]
+                robot.set_desired_gripper_width(desired_width = gripper_width)
+                robot.close_fingers(duration=0.0)
+            else:
+                robot.open_fingers()
             self.index += 1
             print(f"Index: {self.index}")
         self.timer += 1

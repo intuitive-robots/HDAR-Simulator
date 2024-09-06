@@ -13,6 +13,7 @@ from alr_sim.sims.mj_beta import MjRobot
 from alr_sim.sims.mj_beta.mj_utils.mj_scene_object import MujocoObject
 from alr_sim.sims.mj_beta.mj_utils.mj_scene_object import CustomMujocoObject
 from ..Collision_finger import Collision_finger , Collision_aim
+import time
 
 class MetaQuest3Controller(CartPosQuatImpedenceController):
 
@@ -68,7 +69,7 @@ class MetaQuest3Controller(CartPosQuatImpedenceController):
         return super().getControl(robot)
 
 
-class BimanualSameObjectSimulator(SFSimulator):
+class OpenDrawerSimulator(SFSimulator):
 
     def __init__(self):
         self.box_space = SamplingSpace(
@@ -77,62 +78,59 @@ class BimanualSameObjectSimulator(SFSimulator):
             seed=np.random.randint(0, 1000),
         )
         super().__init__(
-            'BimanualSameObject',
+            'OpenDrawer',
             host_address="192.168.0.134",
         )
         self.vibration_triggered = False
+        self.on_vibration = False
 
     def create_robots(self) -> Dict[str, MjRobot]:
         
         self.pick_robot1 = self.sim_factory.create_robot(
             self.mj_scene,
             xml_path=sim_framework_path("./models/mj/robot/panda.xml"),
-            base_position = [0.0, 0.30, 0.0]
-        )
-        self.pick_robot2 = self.sim_factory.create_robot(
-            self.mj_scene,
-            xml_path=sim_framework_path("./models/mj/robot/panda.xml"),
-            base_position = [0.0, -0.30, 0.0]
-        )
-        return {"pick_robot1": self.pick_robot1, "pick_robot2": self.pick_robot2}
+              )
+        
+        return {"pick_robot1": self.pick_robot1}
         
 
     def create_objects(self) -> Dict[str, MujocoObject]:
-        self.picked_Sphere = CustomMujocoObject(
-            object_name="picked_Sphere",
+        self.picked_Box = CustomMujocoObject(
+            object_name="picked_box",
             object_dir_path=os.path.dirname(os.path.abspath(__file__)),
             pos=[0.4, 0, 0.3],
             quat=[0, 0, 0, 1],
         )
-        self.target_Sphere = CustomMujocoObject(
-            object_name="target_Sphere",
+        self.target_Box = CustomMujocoObject(
+            object_name="target_box",
             object_dir_path=os.path.dirname(os.path.abspath(__file__)),
-            pos=[0.4, 0.3, 0.0],
+            pos=[0.4, 0.3, 0.3],
             quat=[0, 0, 0, 1],
         )
+        
         return {
-            "pick_Sphere": self.picked_Sphere,
-            "target_Sphere": self.target_Sphere,
+            "picked_box": self.picked_Box,
+            "target_box": self.target_Box,
+            
         }
 
     def create_controller(self) -> Dict[str, ControllerBase]:
-        self.device = MetaQuest3("ALRMetaQuest3")
+        self.device = MetaQuest3("ALRMetaQuest2")
         self.device.register_button_trigger_event("X", self.recorder.save_record)
         self.device.register_button_trigger_event("X", self.put_reset_main_thread)
         self.controller1 = MetaQuest3Controller(self.device, fix_rotation=False, with_hand=True, hand_side="right")
-        self.controller2 = MetaQuest3Controller(self.device, fix_rotation=False, with_hand=True, hand_side="left")
+        
 
         return {
             "pick_robot1": self.controller1,
-            "pick_robot2": self.controller2
         }
+            
 
     def after_step(self):
         input_data = self.device.get_input_data()
         if input_data is None:
             return
         elif input_data["right"]["hand_trigger"] is True:
-        # elif input_data["hand_trigger"] is True:
             self.recorder.start_record()
         else:
             self.recorder.stop_record()
@@ -141,115 +139,65 @@ class BimanualSameObjectSimulator(SFSimulator):
         replace_rb0_r=0
         self.rb0_finger_collision = Collision_finger(
         self.mj_scene,
-        target_pairs1={('picked_Sphere', 'finger1_rb0_tip_collision')},
-        target_pairs2={('picked_Sphere', 'finger2_rb0_tip_collision')}
+        target_pairs1={('picked_handle', 'finger1_rb0_tip_collision')},
+        target_pairs2={('picked_handle', 'finger2_rb0_tip_collision')}
         )
         replace_rb0_l, replace_rb0_r = self.rb0_finger_collision.get_collisions()
-        replace_rb1_l=0
-        replace_rb1_r=0
-        self.rb1_finger_collision = Collision_finger(
-        self.mj_scene,
-        target_pairs1={('picked_Sphere', 'finger1_rb1_tip_collision')},
-        target_pairs2={('picked_Sphere', 'finger2_rb1_tip_collision')}
-        )
-        replace_rb1_l, replace_rb1_r = self.rb1_finger_collision.get_collisions()
-        self.collision_aim = Collision_aim(
-        self.mj_scene,
-        target_pairs={('picked_Sphere', 'target_Sphere')},
-        )
-        replace_aim=self.collision_aim.aim_resultant_force(replace_rb0_l, replace_rb0_r, replace_rb1_l, replace_rb1_r)
-        hand_right = input_data["right"]
-        while replace_rb0_l != 0 or replace_rb0_r !=0:
-            if hand_right["index_trigger"] :
-                if not self.vibration_triggered:
-                    # self.device.start_vibrate()
-                    print("vibrate because contact with gripping")
-                    self.vibration_triggered = True
-                else: 
-                    print("not vibrate because contact with gripping")
-                    if replace_aim != 0 :
-                        print("collision with enviornment(aim object)")
-            else :
-                print("vibrate because contact without gripping")
-                self.vibration_triggered = False
-                self.device.start_vibrate()
-                # self.device.publish_vibrate()
+        # self.collision_aim = Collision_aim(
+        # self.mj_scene,
+        # target_pairs={},
+        # )
+        # replace_aim=self.collision_aim.aim_resultant_force(replace_rb0_l, replace_rb0_r, replace_rb1_l=0, replace_rb1_r=0)
+        hand = input_data["right"]
+        if (replace_rb0_l != 0 or replace_rb0_r !=0) :
+            self.device.start_vibration()
+     
 
-        hand_left = input_data["left"]
-        while replace_rb1_l != 0 or replace_rb1_r !=0:
-            if hand_left["index_trigger"] :
-                if not self.vibration_triggered:
-                    self.device.start_vibrate_left()
-                    print("vibrate because contact with gripping")
-                    self.vibration_triggered = True
-                else: 
-                    print("not vibrate because contact with gripping")
-                    if replace_aim != 0 :
-                        print("collision with enviornment(aim object)")
-                        # self.device.start_vibrate()
-            else :
-                print("vibrate because contact without gripping")
-                self.vibration_triggered = False
-                # self.device.publish_vibrate()
-                self.device.start_vibrate_left()
+        else:
+            self.device.stop_vibration()
+
+              
 
     def put_reset_main_thread(self):
         self.callback_task_list.append(self.reset)
 
     def reset(self):
-        # return
+        
         pushed_box_pos = self.box_space.sample()
         pushed_box_euler = np.array([np.random.uniform(-180, 180), 0, 0])
         pushed_box_quat = R.from_euler("xyz", pushed_box_euler).as_quat()
         self.mj_scene.set_obj_pos_and_quat(
             new_pos=pushed_box_pos,
             new_quat=pushed_box_quat,
-            obj_name="picked_Sphere",
+            obj_name="picked_box",
         )
-        while True:
-            target_box_pos = self.box_space.sample()
-            if np.linalg.norm(
-                np.array(target_box_pos) - np.array(pushed_box_pos)
-            ) > 0.2:
-                break
-        target_box_euler = np.array([np.random.uniform(-180, 180), 0, 0])
-        target_box_quat = R.from_euler("xyz", target_box_euler).as_quat()
+        
+        target_box_quat = R.from_euler("xyz", pushed_box_euler).as_quat()
+        target_box_pos= pushed_box_pos+np.array([0,0,0.06])
         self.mj_scene.set_obj_pos_and_quat(
             new_pos=target_box_pos,
             new_quat=target_box_quat,
-            obj_name="target_Sphere",
+            obj_name="target_box",
         )
         self.pick_robot1.gotoCartPositionAndQuat(
-            desiredPos=[self.picked_Sphere.pos[0], self.picked_Sphere.pos[1], 0.3],
+            desiredPos=[self.picked_Box.pos[0], self.picked_Box.pos[1], 0.3],
             desiredQuat=[0, 1, 0, 0],
             duration=2.0,
         )
         self.pick_robot1.gotoCartPositionAndQuat(
-            desiredPos=[self.picked_Sphere.pos[0], self.picked_Sphere.pos[1], 0.13],
+            desiredPos=[self.picked_Box.pos[0], self.picked_Box.pos[1], 0.13],
             desiredQuat=[0, 1, 0, 0],
             duration=2.0,
         )
-        self.pick_robot2.gotoCartPositionAndQuat(
-            desiredPos=[self.target_Sphere.pos[0], self.target_Sphere.pos[1], 0.13],
-            desiredQuat=[0, 1, 0, 0],
-            duration=2.0,
-        )
-        self.pick_robot2.gotoCartPositionAndQuat(
-            desiredPos=[self.target_Sphere.pos[0], self.target_Sphere.pos[1], 0.13],
-            desiredQuat=[0, 1, 0, 0],
-            duration=2.0,
-        )
+      
         self.pick_robot1.activeController = self.controller1
-        self.pick_robot2.activeController = self.controller2
-
+        
         self.controller1.setSetPoint(
             np.hstack((self.pick_robot1.current_c_pos_global, [0, 1, 0, 0]))
         )
-        self.controller2.setSetPoint(
-            np.hstack((self.pick_robot2.current_c_pos_global, [0, 1, 0, 0]))
-        )
+        
 
 
 if __name__ == '__main__':
-    simulator = BimanualSameObjectSimulator()
+    simulator = OpenDrawerSimulator()
     simulator.run()

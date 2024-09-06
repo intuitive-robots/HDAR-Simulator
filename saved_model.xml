@@ -155,16 +155,17 @@
         <geom size="0.49 0.98 0.4" type="box" solref="0.002" solimp="0.999 0.999" rgba="0 0 0 0"/>
       </body>
     </body>
-    <body name="picked_Sphere" pos="0.4 0 0.3" quat="0 0 0 1">
-      <joint name="picked_Sphere_joint" type="free" limited="false" actuatorfrclimited="false"/>
-      <geom name="picked_Sphere" size="0.1" pos="0 0 0.05" priority="1" friction="0.3 0.001" mass="0.05" rgba="1 0 0 1"/>
-      <geom size="0.05 0.05 0.045" pos="0.05 0 0.0485" type="box" mass="0.001" rgba="0 0 1 1"/>
-      <geom size="0.05 0.05 0.045" pos="0 0.05 0.0485" type="box" mass="0.001" rgba="1 0 0 1"/>
-      <geom size="0.05 0.05 0.045" pos="-0.05 0 0.0485" type="box" mass="0.001" rgba="1 0 0 1"/>
-      <geom size="0.05 0.05 0.045" pos="0 -0.05 0.0485" type="box" mass="0.001" rgba="1 0 0 1"/>
+    <body name="picked_box" pos="0.3 0.2 0" quat="0 0 0 1">
+      <joint name="picked_box_joint" type="free" limited="false" actuatorfrclimited="false"/>
+      <geom name="picked_box" size="0.03 0.03 0.05" type="box" priority="1" friction="0.3 0.3 0.3" mass="0.03" rgba="1 0 0 1"/>
     </body>
-    <body name="target_Sphere" pos="0.4 0.3 0" quat="0 0 0 1">
-      <geom name="target_Sphere" size="0.15" pos="0 -0.3 0.4" contype="0" conaffinity="0" mass="0.01" rgba="0 1 0.5 1"/>
+    <body name="target_box" pos="0.3 -0.2 0" quat="0 0 0 1">
+      <joint name="target_box_joint" type="free" limited="false" actuatorfrclimited="false"/>
+      <geom name="handle_box" size="0.05 0.02 0.02" pos="0.265 0.064 0.02" type="box" friction="0.3 0.3 0.3" mass="0.01" rgba="1 0 0 1"/>
+      <geom name="target_box0" size="0.064 0.032 0.04" pos="0.1 0 0.02" type="box" mass="0.01" rgba="0.5 0 0.5 1"/>
+      <geom name="target_box1" size="0.032 0.064 0.04" pos="0.068 0.096 0.02" type="box" mass="0.01" rgba="0.5 0 0.5 1"/>
+      <geom name="target_box2" size="0.032 0.064 0.04" pos="0.196 0.032 0.02" type="box" mass="0.01" rgba="0.5 0 0.5 1"/>
+      <geom name="target_box3" size="0.064 0.032 0.04" pos="0.164 0.128 0.02" type="box" mass="0.01" rgba="0.5 0 0.5 1"/>
     </body>
     <body name="panda_rb0_link0" pos="0 0.3 0">
       <inertial pos="-0.0291898 -0.000879465 0.0566032" quat="0.00411744 0.564916 0.0132875 0.825031" mass="3.01399" diaginertia="0.0126801 0.0117603 0.00856656"/>
