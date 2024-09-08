@@ -1,5 +1,0 @@
-host_name: ALRMetaQuest3
-
-controllers:
-  push_robot: MetaQuest3Controller
-  

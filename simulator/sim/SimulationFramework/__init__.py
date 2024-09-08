@@ -1,4 +1,0 @@
-from .BoxPushing.BoxPushingSimulator import BoxPushingSimulator
-from .BoxPickandPlace.BoxPickandPlaceSimulator import BoxPickandPlaceSimulator
-from .BimanualSameObject.SameObjectHold import BimanualSameObjectSimulator
-from .BoxAssemble.BoxAssembleSimulator import BoxAssembleSimulator

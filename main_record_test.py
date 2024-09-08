@@ -6,7 +6,7 @@
 #     simulator.Simulation(**simulator_config).run()
 
 import argparse
-from simulator.sim.sf.task import sf_task_factory
+from hdar_simulator.sim.sf.task import sf_task_factory
 
 if __name__ == '__main__':
 
