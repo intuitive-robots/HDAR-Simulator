@@ -8,8 +8,8 @@
 import argparse
 import os
 
-from hdar_simulator.sf.task import sf_task_factory
-from hdar_simulator.sf.sf_replayer import SFReplayer
+from hdar_simulator._simulationframework.task import sf_task_factory
+from hdar_simulator._simulationframework.sf_replayer import SFReplayer
 
 if __name__ == '__main__':
 

@@ -6,7 +6,7 @@ import os
 import mujoco
 
 from fancy_gym.envs.mujoco.box_pushing.box_pushing_env import BoxPushingEnvBase
-from ..sf.sf_simulator import FancyGemSimulator
+from .._simulationframework.sf_simulator import FancyGemSimulator
 
 
 class PandaPDController:

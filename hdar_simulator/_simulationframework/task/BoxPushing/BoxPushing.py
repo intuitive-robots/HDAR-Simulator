@@ -12,7 +12,7 @@ from alr_sim.sims.mj_beta.mj_utils.mj_scene_object import MujocoObject
 from alr_sim.sims.mj_beta.mj_utils.mj_scene_object import CustomMujocoObject
 
 
-class BoxPushingSimulator(SFSimulator):
+class BoxPushing(SFSimulator):
 
     def __init__(self, host_address=None):
         self.box_space = SamplingSpace(

@@ -9,6 +9,9 @@ import threading
 
 from simpub.core.log import logger
 
+ObjectData = Dict[str, List[float]]
+FrameData = Dict[str, ObjectData]
+
 
 @dataclass
 class RecordDataHeader:
@@ -79,7 +82,7 @@ class Recorder(abc.ABC):
         self,
         task_name: str,
         save_root_path: str,
-        record_mode: bool,
+        # record_mode: bool,
         skip_step: int,
     ) -> None:
         super().__init__()
@@ -91,7 +94,7 @@ class Recorder(abc.ABC):
             f"{task_name}_{record_time}")
         if not os.path.exists(self.save_path):
             os.makedirs(self.save_path)
-        self.record_mode = record_mode
+        # self.record_mode = record_mode
         self.skip_step = skip_step
         # recording flag
         self.on_recording = False
@@ -101,7 +104,9 @@ class Recorder(abc.ABC):
         self.skip_counter = 0
 
     def start_record(self):
-        if not self.record_mode or self.on_recording:
+        # if not self.record_mode or self.on_recording:
+        #     return
+        if self.on_recording:
             return
         logger.info("Start recording")
         self._start_record()
@@ -109,14 +114,16 @@ class Recorder(abc.ABC):
         self.on_recording = True
 
     def stop_record(self):
-        if not self.record_mode or not self.on_recording:
+        # if not self.record_mode or not self.on_recording:
+        #     return
+        if not self.on_recording:
             return
         logger.info("Stop recording")
         self.on_recording = False
 
     def save_record(self):
-        if not self.record_mode:
-            return
+        # if not self.record_mode:
+        #     return
         if self.saving_thread is not None:
             return
         self.stop_record()
@@ -141,7 +148,9 @@ class Recorder(abc.ABC):
         raise NotImplementedError
 
     def record(self):
-        if not self.record_mode or not self.on_recording:
+        # if not self.record_mode or not self.on_recording:
+        #     return
+        if not self.on_recording:
             return
         self.skip_counter += 1
         if self.skip_counter % self.skip_step == 0:

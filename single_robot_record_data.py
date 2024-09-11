@@ -1,15 +1,17 @@
 import argparse
-from hdar_simulator.sf import sf_task_factory
-from hdar_simulator.sf import SFRecorder
-from hdar_simulator.sf import MetaQuest3Controller
+import yaml
 
+from hdar_simulator._simulationframework import sf_task_factory
+from hdar_simulator._simulationframework import SFRecorder
+from hdar_simulator._simulationframework import MetaQuest3Controller
+from hdar_simulator._simulationframework import SFSimulator
 from simpub.xr_device.meta_quest3 import MetaQuest3
 
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "-t", default='BoxPushingSimulator'
+        "-t", default='BoxPushing'
     )
     parser.add_argument(
         "--host", default='127.0.0.1'
@@ -17,9 +19,14 @@ if __name__ == '__main__':
     parser.add_argument("-i", default='meta_quest3')
     args = parser.parse_args()
 
-    simulator = sf_task_factory(args.t, host_address=args.host)
+    simulator: SFSimulator = sf_task_factory(args.t, host_address=args.host)
     recorder = SFRecorder(simulator)
-
+    controller_config = yaml.safe_load(
+        open(
+            "./hdar_simulator/_simulationframework/task/" +
+            f"{args.t}/controller.yaml", "r"
+        )
+    )
     if args.i == 'meta_quest3':
         meta_quest3 = MetaQuest3("ALRMetaQuest3")
         meta_quest3.register_button_press_event("X", recorder.save_record)
@@ -34,8 +41,7 @@ if __name__ == '__main__':
         )
         meta_controller = MetaQuest3Controller(
             meta_quest3,
-            fix_rotation=True,
-            with_hand=False,
+            **controller_config["meta_quest3"],
         )
         simulator.assign_controller({"panda_robot": meta_controller})
     else:

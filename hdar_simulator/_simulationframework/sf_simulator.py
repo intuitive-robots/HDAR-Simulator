@@ -3,6 +3,7 @@ import queue
 from typing import Dict, Any
 from typing import Callable, Tuple
 
+from alr_sim.core.Scene import Scene
 from alr_sim.sims.mj_beta import MjRobot
 from alr_sim.sims.mj_beta import MjScene
 from alr_sim.controllers import ControllerBase
@@ -18,7 +19,7 @@ class SFSimulator(abc.ABC):
     def __init__(
         self,
         task_name: str,
-        host_address: str,
+        host_address: str = None,
     ):
         # NOTE: for all the possible simulator
         self.task_name = task_name
@@ -28,12 +29,21 @@ class SFSimulator(abc.ABC):
         self.robot_dict = self.create_robots()
         self.task_queue: TaskQueue = TaskQueue()
         self.mj_scene.start()
-        self.publisher = SFPublisher(self.mj_scene, host_address)
+        if host_address is not None:
+            self.publisher = SFPublisher(self.mj_scene, host_address)
 
-    def create_scene(self) -> MjScene:
+    def create_scene(
+        self,
+        dt=0.001,
+        render=Scene.RenderMode.HUMAN,
+        surrounding=None,
+    ) -> MjScene:
         self.object_dict = self.create_objects()
         return self.sim_factory.create_scene(
             object_list=self.object_dict.values(),
+            dt=dt,
+            render=render,
+            surrounding=surrounding,
         )
 
     def reset_objects(self, obj_state: Dict):

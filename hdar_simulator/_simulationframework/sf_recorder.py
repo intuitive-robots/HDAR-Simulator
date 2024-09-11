@@ -1,6 +1,8 @@
 import os
+from typing import List, Dict, Callable
 
 from ..recorder import Recorder, RecordData, RecordDataHeader
+from ..recorder import ObjectData
 from .sf_simulator import SFSimulator
 
 
@@ -10,13 +12,13 @@ class SFRecorder(Recorder):
         self,
         sf_simulator: SFSimulator,
         save_root_path="./SFDemoData/",
-        record_mode: bool = False,
+        # record_mode: bool = False,
         record_type: str = "demonstration",
         skip_step: int = 10,
     ) -> None:
         self.mj_scene = sf_simulator.mj_scene
         task_name = sf_simulator.task_name
-        super().__init__(task_name, save_root_path, record_mode, skip_step)
+        super().__init__(task_name, save_root_path, skip_step)
         self.object_dict = sf_simulator.object_dict
         self.robot_dict = sf_simulator.robot_dict
         self.record_data: RecordData = None
@@ -27,6 +29,12 @@ class SFRecorder(Recorder):
             skip_step,
             self.mj_scene.dt,
         )
+        self.record_func: Dict[str, Callable[[], ObjectData]] = {}
+
+    def add_record_func(self, name: str, func: Callable[[], ObjectData]):
+        if self.on_recording:
+            raise ValueError("Cannot add record function while recording")
+        self.record_func[name] = func
 
     def _record(self):
         current_frame = {}
@@ -52,7 +60,8 @@ class SFRecorder(Recorder):
                 "pos": self.mj_scene.get_obj_pos(obj_name=obj.name),
                 "quat": self.mj_scene.get_obj_quat(obj_name=obj.name),
             }
-
+        for name, func in self.record_func.items():
+            current_frame[name] = func()
         self.record_data.append_frame(current_frame)
 
     def _start_record(self):
