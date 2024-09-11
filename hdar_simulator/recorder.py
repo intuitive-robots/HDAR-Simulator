@@ -16,6 +16,7 @@ FrameData = Dict[str, ObjectData]
 @dataclass
 class RecordDataHeader:
     type: str
+    simulator: str
     task: str
     skip_step: int
     simulation_dt: float
@@ -24,13 +25,13 @@ class RecordDataHeader:
 
 class RecordData:
 
-    def __init__(self) -> None:
-        self.header: RecordDataHeader = None
-        self.init_state: Dict[str, Dict[str, List[float]]] = {}
-        self.frames: List[Dict[str, Dict[str, List[float]]]] = []
+    def __init__(self, header: RecordDataHeader = None) -> None:
+        self.header: RecordDataHeader = header
+        self.init_state: FrameData = {}
+        self.frames: List[FrameData] = []
         self.state: Dict[str, Dict[str, np.ndarray]] = None
 
-    def append_frame(self, frame: Dict[str, Dict[str, List[float]]]):
+    def append_frame(self, frame: FrameData):
         self.frames.append(frame)
         self.header.sequence_length += 1
 
@@ -39,8 +40,9 @@ class RecordData:
         frames = self.frames
         state = {}
         for name, date in frames[0].items():
+            state[name] = {}
             for attr, value in date.items():
-                assert isinstance(value, list)
+                assert isinstance(value, np.ndarray)
                 state[name][attr] = np.zeros((seq_length, len(value)))
         for index, frame in enumerate(frames):
             for name, date in frame.items():
@@ -65,13 +67,14 @@ class RecordData:
     def load_from_file(self, file_path: str):
         with open(file_path, "rb") as f:
             pickle_data = pickle.load(f)
-        self.header = RecordDataHeader(
-            pickle_data["header"]["type"],
-            pickle_data["header"]["task"],
-            pickle_data["header"]["skip_step"],
-            pickle_data["header"]["simulation_dt"],
-            pickle_data["header"]["sequence_length"],
-        )
+        self.header = pickle_data["header"]
+        # self.header = RecordDataHeader(
+        #     pickle_data["header"]["type"],
+        #     pickle_data["header"]["task"],
+        #     pickle_data["header"]["skip_step"],
+        #     pickle_data["header"]["simulation_dt"],
+        #     pickle_data["header"]["sequence_length"],
+        # )
         self.init_state = pickle_data["init_state"]
         self.state = pickle_data["state"]
 

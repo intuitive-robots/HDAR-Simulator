@@ -37,14 +37,15 @@ class ReplayerJointController(JointPDController):
 
 class SFReplayer(DataReplayer):
 
-    def __init__(self, record_data_path: str) -> None:
-        self.controller_dict: Dict[str, ReplayerJointController] = None
-        super().__init__(record_data_path)
+    def __init__(self) -> None:
+        self.controller_dict: Dict[str, ReplayerJointController] = {}
+        super().__init__()
 
     def load_simulator(self, simulator: SFSimulator):
         self.simulator = simulator
         self.mj_scene = self.simulator.mj_scene
         init_state = self.record_data.init_state
+        self.skip_step = self.record_data.header.skip_step
         init_object_state = {
             obj_name: init_state[obj_name]
             for obj_name in self.simulator.object_dict.keys()
@@ -64,10 +65,8 @@ class SFReplayer(DataReplayer):
 
     def create_simulator(self, record_data_path: str) -> SFSimulator:
         self.load_recod_data(record_data_path)
-        task_name = self.record_data["header"]["task"]
-        simulator: SFSimulator = sf_task_factory(
-            task_name, record_mode=False
-        )
+        task_name = self.record_data.header.task
+        simulator: SFSimulator = sf_task_factory(task_name)
         self.load_simulator(simulator)
         return simulator
 
@@ -76,7 +75,8 @@ class SFReplayer(DataReplayer):
         return super().replay()
 
     def replay_step(self):
-        for controller in self.controller_dict.values():
-            controller.update_state()
         self.simulator.next_step()
-        super().replay_step()
+        if self.index % self.skip_step == 0:
+            for controller in self.controller_dict.values():
+                controller.update_state()
+        self.index += 1

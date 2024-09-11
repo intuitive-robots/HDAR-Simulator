@@ -12,13 +12,13 @@ class MetaQuest3Controller(CartPosQuatImpedenceController):
         self,
         device: MetaQuest3,
         fix_rotation: bool = False,
-        fix_y: bool = False,
+        fix_z: bool = False,
         with_gripper: bool = True
     ):
         super().__init__()
         self.device: MetaQuest3 = device
         self.fix_rotation = fix_rotation
-        self.fix_y = fix_y
+        self.fix_z = fix_z
         self.with_gripper = with_gripper
         self.on_control = False
         self.start_pos_offset = None
@@ -54,7 +54,7 @@ class MetaQuest3Controller(CartPosQuatImpedenceController):
             else:
                 robot.open_fingers()
         desired_pos_local = robot._localize_cart_pos(desired_pos)
-        if self.fix_y:
-            desired_pos_local[1] = robot.current_c_pos_global[1]
+        if self.fix_z:
+            desired_pos_local[2] = robot.des_c_pos[2]
         self.setSetPoint(np.hstack((desired_pos_local, desired_quat_local)))
         return super().getControl(robot)

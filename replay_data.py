@@ -15,7 +15,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "-t", default='BoxPushingSimulator'
+        "-t", default='BoxPushing'
     )
     parser.add_argument(
         "-s", default='SF'
@@ -25,10 +25,12 @@ if __name__ == '__main__':
 
     if args.s == 'SF':
         hdar_path = os.path.dirname(os.path.abspath(__file__))
-        data_path = os.path(hdar_path, "/SFDemoData/")
+        print(hdar_path)
+        data_path = os.path.join(hdar_path, "SFDemoData/", "BoxPushing_2024_09_11_14_05_22/BoxPushing_008.pkl")
+        print(data_path)
         replayer = SFReplayer()
     else:
         raise NotImplementedError("Only SF simulator is supported for now.")
 
-    simulator = replayer.create_simulator(sf_task_factory(args.t))
+    simulator = replayer.create_simulator(data_path)
     replayer.replay()

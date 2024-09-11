@@ -1,6 +1,6 @@
 meta_quest3:
   fix_rotation: True
-  fix_y: True
+  fix_z: True
   with_gripper: False
 
 real_robot:

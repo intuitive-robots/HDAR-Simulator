@@ -1,6 +1,6 @@
 import abc
 import queue
-from typing import Dict, Any
+from typing import List, Dict, Any
 from typing import Callable, Tuple
 
 from alr_sim.core.Scene import Scene
@@ -64,7 +64,7 @@ class SFSimulator(abc.ABC):
         self.task_queue.put((func, args))
 
     def reset_in_the_main_thread(self):
-        self.task_queue.put(self.reset)
+        self.task_queue.put((self.reset, None))
 
     @abc.abstractmethod
     def create_robots(self) -> Dict[str, MjRobot]:
@@ -96,7 +96,10 @@ class SFSimulator(abc.ABC):
     def execute_task_queue(self):
         while not self.task_queue.empty():
             task, args = self.task_queue.get(block=False)
-            task(*args)
+            if args is None:
+                task()
+            else:
+                task(*args)
 
     def next_step(self):
         self.before_step()

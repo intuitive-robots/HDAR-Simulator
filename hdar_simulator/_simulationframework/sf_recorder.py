@@ -1,5 +1,6 @@
 import os
-from typing import List, Dict, Callable
+import numpy as np
+from typing import Dict, Callable
 
 from ..recorder import Recorder, RecordData, RecordDataHeader
 from ..recorder import ObjectData
@@ -17,18 +18,14 @@ class SFRecorder(Recorder):
         skip_step: int = 10,
     ) -> None:
         self.mj_scene = sf_simulator.mj_scene
-        task_name = sf_simulator.task_name
-        super().__init__(task_name, save_root_path, skip_step)
+        self.task_name = sf_simulator.task_name
+        super().__init__(self.task_name, save_root_path, skip_step)
         self.object_dict = sf_simulator.object_dict
         self.robot_dict = sf_simulator.robot_dict
         self.record_data: RecordData = None
-        self.header = RecordDataHeader(
-            record_type,
-            "SimulationFramework/MjBeta",
-            task_name,
-            skip_step,
-            self.mj_scene.dt,
-        )
+        self.record_type = record_type
+        self.skip_step = skip_step
+        self.dt = self.mj_scene.dt
         self.record_func: Dict[str, Callable[[], ObjectData]] = {}
 
     def add_record_func(self, name: str, func: Callable[[], ObjectData]):
@@ -53,7 +50,7 @@ class SFRecorder(Recorder):
                 "des_c_vel": robot.des_c_vel,
                 "des_quat": robot.des_quat,
                 "des_quat_vel": robot.des_quat_vel,
-                "gripper_width": robot.gripper_width,
+                "gripper_width": np.array([robot.gripper_width]),
             }
         for name, obj in self.object_dict.items():
             current_frame[name] = {
@@ -65,7 +62,15 @@ class SFRecorder(Recorder):
         self.record_data.append_frame(current_frame)
 
     def _start_record(self):
-        record_data = RecordData()
+        record_header = RecordDataHeader(
+            self.record_type,
+            "SimulationFramework/MjBeta",
+            self.task_name,
+            self.skip_step,
+            self.dt,
+            0,
+        )
+        record_data = RecordData(record_header)
         init_state = record_data.init_state
         for obj_name, obj in self.object_dict.items():
             init_state[obj_name] = {

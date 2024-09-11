@@ -70,8 +70,14 @@ class BoxPushing(SFSimulator):
             new_quat=target_box_quat,
             obj_name="target_box",
         )
+        current_pos = self.push_robot.current_c_pos
         self.push_robot.gotoCartPositionAndQuat(
-            desiredPos=[pushed_box_pos[0], pushed_box_pos[1], 0.3],
+            desiredPos=[current_pos[0], current_pos[1], 0.25],
+            desiredQuat=[0, 1, 0, 0],
+            duration=2.0,
+        )
+        self.push_robot.gotoCartPositionAndQuat(
+            desiredPos=[pushed_box_pos[0], pushed_box_pos[1], 0.25],
             desiredQuat=[0, 1, 0, 0],
             duration=2.0,
         )
@@ -80,8 +86,8 @@ class BoxPushing(SFSimulator):
             desiredQuat=[0, 1, 0, 0],
             duration=2.0,
         )
-        self.push_robot.activeController = self.controller_dict["panda_robot"]
         inital_pos = np.array([pushed_box_pos[0], pushed_box_pos[1], 0.13])
+        self.push_robot.activeController = self.controller_dict["panda_robot"]
         self.push_robot.activeController.setSetPoint(
             np.hstack((inital_pos, np.array([0, 1, 0, 0])))
         )

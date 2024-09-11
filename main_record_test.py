@@ -6,7 +6,9 @@
 #     simulator.Simulation(**simulator_config).run()
 
 import argparse
-from hdar_simulator.sim.sf.task import sf_task_factory
+
+from hdar_simulator._simulationframework.task import sf_task_factory
+from hdar_simulator._simulationframework.sf_recorder import SFRecorder
 
 if __name__ == '__main__':
 
@@ -18,11 +20,13 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     simulator = sf_task_factory(args.t)
-    simulator.recorder.start_record()
+    recorder = SFRecorder(simulator)
+    recorder.start_record()
     for _ in range(1000):
         simulator.before_step()
         simulator.mj_scene.next_step()
-        if simulator.record_mode:
-            simulator.recorder.record()
+        recorder.record()
         simulator.after_step()
-    simulator.recorder.save_record()
+    recorder.save_record()
+    # simulator.reset_in_the_main_thread()
+    # simulator.run()

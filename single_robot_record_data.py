@@ -28,16 +28,16 @@ if __name__ == '__main__':
         )
     )
     if args.i == 'meta_quest3':
-        meta_quest3 = MetaQuest3("ALRMetaQuest3")
+        meta_quest3 = MetaQuest3("ALR2")
         meta_quest3.register_button_press_event("X", recorder.save_record)
         meta_quest3.register_button_press_event(
             "X", simulator.reset_in_the_main_thread
         )
         meta_quest3.register_trigger_press_event(
-            "hand", "right", recorder.start_record
+            "hand_trigger", "right", recorder.start_record
         )
         meta_quest3.register_trigger_release_event(
-            "hand", "right", recorder.stop_record
+            "hand_trigger", "right", recorder.stop_record
         )
         meta_controller = MetaQuest3Controller(
             meta_quest3,
@@ -47,4 +47,7 @@ if __name__ == '__main__':
     else:
         raise NotImplementedError("Only MetaQuest3 is supported for now.")
 
-    simulator.run()
+    simulator.reset()
+    while True:
+        simulator.next_step()
+        recorder.record()
