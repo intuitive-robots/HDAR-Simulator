@@ -26,7 +26,7 @@ if __name__ == '__main__':
     if args.s == 'SF':
         hdar_path = os.path.dirname(os.path.abspath(__file__))
         print(hdar_path)
-        data_path = os.path.join(hdar_path, "SFDemoData/", "BoxPushing_2024_09_11_14_05_22/BoxPushing_008.pkl")
+        data_path = os.path.join(hdar_path, "SFDemoData/", "PutIteminDrawer_2024_09_12_17_31_51/PutIteminDrawer_001.pkl")
         print(data_path)
         replayer = SFReplayer()
     else:

@@ -11,12 +11,14 @@ class MetaQuest3Controller(CartPosQuatImpedenceController):
     def __init__(
         self,
         device: MetaQuest3,
+        hand: str = "right",
         fix_rotation: bool = False,
         fix_z: bool = False,
         with_gripper: bool = True
     ):
         super().__init__()
         self.device: MetaQuest3 = device
+        self.hand = hand
         self.fix_rotation = fix_rotation
         self.fix_z = fix_z
         self.with_gripper = with_gripper
@@ -27,7 +29,7 @@ class MetaQuest3Controller(CartPosQuatImpedenceController):
         input_data = self.device.get_input_data()
         if input_data is None:
             return super().getControl(robot)
-        hand = input_data["right"]
+        hand = input_data[self.hand]
         if hand["hand_trigger"] is False:
             self.on_control = False
             return super().getControl(robot)

@@ -6,11 +6,11 @@ from alr_sim.core import Scene, RobotBase
 
 import threading
 
-
+#use to set the 
 class VTController(controllers.JointPDController):
     def __init__(
         self,
-        vt_robot,
+        # vt_robot,
         real_robot,
         vt_scene: Scene,
         robot_config: dict,
@@ -18,7 +18,7 @@ class VTController(controllers.JointPDController):
         update_interval: int = 10,
     ):
         super().__init__()
-        self.vt_robot = vt_robot
+        # self.vt_robot = vt_robot
         self.real_robot = real_robot
         self.robot_config = robot_config
         self.use_gripper = use_gripper
