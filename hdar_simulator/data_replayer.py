@@ -8,7 +8,6 @@ class DataReplayer(abc.ABC):
     def __init__(self):
         self.index = 0
         self.sim_length = 0
-        # self.load_recod_data(record_data_path)
 
     def load_recod_data(self, record_data_path: str):
         self.record_data = RecordData()
@@ -31,4 +30,4 @@ class DataReplayer(abc.ABC):
         raise NotImplementedError
 
     def isSequenceFinished(self):
-        return self.index >= self.sim_length
+        return self.index >= self.sim_length - 1

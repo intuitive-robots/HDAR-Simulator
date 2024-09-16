@@ -13,7 +13,7 @@ from alr_sim.sims.mj_beta.mj_utils.mj_scene_object import MujocoObject
 from alr_sim.sims.mj_beta.mj_utils.mj_scene_object import CustomMujocoObject
 
 
-class BoxPushing(SFSimulator):
+class BoxPushingV2(SFSimulator):
 
     def __init__(self, host_address=None, render=Scene.RenderMode.HUMAN):
         self.box_space = SamplingSpace(
@@ -21,7 +21,7 @@ class BoxPushing(SFSimulator):
             high=np.array([0.6, 0.3, 0]),
             seed=np.random.randint(0, 1000),
         )
-        super().__init__('BoxPushing', host_address, render)
+        super().__init__('BoxPushingV2', host_address, render)
 
     def create_robots(self) -> Dict[str, MjRobot]:
         self.push_robot = self.sim_factory.create_robot(

@@ -11,9 +11,9 @@ from alr_sim.core.Scene import Scene
 from alr_sim.sims.mj_beta import MjRobot
 from alr_sim.sims.mj_beta.mj_utils.mj_scene_object import MujocoObject
 from alr_sim.sims.mj_beta.mj_utils.mj_scene_object import CustomMujocoObject
+from alr_sim.sims.universal_sim.PrimitiveObjects import Box
 
-
-class BoxPushing(SFSimulator):
+class BoxStacking(SFSimulator):
 
     def __init__(self, host_address=None, render=Scene.RenderMode.HUMAN):
         self.box_space = SamplingSpace(
@@ -21,35 +21,67 @@ class BoxPushing(SFSimulator):
             high=np.array([0.6, 0.3, 0]),
             seed=np.random.randint(0, 1000),
         )
-        super().__init__('BoxPushing', host_address, render)
+        super().__init__('BoxStacking', host_address, render)
 
     def create_robots(self) -> Dict[str, MjRobot]:
         self.push_robot = self.sim_factory.create_robot(
             self.mj_scene,
-            xml_path=sim_framework_path("./models/mj/robot/panda_rod.xml"),
+            xml_path=sim_framework_path("./models/mj/robot/panda.xml"),
         )
-        return {"panda_robot": self.push_robot}
+        return {"panda_gripper_robot": self.push_robot}
 
     def create_objects(self) -> Dict[str, MujocoObject]:
-        self.pushed_box = CustomMujocoObject(
-            object_name="pushed_box",
-            object_dir_path=os.path.dirname(os.path.abspath(__file__)),
-            pos=[0.4, 0, 0.3],
-            quat=[0, 0, 0, 1],
+
+        self.red_box = Box(
+            name="red_box",
+            init_pos=np.array([0.5, -0.1, 0.0]),
+            init_quat=[0, 1, 0, 0],
+            rgba=[1, 0, 0, 1.0],
+            mass=0.05,
+            size=[0.03, 0.03, 0.03],
+            # visual_only=True,
         )
-        self.target_box = CustomMujocoObject(
-            object_name="target_box",
-            object_dir_path=os.path.dirname(os.path.abspath(__file__)),
-            pos=[0.4, 0.3, 0.0],
-            quat=[0, 0, 0, 1],
+
+        self.green_box = Box(
+            name="green_box",
+            init_pos=np.array([0.5, 0, 0.0]),
+            init_quat=[0, 1, 0, 0],
+            rgba=[0, 1, 0, 1.0],
+            mass=0.05,
+            size=[0.03, 0.03, 0.03],
+            # visual_only=True,
         )
+
+        self.blue_box = Box(
+            name="blue_box",
+            init_pos=np.array([0.5, 0.1, 0.0]),
+            init_quat=[0, 1, 0, 0],
+            rgba=[0, 0, 1, 1.0],
+            mass=0.05,
+            size=[0.03, 0.05, 0.03],
+            # visual_only=True,
+        )
+
+        self.target_box = Box(
+            name="target_box",
+            init_pos=[0.5, 0.2, 0],
+            init_quat=[0, 1, 0, 0],
+            size=[0.05, 0.05, 0.04],
+            rgba=[1, 0.65, 0, 0.3],
+            visual_only=True,
+            static=True
+            # wall_height=0.005,
+        )
+
         return {
-            "pushed_box": self.pushed_box,
+            "red_box": self.red_box,
+            "green_box": self.green_box,
+            "blue_box": self.blue_box,
             "target_box": self.target_box,
         }
 
     def reset(self):
-        # return
+        return
         pushed_box_pos = self.box_space.sample()
         pushed_box_euler = np.array([np.random.uniform(-180, 180), 0, 0])
         pushed_box_quat = R.from_euler("xyz", pushed_box_euler).as_quat()
@@ -88,16 +120,16 @@ class BoxPushing(SFSimulator):
             duration=2.0,
         )
         inital_pos = np.array([pushed_box_pos[0], pushed_box_pos[1], 0.13])
-        self.push_robot.activeController = self.controller_dict["panda_robot"]
+        self.push_robot.activeController = self.controller_dict["panda_gripper_robot"]
         self.push_robot.activeController.setSetPoint(
             np.hstack((inital_pos, np.array([0, 1, 0, 0])))
         )
         # reset again
-        self.mj_scene.set_obj_pos_and_quat(
-            new_pos=pushed_box_pos,
-            new_quat=pushed_box_quat,
-            obj_name="pushed_box",
-        )
+        # self.mj_scene.set_obj_pos_and_quat(
+        #     new_pos=pushed_box_pos,
+        #     new_quat=pushed_box_quat,
+        #     obj_name="pushed_box",
+        # )
 
     def before_step(self):
         pass
@@ -105,8 +137,8 @@ class BoxPushing(SFSimulator):
     def after_step(self):
         pass
 
-    def is_done(self, error: int = 0.05):
-        push_box_pos = self.mj_scene.get_obj_pos(obj_name="pushed_box")
-        target_box_pos = self.mj_scene.get_obj_pos(obj_name="target_box")
-        distance = np.linalg.norm(np.array(push_box_pos) - np.array(target_box_pos))
-        return distance < error
+    # def is_done(self, error: int = 0.05):
+    #     push_box_pos = self.mj_scene.get_obj_pos(obj_name="pushed_box")
+    #     target_box_pos = self.mj_scene.get_obj_pos(obj_name="target_box")
+    #     distance = np.linalg.norm(np.array(push_box_pos) - np.array(target_box_pos))
+    #     return distance < error

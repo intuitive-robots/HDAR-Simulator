@@ -42,7 +42,7 @@ class RecordData:
         for name, date in frames[0].items():
             state[name] = {}
             for attr, value in date.items():
-                assert isinstance(value, np.ndarray)
+                assert isinstance(value, np.ndarray), str(type(value))
                 state[name][attr] = np.zeros((seq_length, len(value)))
         for index, frame in enumerate(frames):
             for name, date in frame.items():
@@ -68,13 +68,6 @@ class RecordData:
         with open(file_path, "rb") as f:
             pickle_data = pickle.load(f)
         self.header = pickle_data["header"]
-        # self.header = RecordDataHeader(
-        #     pickle_data["header"]["type"],
-        #     pickle_data["header"]["task"],
-        #     pickle_data["header"]["skip_step"],
-        #     pickle_data["header"]["simulation_dt"],
-        #     pickle_data["header"]["sequence_length"],
-        # )
         self.init_state = pickle_data["init_state"]
         self.state = pickle_data["state"]
 

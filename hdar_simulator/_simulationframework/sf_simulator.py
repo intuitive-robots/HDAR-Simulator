@@ -20,12 +20,13 @@ class SFSimulator(abc.ABC):
         self,
         task_name: str,
         host_address: str = None,
+        render=Scene.RenderMode.HUMAN,
     ):
         # NOTE: for all the possible simulator
         self.task_name = task_name
         # MJSimFactory
         self.sim_factory = SimRepository.get_factory("mj_beta")
-        self.mj_scene = self.create_scene()
+        self.mj_scene = self.create_scene(render=render)
         self.robot_dict = self.create_robots()
         self.task_queue: TaskQueue = TaskQueue()
         self.mj_scene.start()

@@ -2,6 +2,8 @@ from typing import Literal
 
 from ..sf_simulator import SFSimulator
 from .BoxPushing.BoxPushing import BoxPushing
+from .BoxPushingV2.BoxPushingV2 import BoxPushingV2
+from .BoxStacking.BoxStacking import BoxStacking
 
 def sf_task_factory(
         typ: Literal["TemporalCorrelatedAgent"], **kwargs
