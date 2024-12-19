@@ -78,6 +78,32 @@ class Panda:
             self.logger.error(f"Failed with exception: {e}")
 
         return self.is_connected()
+    
+    def robot_pos(self) -> bool:
+        self.logger.info(
+            f"Connecting to Panda on {self.ip}:[robot_port: {self.robot_port}, gripper_port: {self.gripper_port}]"
+        )
+        self.robot = RobotInterface(
+            ip_address=self.ip,
+            port=self.robot_port,
+            enforce_version=False,
+        )
+        current_pos,currenr_quat=self.robot.get_ee_pose()
+        self.robot.move_to_ee_pose(position=[current_pos[0],current_pos[1],0.28],orientation=[0,1,0,0])
+        
+    #set quat and pos 
+        return current_pos,currenr_quat
+    
+    
+    def robot(self):
+        self.robot = RobotInterface(
+            ip_address=self.ip,
+            port=self.robot_port,
+            enforce_version=False,
+        )
+
+        return self.robot
+
 
     def is_connected(self) -> bool:
         connected = False

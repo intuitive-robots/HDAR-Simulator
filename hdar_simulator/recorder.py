@@ -42,6 +42,9 @@ class RecordData:
         for name, date in frames[0].items():
             state[name] = {}
             for attr, value in date.items():
+                if isinstance(value, (int, float, np.float64)):  
+                    value = np.array([value]) 
+                # print(f"Value: {value}, Type: {type(value)}")
                 assert isinstance(value, np.ndarray)
                 state[name][attr] = np.zeros((seq_length, len(value)))
         for index, frame in enumerate(frames):

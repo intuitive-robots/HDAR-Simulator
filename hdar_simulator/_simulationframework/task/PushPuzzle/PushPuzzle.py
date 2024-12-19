@@ -57,14 +57,22 @@ class PushPuzzle(SFSimulator):
             pos=[0.4, -0.2, 0.0],
             quat=[0, 0, 0, 1],
         )
+        self.platform_box = CustomMujocoObject(
+            object_name="platform_box",
+            object_dir_path=os.path.dirname(os.path.abspath(__file__)),
+            pos=[0.0, 0.0, 0.0],
+            quat=[0, 0, 0, 1],
+        )
         return {
             "pushed_box": self.picked_box,
             "target_box": self.target_box,
+            "platform_box":self.platform_box,
         }
 
     def reset(self):
         # return
         pushed_box_pos = self.box_space.sample()
+        pushed_box_pos = [pushed_box_pos[0],pushed_box_pos[1],0.13]
         pushed_box_euler = np.array([np.random.uniform(-180, 180), 0, 0])
         pushed_box_quat = R.from_euler("xyz", pushed_box_euler).as_quat()
         self.mj_scene.set_obj_pos_and_quat(
@@ -74,10 +82,12 @@ class PushPuzzle(SFSimulator):
         )
         while True:
             target_box_pos = self.box_space.sample()
-            if np.linalg.norm(
+            target_box_pos = [target_box_pos[0],target_box_pos[1], 0.13]
+            if  0.2 < np.linalg.norm(
                 np.array(target_box_pos) - np.array(pushed_box_pos)
-            ) > 0.2:
+            ) < 1.0 :
                 break
+        # target_box_pos = np.array([np.random.uniform(0.2, 0.5), 0, 0])
         target_box_euler = np.array([np.random.uniform(-180, 180), 0, 0])
         target_box_quat = R.from_euler("xyz", target_box_euler).as_quat()
         self.mj_scene.set_obj_pos_and_quat(
@@ -85,62 +95,81 @@ class PushPuzzle(SFSimulator):
             new_quat=target_box_quat,
             obj_name="target_box",
         )
-        if pushed_box_pos[1] > target_box_pos[1]:
-            self.push_robot1.gotoCartPositionAndQuat(
-                desiredPos=[pushed_box_pos[0]+0.1, pushed_box_pos[1]+0.1, 0.35],
-                desiredQuat=[0, 1, 0, 0],
-                duration=2.0,
-            )
+        home_pos = [0.53,-0.09,0.32]
+        home_quat = [-0.03,0.75,0.67,0.01]
+        self.push_robot1.gotoCartPositionAndQuat(
+            desiredPos=[home_pos[0],home_pos[1]+0.35,home_pos[2]],
+            desiredQuat=home_quat,
+            duration=0.5,
+        )
+        self.push_robot2.gotoCartPositionAndQuat(
+            desiredPos=[home_pos[0],home_pos[1]-0.35,home_pos[2]],
+            desiredQuat=home_quat,
+            duration=0.5,
+        )
+ 
+        # if pushed_box_pos[1] > target_box_pos[1]:
+        #     self.push_robot1.gotoCartPositionAndQuat(
+        #         desiredPos=[pushed_box_pos[0]+0.1, pushed_box_pos[1]+0.1, 0.4],
+        #         desiredQuat=[0, 1, 0, 0],
+        #         duration=0.5,
+        #     )
             
-            self.push_robot2.gotoCartPositionAndQuat(
-                desiredPos=[target_box_pos[0]+0.1, target_box_pos[1]-0.1, 0.35],
-                desiredQuat=[0, 1, 0, 0],
-                duration=2.0,
-            )
-            self.push_robot1.gotoCartPositionAndQuat(
-                desiredPos=[pushed_box_pos[0]+0.1, pushed_box_pos[1]+0.1, 0.3],
-                desiredQuat=[0, 1, 0, 0],
-                duration=1.0,
-            )
-            self.push_robot2.gotoCartPositionAndQuat(
-                desiredPos=[target_box_pos[0]+0.1, target_box_pos[1]-0.1, 0.3],
-                desiredQuat=[0, 1, 0, 0],
-                duration=1.0,
-            )
-        else:
-            self.push_robot2.gotoCartPositionAndQuat(
-                desiredPos=[pushed_box_pos[0]+0.1, pushed_box_pos[1]-0.1, 0.35],
-                desiredQuat=[0, 1, 0, 0],
-                duration=2.0,
-            )
+        #     self.push_robot2.gotoCartPositionAndQuat(
+        #         desiredPos=[target_box_pos[0]+0.1, target_box_pos[1]-0.1, 0.4],
+        #         desiredQuat=[0, 1, 0, 0],
+        #         duration=0.5,
+        #     )
+        #     self.push_robot1.gotoCartPositionAndQuat(
+        #         desiredPos=[pushed_box_pos[0]+0.1, pushed_box_pos[1]+0.1, 0.35],
+        #         desiredQuat=[0, 1, 0, 0],
+        #         duration=0.2,
+        #     )
+        #     self.push_robot2.gotoCartPositionAndQuat(
+        #         desiredPos=[target_box_pos[0]+0.1, target_box_pos[1]-0.1, 0.35],
+        #         desiredQuat=[0, 1, 0, 0],
+        #         duration=0.2,
+        #     )
+        # else:
+        #     self.push_robot2.gotoCartPositionAndQuat(
+        #         desiredPos=[pushed_box_pos[0]+0.1, pushed_box_pos[1]-0.1, 0.4],
+        #         desiredQuat=[0, 1, 0, 0],
+        #         duration=0.5,
+        #     )
             
-            self.push_robot1.gotoCartPositionAndQuat(
-                desiredPos=[target_box_pos[0]+0.1, target_box_pos[1]+0.1, 0.35],
-                desiredQuat=[0, 1, 0, 0],
-                duration=2.0,
-            )
-            self.push_robot2.gotoCartPositionAndQuat(
-                desiredPos=[pushed_box_pos[0]+0.1, pushed_box_pos[1]-0.1, 0.3],
-                desiredQuat=[0, 1, 0, 0],
-                duration=1.0,
-            )
-            self.push_robot1.gotoCartPositionAndQuat(
-                desiredPos=[target_box_pos[0]+0.1, target_box_pos[1]+0.1, 0.3],
-                desiredQuat=[0, 1, 0, 0],
-                duration=1.0,
-            )
+        #     self.push_robot1.gotoCartPositionAndQuat(
+        #         desiredPos=[target_box_pos[0]+0.1, target_box_pos[1]+0.1, 0.4],
+        #         desiredQuat=[0, 1, 0, 0],
+        #         duration=0.5,
+        #     )
+        #     self.push_robot2.gotoCartPositionAndQuat(
+        #         desiredPos=[pushed_box_pos[0]+0.1, pushed_box_pos[1]-0.1, 0.35],
+        #         desiredQuat=[0, 1, 0, 0],
+        #         duration=0.2,
+        #     )
+        #     self.push_robot1.gotoCartPositionAndQuat(
+        #         desiredPos=[target_box_pos[0]+0.1, target_box_pos[1]+0.1, 0.35],
+        #         desiredQuat=[0, 1, 0, 0],
+        #         duration=0.2,
+        #     )
         self.push_robot1.activeController = self.controller_dict["panda_robot1"]
-        
         self.push_robot2.activeController = self.controller_dict["panda_robot2"]
-
-
+        
         self.push_robot1.activeController.setSetPoint(
-            np.hstack((self.push_robot1.current_c_pos, [0, 1, 0, 0]))
+            np.hstack((self.push_robot1.current_c_pos, home_quat))
         )
 
         self.push_robot2.activeController.setSetPoint(
-            np.hstack((self.push_robot2.current_c_pos, [0, 1, 0, 0]))
+            np.hstack((self.push_robot2.current_c_pos, home_quat))
         )
+
+
+        inital_pos1 = np.array([home_pos[0],home_pos[1]+0.35,home_pos[2]])
+        inital_pos2 = np.array([home_pos[0],home_pos[1]-0.35,home_pos[2]])
+
+        target_pos= [inital_pos1,inital_pos2]
+        return target_pos
+    
 
     def before_step(self):
         pass
@@ -160,11 +189,25 @@ class PushPuzzleVibration(PushPuzzle):
         replace_rb0_l, replace_rb0_r  = get_collisions(
         self.mj_scene,
         target_pairs1={
-            ('picked_Sphere', 'finger1_rb0_tip_collision'),
+            ('pushed_box', 'finger1_rb0_tip_collision'),
+            ('pushed_box_part', 'finger1_rb0_tip_collision'),
+            ('pushed_box2', 'finger1_rb0_tip_collision'),
+            ('pushed_box2_part', 'finger1_rb0_tip_collision'),
+            ('pushed_box', 'panda_rb0_leftfinger:geom2'),
+            ('pushed_box_part', 'panda_rb0_leftfinger:geom2'),
+            ('pushed_box2', 'panda_rb0_leftfinger:geom2'),
+            ('pushed_box2_part', 'panda_rb0_leftfinger:geom2'),
             
                        },
         target_pairs2={
-            ('picked_Sphere', 'finger2_rb0_tip_collision'),
+            ('pushed_box', 'finger2_rb0_tip_collision'),
+            ('pushed_box_part', 'finger2_rb0_tip_collision'),
+            ('pushed_box2', 'finger2_rb0_tip_collision'),
+            ('pushed_box2_part', 'finger2_rb0_tip_collision'),
+            ('pushed_box', 'panda_rb0_rightfinger:geom2'),
+            ('pushed_box_part', 'panda_rb0_rightfinger:geom2'),
+            ('pushed_box2', 'panda_rb0_rightfinger:geom2'),
+            ('pushed_box2_part', 'panda_rb0_rightfinger:geom2'),
           
             }
         )
@@ -173,11 +216,26 @@ class PushPuzzleVibration(PushPuzzle):
         replace_rb1_l, replace_rb1_r  = get_collisions(
         self.mj_scene,
         target_pairs1={
-            ('picked_Sphere', 'finger1_rb1_tip_collision'),
+            ('pushed_box', 'finger1_rb1_tip_collision'),
+            ('pushed_box_part', 'finger1_rb1_tip_collision'),
+            ('pushed_box2', 'finger1_rb1_tip_collision'),
+            ('pushed_box2_part', 'finger1_rb1_tip_collision'),
+            ('pushed_box', 'panda_rb1_leftfinger:geom2'),
+            ('pushed_box_part', 'panda_rb1_leftfinger:geom2'),
+            ('pushed_box2', 'panda_rb1_leftfinger:geom2'),
+            ('pushed_box2_part', 'panda_rb1_leftfinger:geom2'),
             
                        },
         target_pairs2={
-            ('picked_Sphere', 'finger2_rb1_tip_collision'),
+            
+            ('pushed_box', 'finger2_rb1_tip_collision'),
+            ('pushed_box_part', 'finger2_rb1_tip_collision'),
+            ('pushed_box2', 'finger2_rb1_tip_collision'),
+            ('pushed_box2_part', 'finger2_rb1_tip_collision'),
+            ('pushed_box', 'panda_rb1_rightfinger:geom2'),
+            ('pushed_box_part', 'panda_rb1_rightfinger:geom2'),
+            ('pushed_box2', 'panda_rb1_rightfinger:geom2'),
+            ('pushed_box2_part', 'panda_rb1_rightfinger:geom2'),
           
             }
         )

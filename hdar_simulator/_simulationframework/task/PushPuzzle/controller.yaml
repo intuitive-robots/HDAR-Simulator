@@ -3,6 +3,12 @@ meta_quest3:
   fix_z: False
   with_gripper: True
 
-real_robot:
-  ip: 127.0.0.1
-  port: 1024
+panda_robot1:
+  ip: 141.3.53.152
+  robot_port: 4321
+  gripper_port: 4322
+
+panda_robot2:
+  ip: 141.3.53.152
+  robot_port: 1234 
+  gripper_port: 1235

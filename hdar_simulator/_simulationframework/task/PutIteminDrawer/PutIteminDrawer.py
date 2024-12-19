@@ -83,25 +83,25 @@ class PutIteminDrawer(SFSimulator):
         )
        
         self.pick_robot1.gotoCartPositionAndQuat(
-            desiredPos=[picked_box_pos[0]+0.1, picked_box_pos[1]+0.15, 0.35],
+            desiredPos=[picked_box_pos[0]+0.1, picked_box_pos[1]+0.15, 0.45],
             desiredQuat=[0, 1, 0, 0],
-            duration=2.0,
+            duration=0.5,
         )
         
         self.pick_robot2.gotoCartPositionAndQuat(
-            desiredPos=[target_box_pos[0]+0.1, target_box_pos[1]-0.15, 0.35],
+            desiredPos=[target_box_pos[0]+0.1, target_box_pos[1]-0.15, 0.45],
             desiredQuat=[0, 1, 0, 0],
-            duration=2.0,
+            duration=0.5,
         )
         self.pick_robot1.gotoCartPositionAndQuat(
-            desiredPos=[picked_box_pos[0]+0.1, picked_box_pos[1]+0.15, 0.3],
+            desiredPos=[picked_box_pos[0]+0.1, picked_box_pos[1]+0.15, 0.4],
             desiredQuat=[0, 1, 0, 0],
-            duration=1.0,
+            duration=0.5,
         )
         self.pick_robot2.gotoCartPositionAndQuat(
-            desiredPos=[target_box_pos[0]+0.1, target_box_pos[1]-0.15, 0.3],
+            desiredPos=[target_box_pos[0]+0.1, target_box_pos[1]-0.15, 0.4],
             desiredQuat=[0, 1, 0, 0],
-            duration=1.0,
+            duration=0.5,
         )
         
         
@@ -116,6 +116,11 @@ class PutIteminDrawer(SFSimulator):
         self.pick_robot2.activeController.setSetPoint(
             np.hstack((self.pick_robot2.current_c_pos, [0, 1, 0, 0]))
         )
+        inital_pos1 = np.array(self.pick_robot1.current_c_pos)
+        inital_pos2 = np.array(self.pick_robot2.current_c_pos)
+
+        target_pos= [inital_pos1,inital_pos2]
+        return target_pos
 
 
     def before_step(self):

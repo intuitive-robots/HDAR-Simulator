@@ -44,13 +44,14 @@ RealRobotConfig: {
 
 HDARConfig: {
   # host: "192.168.178.102",
-  host: "192.168.0.143",
+  # host: "192.168.0.143",
   # host: 192.168.122.1,
   # host: "192.168.0.215",
   # host: "192.168.0.215", # virtual robot test
   # host: "192.168.0.246",
   # host: "10.42.0.1", # irl-220 hot spot
   # host: 141.3.53.54,
+  host: 141.3.53.158,
   port: 8052,
 }
 
@@ -62,8 +63,8 @@ QRConfig: {
 }
 
 SimulatorConfig: {
-  # task_type: "grasp_object",
-  task_type: "bimanual_test",
+  task_type: "grasp_object",
+  # task_type: "bimanual_test",
   # task_type: "box_stacking2",
   # task_type: "object_passing",
   # task_type: "box_passing",

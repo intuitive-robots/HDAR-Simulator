@@ -35,27 +35,35 @@ class OpenDrawer(SFSimulator):
         self.picked_box = CustomMujocoObject(
             object_name="picked_box",
             object_dir_path=os.path.dirname(os.path.abspath(__file__)),
-            pos=[0.4, 0, 0.3],
+            pos=[0.4, 0.3, 0.01],
             quat=[0, 0, 0, 1],
         )
         self.target_box = CustomMujocoObject(
             object_name="target_box",
             object_dir_path=os.path.dirname(os.path.abspath(__file__)),
-            pos=[0.4, 0.3, 0.0],
+            pos=[0.4, 0.3, 0.05],
             quat=[0, 0, 0, 1],
         )
         return {
-            "pick_box": self.picked_box,
+            "picked_box": self.picked_box,
             "target_box": self.target_box,
         }
 
 
     def reset(self):
-        # return
-        # pushed_box_pos = self.box_space.sample()
-        picked_box_pos = [np.random.uniform(0.3, 0.5),np.random.uniform(-0.5, 0.5),0]
-        picked_box_euler = np.array([np.random.uniform(-90, -45), 0, 0])
-        # pushed_box_euler = np.array([-20, 0, 0])
+        while True:
+            picked_box_pos = [np.random.uniform(0.35, 0.5),np.random.uniform(-0.6, 0.6),0]
+            if 0.6 < np.linalg.norm(
+               np.array(picked_box_pos) - np.array([0,0,0.06])
+            ) < 0.8 :
+                break
+        if picked_box_pos[1] < 0:
+            picked_box_euler = np.array([0.15, 0, 0])
+        else: 
+            picked_box_euler = np.array([-3, 0, 0])
+        # angle1 = np.arctan2(picked_box_pos[1], picked_box_pos[0])
+
+        # picked_box_euler = np.array([-1.57-angle1, 0, 0])
         picked_box_quat = R.from_euler("xyz", picked_box_euler).as_quat()
         self.mj_scene.set_obj_pos_and_quat(
             new_pos=picked_box_pos,
@@ -70,20 +78,27 @@ class OpenDrawer(SFSimulator):
             new_quat=target_box_quat,
             obj_name="target_box",
         )
+        current_pos = self.pick_robot.current_c_pos
+        home_pos = [0.53,-0.09,0.32]
+        home_quat = [-0.03,0.75,0.67,0.01]
         self.pick_robot.gotoCartPositionAndQuat(
-            desiredPos=[self.picked_box.pos[0]-0.05, self.picked_box.pos[1], 0.4],
-            desiredQuat=[0, 1, 0, 0],
-            duration=2.0,
+            desiredPos=[current_pos[0], current_pos[1], home_pos[2]],
+            desiredQuat=home_quat,
+            duration=0.2,
         )
         self.pick_robot.gotoCartPositionAndQuat(
-            desiredPos=[self.picked_box.pos[0]-0.05, self.picked_box.pos[1], 0.3],
-            desiredQuat=[0, 1, 0, 0],
-            duration=2.0,
+            desiredPos=home_pos,
+            desiredQuat=home_quat,
+            duration=0.5,
         )
+        inital_pos = home_pos
         self.pick_robot.activeController = self.controller_dict["panda_robot"]
         self.pick_robot.activeController.setSetPoint(
-            np.hstack((self.pick_robot.current_c_pos_global, [0, 1, 0, 0]))
+            np.hstack((home_pos, home_quat))
         )
+        real_reset_target=[inital_pos]
+
+        return real_reset_target
     def before_step(self):
         pass
 

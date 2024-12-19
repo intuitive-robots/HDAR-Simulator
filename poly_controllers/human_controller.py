@@ -11,6 +11,9 @@ class HumanController(toco.PolicyModule):
         super().__init__()
 
         # get joint limits for regularization
+        if robot is None:
+            print(f"robot is not be setted!!!! need to open sh!!!")
+        self.robot=robot
         limits = robot.robot_model.get_joint_angle_limits()
         self.joint_pos_min = limits[0]
         self.joint_pos_max = limits[1]

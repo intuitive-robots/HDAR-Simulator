@@ -93,45 +93,45 @@ class TwoArmAssemble(SFSimulator):
             self.pick_robot1.gotoCartPositionAndQuat(
                 desiredPos=[picked_box_pos[0], picked_box_pos[1]+0.1, 0.35],
                 desiredQuat=[0, 1, 0, 0],
-                duration=2.0,
+                duration=0.5,
             )
             
             self.pick_robot2.gotoCartPositionAndQuat(
                 desiredPos=[target_box_pos[0], target_box_pos[1]-0.1, 0.35],
                 desiredQuat=[0, 1, 0, 0],
-                duration=2.0,
+                duration=0.5,
             )
             self.pick_robot1.gotoCartPositionAndQuat(
                 desiredPos=[picked_box_pos[0], picked_box_pos[1]+0.1, 0.25],
                 desiredQuat=[0, 1, 0, 0],
-                duration=1.0,
+                duration=0.5,
             )
             self.pick_robot2.gotoCartPositionAndQuat(
                 desiredPos=[target_box_pos[0], target_box_pos[1]-0.1, 0.25],
                 desiredQuat=[0, 1, 0, 0],
-                duration=1.0,
+                duration=0.5,
             )
         else:
             self.pick_robot2.gotoCartPositionAndQuat(
                 desiredPos=[picked_box_pos[0], picked_box_pos[1]-0.1, 0.35],
                 desiredQuat=[0, 1, 0, 0],
-                duration=2.0,
+                duration=0.5,
             )
             
             self.pick_robot1.gotoCartPositionAndQuat(
                 desiredPos=[target_box_pos[0], target_box_pos[1]+0.1, 0.35],
                 desiredQuat=[0, 1, 0, 0],
-                duration=2.0,
+                duration=0.5,
             )
             self.pick_robot2.gotoCartPositionAndQuat(
                 desiredPos=[picked_box_pos[0], picked_box_pos[1]-0.1, 0.25],
                 desiredQuat=[0, 1, 0, 0],
-                duration=1.0,
+                duration=0.5,
             )
             self.pick_robot1.gotoCartPositionAndQuat(
                 desiredPos=[target_box_pos[0], target_box_pos[1]+0.1, 0.25],
                 desiredQuat=[0, 1, 0, 0],
-                duration=1.0,
+                duration=0.5,
             )
         
         self.pick_robot1.activeController = self.controller_dict["panda_robot1"]
@@ -145,6 +145,11 @@ class TwoArmAssemble(SFSimulator):
         self.pick_robot2.activeController.setSetPoint(
             np.hstack((self.pick_robot2.current_c_pos, [0, 1, 0, 0]))
         )
+        inital_pos1 = np.array(self.pick_robot1.current_c_pos)
+        inital_pos2 = np.array(self.pick_robot2.current_c_pos)
+
+        target_pos= [inital_pos1,inital_pos2]
+        return target_pos
 
 
     def before_step(self):

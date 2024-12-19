@@ -44,27 +44,43 @@ class AssembleBox(SFSimulator):
             pos=[0.4, 0.3, 0.0],
             quat=[0, 0, 0, 1],
         )
+        self.platform_box = CustomMujocoObject(
+            object_name="platform_box",
+            object_dir_path=os.path.dirname(os.path.abspath(__file__)),
+            pos=[0.0, 0.0, 0.0],
+            quat=[0, 0, 0, 1],
+        )
         return {
-            "pick_box": self.picked_box,
+            "picked_box": self.picked_box,
             "target_box": self.target_box,
+            "platform_box":self.platform_box,
         }
 
 
     def reset(self):
         # return
-        pushed_box_pos = self.box_space.sample()
-        pushed_box_euler = np.array([np.random.uniform(-180, 180), 0, 0])
-        pushed_box_quat = R.from_euler("xyz", pushed_box_euler).as_quat()
+        while True:
+            picked_box_pos = self.box_space.sample()
+            picked_box_pos = [picked_box_pos[0],picked_box_pos[1],0.06]
+            if  0.2 <  np.linalg.norm(
+               np.array(picked_box_pos) - np.array([0,0,0.06])
+            ) < 0.5 :
+                break
+        picked_box_euler = np.array([np.random.uniform(-180, 180), 0, 0])
+        pushed_box_quat = R.from_euler("xyz", picked_box_euler).as_quat()
         self.mj_scene.set_obj_pos_and_quat(
-            new_pos=pushed_box_pos,
+            new_pos=picked_box_pos,
             new_quat=pushed_box_quat,
             obj_name="picked_box",
         )
         while True:
             target_box_pos = self.box_space.sample()
+            target_box_pos = [target_box_pos[0],target_box_pos[1], 0.06]
             if np.linalg.norm(
-                np.array(target_box_pos) - np.array(pushed_box_pos)
-            ) > 0.2:
+                np.array(target_box_pos) - np.array(picked_box_pos)
+            ) > 0.3   and   0.35 <  np.linalg.norm(
+               np.array(target_box_pos) - np.array([0,0,0.06])
+            )  < 0.5:
                 break
         target_box_euler = np.array([np.random.uniform(-180, 180), 0, 0])
         target_box_quat = R.from_euler("xyz", target_box_euler).as_quat()
@@ -73,20 +89,28 @@ class AssembleBox(SFSimulator):
             new_quat=target_box_quat,
             obj_name="target_box",
         )
+
+        current_pos = self.pick_robot.current_c_pos
+        home_pos = [0.53,-0.09,0.32]
+        home_quat = [-0.03,0.75,0.67,0.01]
         self.pick_robot.gotoCartPositionAndQuat(
-            desiredPos=[pushed_box_pos[0], pushed_box_pos[1], 0.3],
-            desiredQuat=[0, 1, 0, 0],
-            duration=2.0,
+            desiredPos=[current_pos[0], current_pos[1], home_pos[2]],
+            desiredQuat=home_quat,
+            duration=0.2,
         )
         self.pick_robot.gotoCartPositionAndQuat(
-            desiredPos=[pushed_box_pos[0], pushed_box_pos[1], 0.13],
-            desiredQuat=[0, 1, 0, 0],
-            duration=2.0,
+            desiredPos=home_pos,
+            desiredQuat=home_quat,
+            duration=0.5,
         )
+        inital_pos = home_pos
         self.pick_robot.activeController = self.controller_dict["panda_robot"]
         self.pick_robot.activeController.setSetPoint(
-            np.hstack((self.pick_robot.current_c_pos, [0, 1, 0, 0]))
+            np.hstack((home_pos, home_quat))
         )
+        real_reset_target=[inital_pos]
+
+        return real_reset_target
     def before_step(self):
         pass
 

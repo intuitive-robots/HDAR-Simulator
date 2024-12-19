@@ -87,62 +87,79 @@ class HandoverBox(SFSimulator):
             new_quat=target_box_quat,
             obj_name="target_box",
         )
-        if picked_box_pos[1] > target_box_pos[1]:
-            self.pick_robot1.gotoCartPositionAndQuat(
-                desiredPos=[picked_box_pos[0]+0.1, picked_box_pos[1]+0.1, 0.35],
-                desiredQuat=[0, 1, 0, 0],
-                duration=2.0,
-            )
+        home_pos = [0.53,-0.09,0.32]
+        home_quat = [-0.03,0.75,0.67,0.01]
+        self.pick_robot1.gotoCartPositionAndQuat(
+            desiredPos=[home_pos[0],home_pos[1]+0.35,home_pos[2]],
+            desiredQuat=home_quat,
+            duration=0.5,
+        )
+        self.pick_robot2.gotoCartPositionAndQuat(
+            desiredPos=[home_pos[0],home_pos[1]-0.35,home_pos[2]],
+            desiredQuat=home_quat,
+            duration=0.5,
+        )
+        # if picked_box_pos[1] > target_box_pos[1]:
+        #     self.pick_robot1.gotoCartPositionAndQuat(
+        #         desiredPos=[picked_box_pos[0]+0.1, picked_box_pos[1]+0.1, 0.35],
+        #         desiredQuat=[0, 1, 0, 0],
+        #         duration=0.5,
+        #     )
             
-            self.pick_robot2.gotoCartPositionAndQuat(
-                desiredPos=[target_box_pos[0]+0.1, target_box_pos[1]-0.1, 0.35],
-                desiredQuat=[0, 1, 0, 0],
-                duration=2.0,
-            )
-            self.pick_robot1.gotoCartPositionAndQuat(
-                desiredPos=[picked_box_pos[0]+0.1, picked_box_pos[1]+0.1, 0.3],
-                desiredQuat=[0, 1, 0, 0],
-                duration=1.0,
-            )
-            self.pick_robot2.gotoCartPositionAndQuat(
-                desiredPos=[target_box_pos[0]+0.1, target_box_pos[1]-0.1, 0.3],
-                desiredQuat=[0, 1, 0, 0],
-                duration=1.0,
-            )
-        else:
-            self.pick_robot2.gotoCartPositionAndQuat(
-                desiredPos=[picked_box_pos[0]+0.1, picked_box_pos[1]-0.1, 0.35],
-                desiredQuat=[0, 1, 0, 0],
-                duration=2.0,
-            )
+        #     self.pick_robot2.gotoCartPositionAndQuat(
+        #         desiredPos=[target_box_pos[0]+0.1, target_box_pos[1]-0.1, 0.35],
+        #         desiredQuat=[0, 1, 0, 0],
+        #         duration=0.5,
+        #     )
+        #     self.pick_robot1.gotoCartPositionAndQuat(
+        #         desiredPos=[picked_box_pos[0]+0.1, picked_box_pos[1]+0.1, 0.3],
+        #         desiredQuat=[0, 1, 0, 0],
+        #         duration=0.5,
+        #     )
+        #     self.pick_robot2.gotoCartPositionAndQuat(
+        #         desiredPos=[target_box_pos[0]+0.1, target_box_pos[1]-0.1, 0.3],
+        #         desiredQuat=[0, 1, 0, 0],
+        #         duration=0.5,
+        #     )
+        # else:
+        #     self.pick_robot2.gotoCartPositionAndQuat(
+        #         desiredPos=[picked_box_pos[0]+0.1, picked_box_pos[1]-0.1, 0.35],
+        #         desiredQuat=[0, 1, 0, 0],
+        #         duration=0.5,
+        #     )
             
-            self.pick_robot1.gotoCartPositionAndQuat(
-                desiredPos=[target_box_pos[0]+0.1, target_box_pos[1]+0.1, 0.35],
-                desiredQuat=[0, 1, 0, 0],
-                duration=2.0,
-            )
-            self.pick_robot2.gotoCartPositionAndQuat(
-                desiredPos=[picked_box_pos[0]+0.1, picked_box_pos[1]-0.1, 0.3],
-                desiredQuat=[0, 1, 0, 0],
-                duration=1.0,
-            )
-            self.pick_robot1.gotoCartPositionAndQuat(
-                desiredPos=[target_box_pos[0]+0.1, target_box_pos[1]+0.1, 0.3],
-                desiredQuat=[0, 1, 0, 0],
-                duration=1.0,
-            )
+        #     self.pick_robot1.gotoCartPositionAndQuat(
+        #         desiredPos=[target_box_pos[0]+0.1, target_box_pos[1]+0.1, 0.35],
+        #         desiredQuat=[0, 1, 0, 0],
+        #         duration=0.5,
+        #     )
+        #     self.pick_robot2.gotoCartPositionAndQuat(
+        #         desiredPos=[picked_box_pos[0]+0.1, picked_box_pos[1]-0.1, 0.3],
+        #         desiredQuat=[0, 1, 0, 0],
+        #         duration=0.5,
+        #     )
+        #     self.pick_robot1.gotoCartPositionAndQuat(
+        #         desiredPos=[target_box_pos[0]+0.1, target_box_pos[1]+0.1, 0.3],
+        #         desiredQuat=[0, 1, 0, 0],
+        #         duration=0.5,
+        #     )
         
         self.pick_robot1.activeController = self.controller_dict["panda_robot1"]
         self.pick_robot2.activeController = self.controller_dict["panda_robot2"]
 
 
         self.pick_robot1.activeController.setSetPoint(
-            np.hstack((self.pick_robot1.current_c_pos, [0, 1, 0, 0]))
+            np.hstack((self.pick_robot1.current_c_pos, home_quat))
         )
 
         self.pick_robot2.activeController.setSetPoint(
-            np.hstack((self.pick_robot2.current_c_pos, [0, 1, 0, 0]))
+            np.hstack((self.pick_robot2.current_c_pos, home_quat))
         )
+        inital_pos1 = np.array(self.pick_robot1.current_c_pos)
+        inital_pos2 = np.array(self.pick_robot2.current_c_pos)
+
+        target_pos= [inital_pos1,inital_pos2]
+        return target_pos
 
 
     def before_step(self):

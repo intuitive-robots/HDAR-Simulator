@@ -15,7 +15,7 @@ class HoloLensTCPController(InteractiveTCPControllerBase):
 
     # def getControl(self, robot: RobotBase):
     #     self.scene.viewer.cam.lookat = self.scene.get_obj_pos(obj_name="user_head_pose")
-    #     rot = quat2euler(self.scene.get_obj_quat(obj_name="user_head_pose"))
+        # rot = quat2euler(self.scene.get_obj_quat(obj_name="user_head_pose"))
     #     self.scene.viewer.cam.distance = 0
     #     self.scene.viewer.cam.azimuth, self.scene.viewer.cam.elevation = -degrees(rot[2]), degrees(rot[1])
     #     return super().getControl(robot)

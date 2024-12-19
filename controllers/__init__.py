@@ -6,5 +6,5 @@ from .kalman_filter import KalmanFilter
 from .real_robot_controller import RealRobotController
 from .replay_controller import ReplayerController
 from .tcp_controller import InteractiveTCPControllerBase
-from .vive_pro_controller import ViveProMotionControllerTCPController
+# from .vive_pro_controller import ViveProMotionControllerTCPController
 from .vt_controller import VTController

@@ -5,7 +5,7 @@ from typing import Dict, Callable
 from ..recorder import Recorder, RecordData, RecordDataHeader
 from ..recorder import ObjectData
 from .sf_simulator import SFSimulator
-
+# from hdar_simulator._simulationframework.task.Collision_finger import 
 
 class SFRecorder(Recorder):
 
@@ -27,6 +27,8 @@ class SFRecorder(Recorder):
         self.skip_step = skip_step
         self.dt = self.mj_scene.dt
         self.record_func: Dict[str, Callable[[], ObjectData]] = {}
+        # self.finger_force_left = 
+        # self.finger_force_right = 
 
     def add_record_func(self, name: str, func: Callable[[], ObjectData]):
         if self.on_recording:
@@ -34,32 +36,39 @@ class SFRecorder(Recorder):
         self.record_func[name] = func
 
     def _record(self):
-        current_frame = {}
+        env_state = {}
         for name, robot in self.robot_dict.items():
-            current_frame[name] = {
-                "joint_pos": robot.current_j_pos,
-                "joint_vel": robot.current_j_vel,
-                "des_joint_pos": robot.des_joint_pos,
-                "des_joint_vel": robot.des_joint_vel,
-                "des_joint_acc": robot.des_joint_acc,
-                "cart_pos": robot.current_c_pos,
-                "cart_quat": robot.current_c_quat,
-                "cart_vel": robot.current_c_vel,
-                "cart_quat_vel": robot.current_c_quat_vel,
+            env_state[name] = {
+                "j_pos": robot.current_j_pos,
+                "j_vel": robot.current_j_vel,
+                "c_pos": robot.current_c_pos,
+                "c_quat": robot.current_c_quat,
+                "c_vel": robot.current_c_vel,
                 "des_c_pos": robot.des_c_pos,
-                "des_c_vel": robot.des_c_vel,
-                "des_quat": robot.des_quat,
-                "des_quat_vel": robot.des_quat_vel,
-                "gripper_width": np.array([robot.gripper_width]),
+                "des_c_quat": robot.des_quat,
+                "des_j_pos": robot.des_joint_pos,
+                "des_j_vel": robot.des_joint_vel,
+                "des_j_acc": robot.des_joint_acc,
+                "gripper_width": robot.gripper_width,
             }
         for name, obj in self.object_dict.items():
-            current_frame[name] = {
+            env_state[name] = {
                 "pos": self.mj_scene.get_obj_pos(obj_name=obj.name),
                 "quat": self.mj_scene.get_obj_quat(obj_name=obj.name),
             }
+        # for force in self.finger_force_left.item():
+        #     env_state["left"] = {
+        #         "force": force
+        #     }
+        # for force in self.finger_force_right.item():
+        #     env_state["right"] = {
+        #         "force": force
+        #     }
+         
+
         for name, func in self.record_func.items():
-            current_frame[name] = func()
-        self.record_data.append_frame(current_frame)
+            env_state[name] = func()
+        self.record_data.append_frame(env_state)
 
     def _start_record(self):
         record_header = RecordDataHeader(
@@ -80,6 +89,7 @@ class SFRecorder(Recorder):
         for robot_name, robot in self.robot_dict.items():
             init_state[robot_name] = {
                 "joint_pos": robot.current_j_pos,
+                "gripper_width": np.array(robot.gripper_width),
             }
         self.record_data = record_data
 

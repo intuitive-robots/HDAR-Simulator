@@ -18,8 +18,8 @@ class PickandPlaceBox(SFSimulator):
 
     def __init__(self, host_address=None):
         self.box_space = SamplingSpace(
-            low=np.array([0.3, -0.3, 0]),
-            high=np.array([0.6, 0.3, 0]),
+            low=np.array([0.3, -0.35, 0]),
+            high=np.array([0.6, 0.35, 0]),
             seed=np.random.randint(0, 1000),
         )
         super().__init__('PickandPlaceBox', host_address)
@@ -47,49 +47,86 @@ class PickandPlaceBox(SFSimulator):
             quat=[0, 0, 0, 1],
         )
         return {
-            "pick_box": self.picked_box,
+            "picked_box": self.picked_box,
             "target_box": self.target_box,
         }
          
 
     def reset(self):
         # return
-        pushed_box_pos = self.box_space.sample()
+        
+        while True:
+            picked_box_pos = self.box_space.sample()
+            if 0.4 < np.linalg.norm(
+               np.array(picked_box_pos) - np.array([0,0,0.0])
+            ) < 0.8   and 0.10 < np.linalg.norm(
+               np.array(picked_box_pos) - np.array([0.5,0.25,0.0])
+            ) :
+                break
         # pushed_box_pos = np.array([np.random.uniform(-0.7,0.7), np.random.uniform(-0.5,0.5), 0])
-        pushed_box_euler = np.array([np.random.uniform(-180, 180), 0, 0])
-        pushed_box_quat = R.from_euler("xyz", pushed_box_euler).as_quat()
+        picked_box_euler = np.array([np.random.uniform(-180, 180), 0, 0])
+        picked_box_quat = R.from_euler("xyz", picked_box_euler).as_quat()
         self.mj_scene.set_obj_pos_and_quat(
-            new_pos=pushed_box_pos,
-            new_quat=pushed_box_quat,
+            new_pos=picked_box_pos,
+            new_quat=picked_box_quat,
             obj_name="picked_box",
         )
         while True:
             target_box_pos = self.box_space.sample()
             if 0.2 < np.linalg.norm(
-                np.array(target_box_pos) - np.array(pushed_box_pos)
-            ) < 0.5 :
+                np.array(target_box_pos) - np.array(picked_box_pos)
+            ) < 0.35    and   0.4 < np.linalg.norm(
+                np.array(target_box_pos) - np.array([0,0,0.0])
+            ) < 0.6:
                 break
         target_box_euler = np.array([np.random.uniform(-180, 180), 0, 0])
+        # target_box_pos = [0.5,0.25,0.0]
+        # target_box_euler = np.array([45, 0, 0])
         target_box_quat = R.from_euler("xyz", target_box_euler).as_quat()
+
         self.mj_scene.set_obj_pos_and_quat(
             new_pos=target_box_pos,
             new_quat=target_box_quat,
             obj_name="target_box",
         )
+        # self.pick_robot.gotoCartPositionAndQuat(
+        #     desiredPos=[picked_box_pos[0], picked_box_pos[1], 0.35],
+        #     desiredQuat=[0, 1, 0, 0],
+        #     duration=0.5,
+        # )
+        # self.pick_robot.gotoCartPositionAndQuat(
+        #     desiredPos=[picked_box_pos[0], picked_box_pos[1], 0.3],
+        #     desiredQuat=[0, 1, 0, 0],
+        #     duration=0.2,
+        # )
+        # inital_pos = np.array([picked_box_pos[0], picked_box_pos[1], 0.3])
+        # self.pick_robot.activeController = self.controller_dict["panda_robot"]
+        # self.pick_robot.activeController.setSetPoint(
+        #     np.hstack((self.pick_robot.current_c_pos_global, [0, 1, 0, 0]))
+        # )
+        # real_reset_target=[inital_pos]
+
+        current_pos = self.pick_robot.current_c_pos
+        home_pos = [0.53,-0.09,0.325]
+        home_quat = [-0.02,0.935,0.35,0]
         self.pick_robot.gotoCartPositionAndQuat(
-            desiredPos=[pushed_box_pos[0], pushed_box_pos[1], 0.3],
-            desiredQuat=[0, 1, 0, 0],
-            duration=2.0,
+            desiredPos=[current_pos[0], current_pos[1], 0.5],
+            desiredQuat=home_quat,
+            duration=0.2,
         )
         self.pick_robot.gotoCartPositionAndQuat(
-            desiredPos=[pushed_box_pos[0], pushed_box_pos[1], 0.15],
-            desiredQuat=[0, 1, 0, 0],
-            duration=2.0,
+            desiredPos=home_pos,
+            desiredQuat=home_quat,
+            duration=0.5,
         )
+        inital_pos = home_pos
         self.pick_robot.activeController = self.controller_dict["panda_robot"]
         self.pick_robot.activeController.setSetPoint(
-            np.hstack((self.pick_robot.current_c_pos_global, [0, 1, 0, 0]))
+            np.hstack((home_pos, home_quat))
         )
+        real_reset_target=[inital_pos]
+
+        return real_reset_target
 
     def before_step(self):
         pass

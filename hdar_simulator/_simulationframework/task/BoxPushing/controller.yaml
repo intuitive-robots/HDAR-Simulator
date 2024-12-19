@@ -4,5 +4,10 @@ meta_quest3:
   with_gripper: False
 
 real_robot:
-  ip: 127.0.0.1
-  port: 1024
+  # ip: 127.0.0.1
+  ip: 141.3.53.152
+  robot_port: 4321
+  gripper_port: 4322
+  # ip: 141.3.53.152
+  # robot_port: 1234 
+  # gripper_port: 1235

@@ -41,14 +41,33 @@ class MetaQuest3Controller(CartPosQuatImpedenceController):
             self.on_control = True
         # pos and quat offsets
         desired_pos = np.array(hand["pos"]) + self.start_pos_offset
+        # desired_pos =[desired_pos[0],desired_pos[1],0.28]
+        # desired_quat_local = np.array([0, 1, 0, 0])
         if self.fix_rotation:
             desired_quat_local = np.array([0, 1, 0, 0])
         else:
             desired_quat = hand["rot"]
+            
             rot = R.from_quat(desired_quat) * R.from_euler(
-                "xyz", [-180, 0, 180], True
+                "xyz", [180, 0, 0], True
             )
-            desired_quat = rot.as_quat(scalar_first=True)
+            rot = rot.as_euler('xyz')
+            rot2 = np.array([-rot[2],rot[1],-rot[0]])
+            # rot3 = R.from_euler("xyz",  rot2) * R.from_euler(
+            #     "xyz", [180, 0, 90], True
+            # )
+            # rot3 = rot3.as_euler('xyz')
+            desired_quat = R.from_euler("xyz" ,rot2).as_quat()
+
+
+            # rot = R.from_quat(desired_quat) * R.from_euler(
+            #     "xyz", [-180, 0, 180], True
+            # )
+            # rot = rot.as_euler('xyz')
+            # desired_quat = R.from_euler("xyz" ,rot).as_quat()
+         
+          
+            
             desired_quat_local = robot._localize_cart_quat(desired_quat)
         if self.with_gripper:
             if hand["index_trigger"]:

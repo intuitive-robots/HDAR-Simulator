@@ -2,7 +2,7 @@ import abc
 import queue
 from typing import List, Dict, Any
 from typing import Callable, Tuple
-
+import numpy as np
 from alr_sim.core.Scene import Scene
 from alr_sim.sims.mj_beta import MjRobot
 from alr_sim.sims.mj_beta import MjScene
@@ -10,8 +10,11 @@ from alr_sim.controllers import ControllerBase
 from alr_sim.sims.SimFactory import SimRepository
 from alr_sim.sims.mj_beta.mj_utils.mj_scene_object import MujocoObject
 from simpub.sim.sf_publisher import SFPublisher
+import poly_controllers,controllers
 
-TaskQueue = queue.Queue[Tuple[Callable[..., None], Tuple[Any, ...]]]
+# TaskQueue = queue.Queue[Tuple[Callable[..., None], Tuple[Any, ...]]]
+TaskTuple = Tuple[Callable[..., None], Tuple[Any, ...]]
+TaskQueue = queue.Queue  # Type hint only, no direct subscript
 
 
 class SFSimulator(abc.ABC):
@@ -27,7 +30,8 @@ class SFSimulator(abc.ABC):
         self.sim_factory = SimRepository.get_factory("mj_beta")
         self.mj_scene = self.create_scene()
         self.robot_dict = self.create_robots()
-        self.task_queue: TaskQueue = TaskQueue()
+        # self.task_queue: TaskQueue = TaskQueue()
+        self.task_queue = queue.Queue()
         self.mj_scene.start()
         if host_address is not None:
             self.publisher = SFPublisher(self.mj_scene, host_address)
@@ -77,6 +81,7 @@ class SFSimulator(abc.ABC):
     @abc.abstractmethod
     def reset(self):
         raise NotImplementedError
+    
 
     @abc.abstractmethod
     def before_step(self):
@@ -88,7 +93,18 @@ class SFSimulator(abc.ABC):
 
     def assign_controller(self, controller_dict: Dict[str, ControllerBase]):
         self.controller_dict = controller_dict
+        
+        print(f"controller dict:{controller_dict}")
+        
         for name, robot in self.robot_dict.items():
+            controller = controller_dict.get(name)
+            
+            if isinstance(controller, controllers.vt_controller.VTController):
+                pos=controller.real_robot.robot.get_joint_positions()
+                robot.beam_to_joint_pos( pos.numpy()
+                    # controller.real_robot.robot.get_joint_positions().numpy()
+                )
+                print(f"finish to set controller pos")
             self.controller_dict[name].executeController(
                 robot, maxDuration=1000, block=False
             )
@@ -111,3 +127,16 @@ class SFSimulator(abc.ABC):
         self.reset()
         while True:
             self.next_step()
+
+    def reset_controlled_robots(self,target_pos=None):
+        for robot, target_pos in zip(self.robot_dict.values(), target_pos):
+        # for robot in self.robot_dict.values():
+            if hasattr(robot.activeController, "reset_robot"):
+                robot.activeController.reset_robot(target_pos=target_pos)
+    
+    def reset_real_robot_in_the_main_thread(self):
+        self.task_queue.put((self.reset_real_robot, None))
+
+    def reset_real_robot(self):
+        target_pos=self.reset()
+        self.reset_controlled_robots(target_pos=target_pos)

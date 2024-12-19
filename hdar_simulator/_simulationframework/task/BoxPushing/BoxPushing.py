@@ -10,7 +10,7 @@ from alr_sim.utils.sim_path import sim_framework_path
 from alr_sim.sims.mj_beta import MjRobot
 from alr_sim.sims.mj_beta.mj_utils.mj_scene_object import MujocoObject
 from alr_sim.sims.mj_beta.mj_utils.mj_scene_object import CustomMujocoObject
-
+from ..Collision_finger import get_collisions 
 
 class BoxPushing(SFSimulator):
 
@@ -21,6 +21,9 @@ class BoxPushing(SFSimulator):
             seed=np.random.randint(0, 1000),
         )
         super().__init__('BoxPushing', host_address)
+        self.haptic_on: bool = False
+        self.haptic_aim = False
+
 
     def create_robots(self) -> Dict[str, MjRobot]:
         self.push_robot = self.sim_factory.create_robot(
@@ -70,30 +73,78 @@ class BoxPushing(SFSimulator):
             new_quat=target_box_quat,
             obj_name="target_box",
         )
+
         current_pos = self.push_robot.current_c_pos
+
+
         self.push_robot.gotoCartPositionAndQuat(
-            desiredPos=[current_pos[0], current_pos[1], 0.25],
+            desiredPos=[current_pos[0], current_pos[1], 0.5],
             desiredQuat=[0, 1, 0, 0],
             duration=2.0,
         )
+    
         self.push_robot.gotoCartPositionAndQuat(
-            desiredPos=[pushed_box_pos[0], pushed_box_pos[1], 0.25],
+            desiredPos=[pushed_box_pos[0], pushed_box_pos[1], 0.5],
             desiredQuat=[0, 1, 0, 0],
             duration=2.0,
         )
+ 
+        
         self.push_robot.gotoCartPositionAndQuat(
-            desiredPos=[pushed_box_pos[0], pushed_box_pos[1], 0.13],
+            desiredPos=[pushed_box_pos[0], pushed_box_pos[1], 0.15],
             desiredQuat=[0, 1, 0, 0],
             duration=2.0,
         )
-        inital_pos = np.array([pushed_box_pos[0], pushed_box_pos[1], 0.13])
+        
+        inital_pos = np.array([pushed_box_pos[0], pushed_box_pos[1], 0.15])
         self.push_robot.activeController = self.controller_dict["panda_robot"]
         self.push_robot.activeController.setSetPoint(
             np.hstack((inital_pos, np.array([0, 1, 0, 0])))
         )
+
+        real_reset_target=[inital_pos]
+
+        return real_reset_target
+    
+
+        
 
     def before_step(self):
         pass
 
     def after_step(self):
         pass
+
+
+
+
+class BoxPushingVibration(BoxPushing):
+    def __init__(self, host_address=None):
+        super().__init__(host_address)
+
+    def after_step(self):
+               
+        replace_rb0_l=0
+        replace_rb0_r=0
+        replace_rb0_l, replace_rb0_r  = get_collisions(
+        self.mj_scene,
+        target_pairs1={
+            ('pushed_box_a', 'rod:geom_rb0'),
+            ('pushed_box_b', 'rod:geom_rb0'),
+            ('pushed_box_c', 'rod:geom_rb0'),
+            ('pushed_box_d', 'rod:geom_rb0'),
+
+            
+                       },
+        target_pairs2={
+            ('pushed_box_a', 'rod:geom_rb0'),
+            ('pushed_box_b', 'rod:geom_rb0'),
+            ('pushed_box_c', 'rod:geom_rb0'),
+            ('pushed_box_d', 'rod:geom_rb0'),
+            }
+        )
+        if (replace_rb0_l != 0 or replace_rb0_r !=0) :
+            self.haptic_on = True
+        else:
+            self.haptic_on = False
+

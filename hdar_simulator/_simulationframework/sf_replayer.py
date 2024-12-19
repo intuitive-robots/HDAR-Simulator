@@ -1,7 +1,7 @@
 from typing import Dict
 
 from alr_sim.controllers.Controller import JointPDController
-from alr_sim.sims.mj_beta import MjRobot
+from alr_sim.sims.mj_beta import MjRobot,MjScene
 from .sf_simulator import SFSimulator
 from .sf_recorder import RecordData
 from ..data_replayer import DataReplayer
@@ -16,7 +16,7 @@ class ReplayerJointController(JointPDController):
         robot_name: str,
     ):
         super().__init__()
-        self.joint_state = record_data.state[robot_name]["joint_pos"]
+        self.joint_state = record_data.state[robot_name]["j_pos"]
         self.gripper_state = record_data.state[robot_name]["gripper_width"]
         self.init_state = record_data.init_state[robot_name]
         self.sequence_length = record_data.header.sequence_length
@@ -25,15 +25,18 @@ class ReplayerJointController(JointPDController):
 
     def update_state(self):
         self.desired_joint_pos = self.joint_state[self.index]
+        
+
         if self.gripper_state[self.index] <= 0.075:
             self.robot.close_fingers(duration=0)
         else:
             self.robot.open_fingers()
         self.index += 1
 
+
     def reset_robot(self):
         self.robot.beam_to_joint_pos(self.init_state)
-
+#TODO object replay
 
 class SFReplayer(DataReplayer):
 
@@ -50,16 +53,19 @@ class SFReplayer(DataReplayer):
             obj_name: init_state[obj_name]
             for obj_name in self.simulator.object_dict.keys()
         }
+        
         self.simulator.reset_objects(init_object_state)
         init_robot_state = {
             robot_name: init_state[robot_name]
             for robot_name in self.simulator.robot_dict.keys()
         }
+        print(f"state robot{init_robot_state}")
         self.simulator.reset_robots(init_robot_state)
         for robot_name, robot in self.simulator.robot_dict.items():
             self.controller_dict[robot_name] = ReplayerJointController(
                 self.record_data, robot, robot_name,
             )
+        print(self.record_data.__dict__)
         self.simulator.assign_controller(self.controller_dict)
         return self.simulator
 
@@ -68,6 +74,7 @@ class SFReplayer(DataReplayer):
         task_name = self.record_data.header.task
         simulator: SFSimulator = sf_task_factory(task_name)
         self.load_simulator(simulator)
+        
         return simulator
 
     def replay(self):
@@ -77,6 +84,21 @@ class SFReplayer(DataReplayer):
     def replay_step(self):
         self.simulator.next_step()
         if self.index % self.skip_step == 0:
+            # self.update_object_states()
             for controller in self.controller_dict.values():
                 controller.update_state()
+                for robot_name, robot in self.simulator.robot_dict.items():
+                    print(f"robot c desired pos:{robot.current_c_pos}")
+                for obj_name,obj in self.simulator.object_dict.items():
+                    print(f"obj_{obj_name}:obj pos,quat :{self.mj_scene.get_obj_quat(obj_name=obj.name)}")
         self.index += 1
+
+     
+    # def update_object_states(self):
+    #     for obj_name , obj in self.simulator.object_dict.items():
+    #         object_states = self.record_data.state[obj_name]  # 根据你的数据结构进行调整
+    #     current_object_state = {
+    #         obj_name: object_states[obj_name][self.index]
+    #         for obj_name in self.simulator.object_dict.keys()
+    #     }
+    #     self.simulator.update_objects(current_object_state)
