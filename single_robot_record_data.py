@@ -22,17 +22,11 @@ if __name__ == '__main__':
     # parser.add_argument("-i", default='meta_quest3')
     parser.add_argument("-i", default='real_robot')
     args = parser.parse_args()
-
-    # simulator: SFSimulator = sf_task_factory(args.t, host_address=args.host)
-    # recorder = SFRecorder(simulator)
-    # controller_config = yaml.safe_load(
-    #     open(
-    #         "./hdar_simulator/_simulationframework/task/" +
-    #         f"{args.t}/controller.yaml", "r"
-    #     )
-    # )    
+   
     if args.i == 'meta_quest3':
+#   #vibration feedback        
         modified_task_type = args.t + "Vibration"
+#   #initial without feedback
         # modified_task_type = args.t 
         simulator: SFSimulator = sf_task_factory(modified_task_type, host_address=args.host)
         recorder = SFRecorder(simulator)
@@ -103,8 +97,7 @@ if __name__ == '__main__':
             "X", simulator.reset_real_robot_in_the_main_thread
         )
     
-
-        # Record while the 'R' key is held down
+    # Record while the 'X' key is held down
         
         meta_quest3.register_trigger_press_event(
             "hand_trigger", "right", recorder.start_record
@@ -151,13 +144,14 @@ if __name__ == '__main__':
                 vt_scene.time_stamp
                 > force_last_timestep + force_interval
             ):
+#   #enviornment physical force feedback                
                 force_last_timestep = vt_scene.time_stamp
                 if real_robot.is_running_policy():
                     constraint_forces = [
-                            vt_scene.data.joint(name).qfrc_constraint[0] *1.5 + vt_scene.data.joint(name).qfrc_bias[0] * 0.25
+                            vt_scene.data.joint(name).qfrc_constraint[0] *2 + vt_scene.data.joint(name).qfrc_bias[0] * 0.25
                             for name in robot_config.joint_names
                         ]
-  # withour object forcefeedback
+#  # withour object force feedback
                     # constraint_forces = [
                     #         vt_scene.data.joint(name).qfrc_bias[0] * 0.25
                     #         for name in robot_config.joint_names
@@ -170,4 +164,4 @@ if __name__ == '__main__':
             simulator.next_step()
             recorder.record()
     else:
-        raise NotImplementedError("Only MetaQuest3 is supported for now.")
+        raise NotImplementedError("Only MetaQuest3 motion controller and KT-robot are supported for now.")

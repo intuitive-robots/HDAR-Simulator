@@ -24,15 +24,6 @@ if __name__ == '__main__':
     parser.add_argument("-i", default='meta_quest3')
     # parser.add_argument("-i", default='real_robot')
     args = parser.parse_args()
-
-    # simulator: SFSimulator = sf_task_factory(args.t, host_address=args.host)
-    # recorder = SFRecorder(simulator)
-    # controller_config = yaml.safe_load(
-    #     open(
-    #         "./hdar_simulator/_simulationframework/task/" +
-    #         f"{args.t}/controller.yaml", "r"
-    #     )
-    # )
     if args.i == 'meta_quest3':
         modified_task_type = args.t + "Vibration"
         simulator: SFSimulator = sf_task_factory(modified_task_type, host_address=args.host)
